@@ -14,11 +14,13 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    paddingLeft: 200,
   },
   closecircle: {
-    paddingRight: 30,
+    paddingRight: 10,
     paddingLeft: 10,
+  },
+  tabView: {
+    width: '100%',
   }
 });
 

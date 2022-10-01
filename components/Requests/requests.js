@@ -1,6 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
-import { ListItem, Avatar, Text, Tab } from "@rneui/themed";
+import { useState, useEffect } from 'react';
+import { View, FlatList } from 'react-native';
+import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -32,36 +33,49 @@ const users = [
     breed: 'German Shepherd',
     personality: 'Mild',
     size: 'Large'
-  }
+  },
 ];
 
-//name, breed, personality, size
 const Request = (props) => {
+  const [index, setIndex] = useState(0);
+
   return (
     <View style={styles.requestContainer}>
-      <Tab value={0} variant="primary">
+      <Tab
+        value={index}
+        onChange={(e) => setIndex(e)}
+        indicatorStyle={{
+          backgroundColor: 'white',
+          height: 3,
+        }}
+        variant="primary"
+      >
         <Tab.Item>Matches</Tab.Item>
         <Tab.Item>Accepted</Tab.Item>
       </Tab>
-      {
-        users.map((user, i) => (
-          <ListItem key={i} bottomDivider>
-            <Avatar source={{uri: user.avatar}} size={60} rounded/>
-            <ListItem.Content >
-            <View style={styles.buttons}>
-              <AntDesign name="closecircle" size={24} color="red" onPress={() => {alert('Declined')}}/>
-              <AntDesign name="checkcircle" size={24} color="green" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
-            </View>
-              <View style={styles.bio}>
-                <ListItem.Title style={styles.name}>{user.name}</ListItem.Title>
-                <Text>{user.breed}</Text>
-                <Text>{user.personality}</Text>
-                <Text>{user.size}</Text>
-              </View>
-            </ListItem.Content>
-          </ListItem>
-        ))
-      }
+
+      <TabView value={index} onChange={setIndex} animationType='spring'>
+        <TabView.Item style={styles.tabView}>
+          <FlatList
+            data={users}
+            renderItem={({item}) => (
+              <ListItem bottomDivider>
+                <Avatar rounded source={{uri: item.avatar}} size={60} />
+                <ListItem.Content>
+                  <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
+                  <ListItem.Subtitle>{item.breed}</ListItem.Subtitle>
+                  <ListItem.Subtitle>{item.personality}</ListItem.Subtitle>
+                  <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
+                </ListItem.Content>
+                <View style={styles.buttons}>
+                  <AntDesign name="closecircle" size={24} color="red" onPress={() => {alert('Declined')}}/>
+                <AntDesign name="checkcircle" size={24} color="green" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
+                </View>
+              </ListItem>
+            )}
+          />
+        </TabView.Item>
+      </TabView>
     </View>
   )
 }
