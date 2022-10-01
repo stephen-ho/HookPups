@@ -61,6 +61,11 @@ const SignInScreen = () => {
         onPress={onApplePressed}
         bgColor='#E3E3E3'
       />
+      <CustomButton
+        text="Don't have an account? Create one"
+        onPress={onApplePressed}
+        type='EMPTY'
+      />
     </View>
   )
 }

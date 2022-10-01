@@ -6,13 +6,7 @@ import InitialScreen from './screens/InitialScreen'
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <InitialScreen /> */}
       <SignInScreen />
-      {/* <SignInScreen />
-      <SignInScreen /> */}
-      {/* <RegisterScreen /> */}
-      {/* <Text>Hello world</Text> */}
-      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }
