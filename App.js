@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+// import EventPage from './events/EventPage.js';
+import EventMain from './events/EventMain.js';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Hello World!</Text>
       <StatusBar style="auto" />
+      <EventMain />
     </View>
   );
 }
