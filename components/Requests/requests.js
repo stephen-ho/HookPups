@@ -36,6 +36,14 @@ const users = [
   },
 ];
 
+const matched = [
+  {
+    name: 'Mochi',
+    avatar: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-white-dog-breeds-cover-1560293099.jpg',
+    message: 'Hey this is Mochi! Wanna schedule a play date?'
+  },
+];
+
 const Request = (props) => {
   const [index, setIndex] = useState(0);
 
@@ -45,13 +53,21 @@ const Request = (props) => {
         value={index}
         onChange={(e) => setIndex(e)}
         indicatorStyle={{
-          backgroundColor: 'white',
+          backgroundColor: '#CDB4DB',
           height: 3,
         }}
         variant="primary"
       >
-        <Tab.Item>Matches</Tab.Item>
-        <Tab.Item>Accepted</Tab.Item>
+        <Tab.Item
+          containerStyle={(active) => ({
+            backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
+          })}
+        > Matches </Tab.Item>
+        <Tab.Item
+          containerStyle={(active) => ({
+            backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
+          })}
+        >Accepted</Tab.Item>
       </Tab>
 
       <TabView value={index} onChange={setIndex} animationType='spring'>
@@ -68,9 +84,24 @@ const Request = (props) => {
                   <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
                 </ListItem.Content>
                 <View style={styles.buttons}>
-                  <AntDesign name="closecircle" size={24} color="red" onPress={() => {alert('Declined')}}/>
-                <AntDesign name="checkcircle" size={24} color="green" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
+                  <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {alert('Declined')}}/>
+                <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
                 </View>
+              </ListItem>
+            )}
+          />
+        </TabView.Item >
+
+        <TabView.Item style={styles.tabView}>
+        <FlatList
+            data={matched}
+            renderItem={({item}) => (
+              <ListItem bottomDivider>
+                <Avatar rounded source={{uri: item.avatar}} size={60} />
+                <ListItem.Content>
+                  <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
+                  <ListItem.Subtitle>{item.message}</ListItem.Subtitle>
+                </ListItem.Content>
               </ListItem>
             )}
           />

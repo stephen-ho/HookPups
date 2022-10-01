@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   requestContainer: {
+    paddingTop: 30,
     width: '100%',
     height: '100%',
   },
