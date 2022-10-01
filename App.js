@@ -1,7 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Home from './components/Home/home.js';
-import Swipe from './components/Home/swipe.js';
 import CardSwipe from './components/Home/cardSwipe.js';
 
 export default function App() {
