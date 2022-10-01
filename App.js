@@ -1,11 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import SignInScreen from './screens/SignIn/SignInScreen.js'
+import InitialScreen from './screens/InitialScreen'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Hello World!</Text>
-      <StatusBar style="auto" />
+      {/* <InitialScreen /> */}
+      <SignInScreen />
+      {/* <SignInScreen />
+      <SignInScreen /> */}
+      {/* <RegisterScreen /> */}
+      {/* <Text>Hello world</Text> */}
+      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }
@@ -13,8 +20,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#BDE0FE',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
