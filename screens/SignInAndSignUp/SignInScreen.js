@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import LogoImg from '../../assets/images/hookpupslogo.png';
 import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
@@ -10,6 +11,8 @@ const SignInScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation = useNavigation();
+
   const onSignInPressed = () => {
     console.log('click sign in')
   }
@@ -19,7 +22,7 @@ const SignInScreen = () => {
   }
 
   const onCreateAccountPressed = () => {
-    console.warn('create account')
+    navigation.navigate('Register');
   }
 
   return (
@@ -68,13 +71,12 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     top: 30,
-    // backgroundColor: 'green'
+    backgroundColor: '#BDE0FE'
   },
 
   logo: {
     maxWidth: 150,
     maxHeight: 150,
-    margin: 20,
-    // backgroundColor: 'white'
+    margin: 20
   }
 });

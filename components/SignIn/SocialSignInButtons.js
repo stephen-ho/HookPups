@@ -5,7 +5,7 @@ import CustomButton from './CustomButton.js';
   const SocialSignInButtons = () => {
 
     const onGooglePressed = () => {
-      console.warn('sing in with google')
+      console.warn('sign in with google')
     }
 
     const onApplePressed = () => {
