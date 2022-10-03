@@ -6,15 +6,28 @@ import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
+import { auth } from '../../firebase_config.js';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const SignInScreen = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
 
   const onSignInPressed = () => {
-    console.log('click sign in')
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        // const user = userCredential.user;
+        console.log('sign in');
+        console.log(res);
+        //navigate to home screen
+      })
+      .catch((error) => {
+        console.log(error.message);
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+      });
   }
 
   const onForgotPasswordPressed = () => {
@@ -32,9 +45,9 @@ const SignInScreen = () => {
         <Logo />
 
         <CustomInput
-          placeholder='Username'
-          value={username}
-          setValue={setUsername}
+          placeholder='Email'
+          value={email}
+          setValue={setEmail}
         />
         <CustomInput
           placeholder='Password'
