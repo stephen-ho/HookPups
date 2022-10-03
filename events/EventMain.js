@@ -11,7 +11,6 @@ import eventData from './eventTestData.js';
   TODO:
     Markers for events in calendar already
       Axios call for all relevant events on component load?
-    Back arrow to close out of event page back to calendar
 */
 
 const EventMain = (props) => {
@@ -20,20 +19,27 @@ const EventMain = (props) => {
   const [markedDays, setMarkedDays] = useState({}); // Mark calendar with relevant days once GET request done
   const [dayEvents, setDayEvents] = useState([]);  // Store events for the pressed date here
 
-  useEffect(() => {
-    // async function fetchData() {
-    //   axios.get()
-    //   .then(() => {})
-    //   .catch((err) => console.log(err));
-    // }
-    // fetchData();
+  const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    // fetchEvents();
+    markDates(); //take out when axios implemented; move to fetchEvents
+  }, []);
+
+  const fetchEvents = async () => {
+    const results = await axios.get('/');
+    //parse results first?
+    setEvents(results);
+    markDates();
+  }
+
+  const markDates = () => {
     let tempMarkedDays = {};
     for (let i = 0; i < eventData.length; i++) {
       tempMarkedDays[eventData[i].date] = {selected: true};
     }
     setMarkedDays(tempMarkedDays);
-  }, []);
+  }
 
   const handleDayPress = (day) => {
     let date = day.dateString;

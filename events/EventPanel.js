@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Image, Text, View } from 'react-native';
 import styles from './styles.js';
+import { ListItem, Avatar } from '@rneui/themed'
 // import { Button } from '@rneui/base';
 
 //#cdb4db
@@ -15,6 +16,26 @@ import styles from './styles.js';
 const EventPanel = (props) => {
 
   return (
+    <ListItem style={styles.eventPanel}>
+      <ListItem.Content style={styles.eventPanelLeft}>
+        <Avatar
+          source={{uri: props.event.recipient.dog.photo}}
+          rounded={true}
+        />
+        <ListItem.Title>{props.event.recipient.dog.name}</ListItem.Title>
+      </ListItem.Content>
+      <ListItem.Content>
+        <ListItem.Subtitle>{props.event.event}</ListItem.Subtitle>
+        <ListItem.Subtitle>with {props.event.recipient.owner}</ListItem.Subtitle>
+        <ListItem.Subtitle>at {props.event.location}</ListItem.Subtitle>
+      </ListItem.Content>
+    </ListItem>
+  )
+}
+
+export default EventPanel;
+
+/*
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         <Text>{props.event.date}</Text>
@@ -27,7 +48,4 @@ const EventPanel = (props) => {
         <Text>at {props.event.location}</Text>
       </View>
     </View>
-  )
-}
-
-export default EventPanel;
+*/

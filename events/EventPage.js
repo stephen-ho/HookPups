@@ -4,6 +4,7 @@ import EventPanel from './EventPanel.js';
 import eventData from './eventTestData.js';
 import styles from './styles.js';
 import { useState } from 'react';
+import EventInput from './EventInput.js';
 
 /*
   TODO:
@@ -12,27 +13,31 @@ import { useState } from 'react';
 */
 
 const EventPage = (props) => {
-  const [show, setShow] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
-  const handleShow = (day) => {
-    //{"dateString": "2022-10-29", "day": 29, "month": 10, "timestamp": 1667001600000, "year": 2022}
-    console.log(day);
-    setShow(!show)
+  const handleShow = () => {
+    setShowInput(!showInput);
   }
 
   const renderNames = () => {
     return props.events.map((event, index) => (
       <EventPanel
-      event={event}
-      key={event.event + index}
+        event={event}
+        key={event.event + index}
       />
     ))
   }
 
   return (
     <ScrollView style={styles.eventPage}>
-      {renderNames()}
+      {!showInput && renderNames()}
       {/* <StatusBar style="auto" /> */}
+      {!showInput && <Text onPress={handleShow}>Add an event</Text>}
+      {showInput && <EventInput
+        handleShow={handleShow}
+        date={new Date()}
+        disabled={true}
+      />}
     </ScrollView>
   );
 }

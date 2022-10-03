@@ -17,8 +17,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navBar: {
+    position: 'absolute',
+    flexDirection: 'row',
+    left: 0,
+    bottom: 0,
     width: '100%',
-    height: '8%',
+    height: '6.5%',
     backgroundColor: '#cdb4db',
   },
   topBarText: {
@@ -34,35 +38,16 @@ const styles = StyleSheet.create({
   eventPage: {
     height: 500,
     width: '90%',
+    paddingTop: 10,
     backgroundColor: '#bde0fe',
     flexDirection: 'column',
   },
-  image: {
-    height: 100,
-    width: 100,
+  eventPanel: {
+    marginBottom: 20,
   },
-  container: {
-    flexDirection: 'row',
-    width: '100%',
-    marginBottom: 10,
-    padding: 5,
-    border: '1px solid black',
-    backgroundColor: '#a2d2ff',
-  },
-  leftContainer: {
-    flexDirection: 'column',
-    marginRight: 10,
-  },
-  name: {
-    fontWeight: 'bold',
-  },
-  photo: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-  },
-  rightContainer: {
-    flexDirection: 'column',
+  eventPanelLeft: {
+    flex: 0,
+    width: '25%',
   }
 })
 
