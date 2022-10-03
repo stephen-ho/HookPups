@@ -21,6 +21,7 @@ const RegisterScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
         // const user = userCredential.user;
+        console.log('account created')
         console.log(res);
 
         //navigate to profit setup

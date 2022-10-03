@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import LogoImg from '../../assets/images/hookpupslogo.png';
@@ -6,6 +6,7 @@ import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
+import MainScreen from '../MainScreen.js';
 import { auth } from '../../firebase_config.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -15,19 +16,25 @@ const SignInScreen = () => {
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+
+
+  }, [])
+
   const onSignInPressed = () => {
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then((res) => {
-    //     // const user = userCredential.user;
-    //     console.log('sign in');
-    //     console.log(res);
-    //     //navigate to home screen
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //     // const errorCode = error.code;
-    //     // const errorMessage = error.message;
-    //   });
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        // const user = userCredential.user;
+        console.log('sign in');
+        console.log(res);
+        //navigate to main screen
+
+      })
+      .catch((error) => {
+        console.log(error.message);
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+      });
   }
 
   const onForgotPasswordPressed = () => {
