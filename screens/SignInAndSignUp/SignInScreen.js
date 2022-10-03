@@ -16,18 +16,18 @@ const SignInScreen = () => {
   const navigation = useNavigation();
 
   const onSignInPressed = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((res) => {
-        // const user = userCredential.user;
-        console.log('sign in');
-        console.log(res);
-        //navigate to home screen
-      })
-      .catch((error) => {
-        console.log(error.message);
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-      });
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then((res) => {
+    //     // const user = userCredential.user;
+    //     console.log('sign in');
+    //     console.log(res);
+    //     //navigate to home screen
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.message);
+    //     // const errorCode = error.code;
+    //     // const errorMessage = error.message;
+    //   });
   }
 
   const onForgotPasswordPressed = () => {
