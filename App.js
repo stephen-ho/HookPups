@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Requests from './components/Requests/requests.js';
 import CardSwipe from './components/Home/cardSwipe.js';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -53,7 +54,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Matches"
-          component={CardSwipe}
+          component={Requests}
           options={{ headerShown: false, tabBarIcon: renderMatches, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
         />
         <Tab.Screen
@@ -66,11 +67,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
