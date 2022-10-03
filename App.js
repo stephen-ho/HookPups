@@ -1,22 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-<<<<<<< HEAD
-<<<<<<< HEAD
-// import EventPage from './events/EventPage.js';
 import EventMain from './events/EventMain.js';
-=======
-=======
->>>>>>> 28f8cfe74bf4f03ca323376a8f12b0f479663237
 import CardSwipe from './components/Home/cardSwipe.js';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
-<<<<<<< HEAD
->>>>>>> 7a7a1fb47cbc3eac3bfcb05924d13f4bd1726097
-=======
->>>>>>> 28f8cfe74bf4f03ca323376a8f12b0f479663237
 
 export default function App() {
 
@@ -41,19 +31,6 @@ export default function App() {
   }
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <EventMain />
-    </View>
-=======
-=======
->>>>>>> 28f8cfe74bf4f03ca323376a8f12b0f479663237
-    // <View style={styles.container}>
-    //   <CardSwipe/>
-    //   <StatusBar style="auto" />
-    // </View>
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
@@ -63,7 +40,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Events"
-          component={CardSwipe}
+          component={EventMain}
           options={{ headerShown: false, tabBarIcon: renderEvents, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
         />
         <Tab.Screen
@@ -83,10 +60,6 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
-<<<<<<< HEAD
->>>>>>> 7a7a1fb47cbc3eac3bfcb05924d13f4bd1726097
-=======
->>>>>>> 28f8cfe74bf4f03ca323376a8f12b0f479663237
   );
 }
 
