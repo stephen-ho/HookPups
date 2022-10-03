@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
+import Chat from '../../chat/Chat.js';
 import { AntDesign } from '@expo/vector-icons';
 
 const users = [
@@ -46,8 +47,15 @@ const matched = [
 
 const Request = (props) => {
   const [index, setIndex] = useState(0);
+  const [isChat, setIsChat] = useState(false);
+
+  const toggleChat = () => {
+    setIsChat(!isChat);
+  }
 
   return (
+    <>
+    {isChat ? <Chat toggleChat={toggleChat}/> :
     <View style={styles.requestContainer}>
       <Tab
         value={index}
@@ -100,7 +108,7 @@ const Request = (props) => {
                 <Avatar rounded source={{uri: item.avatar}} size={60} />
                 <ListItem.Content>
                   <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
-                  <ListItem.Subtitle>{item.message}</ListItem.Subtitle>
+                  <ListItem.Subtitle onPress={() =>{toggleChat()}}>{item.message}</ListItem.Subtitle>
                 </ListItem.Content>
               </ListItem>
             )}
@@ -108,6 +116,8 @@ const Request = (props) => {
         </TabView.Item>
       </TabView>
     </View>
+    }
+    </>
   )
 }
 
