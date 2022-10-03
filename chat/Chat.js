@@ -3,9 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, SafeAreaView } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 import { IconButton } from 'react-native-paper';
-import Message from './Message.js';
 
-export default function Chat () {
+export default function Chat ({toggleChat}) {
   const [messageList, setMessageList] = useState([])
   const [text, setText] = useState('')
   useEffect(() => {
@@ -92,7 +91,7 @@ export default function Chat () {
   return (
     <>
       <View style={styles.profile}>
-        <Text>profile goes here</Text>
+        <Text onPress={toggleChat}>profile goes here</Text>
       </View>
       <GiftedChat
         timeTextStyle={{ left: { color: 'white' }}}
@@ -108,9 +107,6 @@ export default function Chat () {
         alwaysShowSend
         showUserAvatar
       />
-      <View style={styles.navbar}>
-        <Text>Navbar goes here</Text>
-      </View>
     </>
 
   )
