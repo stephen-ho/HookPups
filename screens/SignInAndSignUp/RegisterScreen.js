@@ -25,6 +25,7 @@ const RegisterScreen = () => {
         console.log(res);
 
         //navigate to profit setup
+        navigation.navigation('ProfileInputScreen')
       })
       .catch((error) => {
         console.log(error);

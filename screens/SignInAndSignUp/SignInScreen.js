@@ -13,6 +13,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const navigation = useNavigation();
 
@@ -22,13 +23,15 @@ const SignInScreen = () => {
   }, [])
 
   const onSignInPressed = () => {
+
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         // const user = userCredential.user;
         console.log('sign in');
         console.log(res);
         //navigate to main screen
-
+        // setIsSignedIn(true);
+        navigation.navigate('MainScreen');
       })
       .catch((error) => {
         console.log(error.message);
