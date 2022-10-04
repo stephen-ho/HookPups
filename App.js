@@ -61,6 +61,7 @@ export default function App() {
     return <MaterialIcons name="account-box" size={24} color="black" />;
   }
 
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
