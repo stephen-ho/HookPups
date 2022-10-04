@@ -1,14 +1,14 @@
-import React from 'react';
-import { Image, StyleSheet, View, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather } from '@expo/vector-icons';
-
+import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe from 'react-native-cards-swipe';
 
 const Dogs = [
-  { src: require('../../photos/majesticdog.jpeg') },
-  { src: require('../../photos/hero_dog.png') },
-  { src: require('../../photos/cutedog.jpeg') },
+  { name: 'Majesty', src: require('../../photos/majesticdog.jpeg'), photos: ['../../photos/corgi.jpeg', '../../photos/puppy.jpeg', '../../photos/majesticdog.jpeg'], age: 6, size: 'Large', temperament: 'Calm', bio: 'Loves to play with other dogs. Very friendly with kids'},
+  { name: 'Hero', src: require('../../photos/hero_dog.png') },
+  { name: 'Cutie', src: require('../../photos/cutedog.jpeg') },
 ]
 
 function handleLeft () {
@@ -51,8 +51,36 @@ function handleNext () {
   );
 }
 
+
 export default function CardSwipe () {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentCard, setCurrentCard] = useState({});
+  const [visible, setIsVisible] = useState(true);
+  const [images, setImages] = useState([]);
+  const width = Dimensions.get('window').width;
+
+  _renderItem = ({item, index}) => {
+    return (
+        <View style={styles.slide}>
+            <Text style={styles.title}>{ item.title }</Text>
+        </View>
+    );
+  }
+
+  function handlePress (card) {
+    setModalVisible(true);
+    setCurrentCard(card);
+    console.log(currentCard.photos)
+
+    // setImages(card.photos.map((photo) => {
+    //   return ({uri: photo});
+    // }))
+
+    // console.warn(images);
+  };
+
   return (
+    <>
     <View style={styles.container}>
       <CardsSwipe
         cards={Dogs}
@@ -61,7 +89,7 @@ export default function CardSwipe () {
         onSwipedRight={handleRight}
         renderCard={(card) => (
           <View style={styles.card}>
-            <Text style={styles.h1}>Dog Name</Text>
+            <Text style={styles.h1} onPress={() => handlePress(card)}>{card.name}</Text>
             <Image
               style={styles.cardImg}
               source={card.src}
@@ -78,17 +106,73 @@ export default function CardSwipe () {
         </Button>
       </View>
     </View>
+    <View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+
+
+          <View style={{ flex: 1 }}>
+            <Carousel
+              loop
+              width={width * 0.85}
+              height={width / 2}
+              autoPlay={false}
+              data={currentCard.photos}
+              scrollAnimationDuration={1000}
+              onSnapToItem={(index) => console.log('current index:', index)}
+              renderItem={({ item }) => (
+                <View
+                    style={{
+                        flex: 1,
+                        borderWidth: 1,
+                        justifyContent: 'center',
+                    }}
+                >
+                  <Image source={{ uri: item }}/>
+                </View>
+              )}
+            />
+          </View>
+
+
+            <Text style={styles.modalName}>{currentCard.name}</Text>
+            <Text style={styles.modalText}>Age: {currentCard.age}</Text>
+            <Text style={styles.modalText}>Size: {currentCard.size}</Text>
+            <Text style={styles.modalText}>Temperament: {currentCard.temperament}</Text>
+            <Text style={styles.modalText}>Bio: {currentCard.bio}</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   h1: {
     fontSize: 35,
+    padding: 10,
   },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingBottom: 20,
   },
   icon: {
     paddingHorizontal: 50,
@@ -101,7 +185,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: '92%',
     height: '75%',
-    backgroundColor: 'white',
+    backgroundColor: '#f2f2f2',
   },
   card: {
     width: '100%',
@@ -119,4 +203,52 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 15,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    position: 'absolute',
+    bottom: 0,
+    height: '85%',
+    width: '100%',
+    margin: 0,
+    backgroundColor: "white",
+    padding: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 15,
+    padding: 10,
+    elevation: 2,
+    margin: 20,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalName: {
+    fontSize: 35,
+    paddingBottom: 5,
+  },
+  modalText: {
+    fontSize: 20,
+    paddingBottom: 5,
+  }
 });
