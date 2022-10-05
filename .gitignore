@@ -16,7 +16,6 @@ package-lock.json
 
 package-lock.json
 data/
-firebase_config.js
 
 .env
 config.js
