@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { auth } from '../../firebase_config.js';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import LogoImg from '../../assets/images/hookpupslogo.png';
 import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
-import { auth } from '../../firebase_config.js';
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -21,12 +21,14 @@ const RegisterScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
         // const user = userCredential.user;
+        console.warn('Account has been successfully created. Please sign in.')
         console.log(res);
 
         //navigate to profit setup
+        navigation.navigate('ProfileInput', { email })
       })
       .catch((error) => {
-        console.log(error);
+        console.warn(error.message);
         // const errorCode = error.code;
         // const errorMessage = error.message;
       });
@@ -87,9 +89,8 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingTop: 50,
     alignItems: 'center',
-    top: 30,
     backgroundColor: '#BDE0FE',
     height: Dimensions.get('window').height
   },

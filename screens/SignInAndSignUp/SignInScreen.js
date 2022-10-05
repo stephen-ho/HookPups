@@ -1,33 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { auth } from '../../firebase_config.js';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import LogoImg from '../../assets/images/hookpupslogo.png';
 import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
-import { auth } from '../../firebase_config.js';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import MainScreen from '../MainScreen.js';
+// import DogProfileInputScreen from '../Profiles/DogProfileInputScreen.js'
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+
+
+  }, [])
+
   const onSignInPressed = () => {
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then((res) => {
-    //     // const user = userCredential.user;
-    //     console.log('sign in');
-    //     console.log(res);
-    //     //navigate to home screen
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //     // const errorCode = error.code;
-    //     // const errorMessage = error.message;
-    //   });
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        // const user = userCredential.user;
+        console.log('sign in');
+        console.log(res);
+        //navigate to main screen
+        // setIsSignedIn(true);
+        navigation.navigate('MainScreen', { email });
+        // navigation.navigate('ProfileInputScreen');
+      })
+      .catch((error) => {
+        console.log(error.message);
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+      });
   }
 
   const onForgotPasswordPressed = () => {
@@ -81,9 +93,8 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingTop: 50,
     alignItems: 'center',
-    top: 30,
     backgroundColor: '#BDE0FE'
   },
 

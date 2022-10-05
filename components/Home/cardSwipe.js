@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
-import CardsSwipe from 'react-native-cards-swipe';
+import CardsSwipe, {CardsSwipeRefObject} from 'react-native-cards-swipe';
+import { useRoute } from '@react-navigation/native';
 
-export default function CardSwipe () {
+export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState({});
   const [visible, setIsVisible] = useState(true);
@@ -14,7 +15,12 @@ export default function CardSwipe () {
   const width = Dimensions.get('window').width;
   const [dogs, setDogs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+
+  const swiper = useRef(null);
   // const [currentUser, setCurrentUser] = useState({});
+
+  //console.log('what is in card swip: ', props.route.params);
+
   const currentUser = {
     "dog_id": 4,
     "owner_name": "Justin",
@@ -54,20 +60,20 @@ export default function CardSwipe () {
 
   function handleRight (index) {
     console.log('Index: ', index);
-    console.log('Current Dog: ', dogs[index]);
+    console.log('Current Owner Name: ', dogs[index].owner_name);
     console.log('Current User: ', currentUser);
-    // axios.post('http://54.219.129.63:3000/matches', {
-    //   dog1_name: currentUser.dog_name,
-    //   dog2_name: currentCard.dog_name,
-    //   owner1_name: currentUser.owner_name,
-    //   owner2_name: currentCard.user_name,
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // })
+    axios.post('http://54.219.129.63:3000/matches', {
+      dog1_name: currentUser.dog_name,
+      dog2_name: dogs[index].dog_name,
+      owner1_name: currentUser.owner_name,
+      owner2_name: dogs[index].owner_name,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function handleLike () {
@@ -115,6 +121,7 @@ if (isLoading === false) {
     <>
     <View style={styles.container}>
       <CardsSwipe
+        ref={swiper}
         cards={dogs}
         cardContainerStyle={styles.cardContainer}
         onSwipedRight={handleRight}
@@ -129,12 +136,27 @@ if (isLoading === false) {
         )}
       />
       <View style={styles.icons}>
-        <Button type="clear" onPress={handleNext}>
+
+        {/* <Button type="clear" onPress={handleNext}>
           <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
-        </Button>
-        <Button type="clear" onPress={handleLike}>
+        </Button> */}
+        <TouchableOpacity
+          onPress={() => {
+            if (swiper.current) swiper.current.swipeLeft();
+          }}
+        >
+          <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
+        </TouchableOpacity>
+        {/* <Button type="clear" onPress={handleLike}>
           <AntDesign style={styles.icon} name="heart" size={50} color="#FFAFCC"/>
-        </Button>
+        </Button> */}
+        <TouchableOpacity
+          onPress={() => {
+            if (swiper.current) swiper.current.swipeRight();
+          }}
+        >
+          <AntDesign style={styles.icon} name="heart" size={50} color="#FFAFCC"/>
+        </TouchableOpacity>
       </View>
     </View>
     <View>
@@ -207,7 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 20,
+    padding: 15,
   },
   icon: {
     paddingHorizontal: 50,
