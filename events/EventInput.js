@@ -23,7 +23,7 @@ const EventInput = (props) => {
   }, [])
 
   const fetchMatchedDogs = async () => {
-    // const dogs = await axios.get(`/matches`);
+    // const dogs = await axios.get(`/matches/${props.currentUser}/${CURRENTDOG_HERE}/confirmed`);
   }
 
   const validateInfo = () => {
@@ -68,7 +68,7 @@ const EventInput = (props) => {
     };
     console.log(data);
     props.handleShow();
-    // await axios.post('/', data);
+    // await axios.post('/events', data);
   }
 
   const handleDateChange = (e, date) => {
@@ -93,7 +93,7 @@ const EventInput = (props) => {
       <View style={{alignItems: 'center'}}>
         {!selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
+            <Avatar rounded source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
             <ListItem.Content>
               <ListItem.Title>Select a dog you've matched with!</ListItem.Title>
             </ListItem.Content>
@@ -101,7 +101,7 @@ const EventInput = (props) => {
         }
         {selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar source={{uri: selectedDog.photo}}/>
+            <Avatar rounded source={{uri: selectedDog.photo}}/>
             <ListItem.Content>
               <ListItem.Title>Dog: {selectedDog.dog}</ListItem.Title>
               <ListItem.Subtitle>Owner: {selectedDog.owner}</ListItem.Subtitle>

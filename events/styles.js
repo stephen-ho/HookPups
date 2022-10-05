@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   phone: {
     flexDirection: 'column',
-    backgroundColor: '#bde0fe',
+    backgroundColor: '#d9edff',
     height: 10,
     width: '100%',
     flex: 1,
@@ -55,10 +55,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
+  eventPageHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#a2d2ff',
+  },
+
   eventPageDate: {
     fontSize: 30,
     textAlign: 'center',
-    marginBottom: 15,
   },
 
   eventPanel: {

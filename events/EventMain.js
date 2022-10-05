@@ -18,6 +18,9 @@ import moment from 'moment';
 
 const EventMain = (props) => {
   console.log('what is in Event main: ', props.route.params)
+  //{"user": "dan@gmail.com"}
+  //dog name is "Scruffy"
+  const [currentUser, setCurrentUser] = useState(props.route.params.user)
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
   const [events, setEvents] = useState(eventData); // Store initial axios GET events here
   const [selectedDates, setSelectedDates] = useState({}); // Mark calendar with relevant days once GET request done
@@ -35,7 +38,7 @@ const EventMain = (props) => {
   }, []);
 
   const fetchEvents = async () => {
-    const results = await axios.get('/');
+    // const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${DOGNAMEHERE}`);
     //parse results first?
     setEvents(results);
     selectDates();
@@ -75,11 +78,13 @@ const EventMain = (props) => {
       {!showPage && <EventCalendar
         selectedDates={selectedDates}
         handleDayPress={handleDayPress}
+        currentUser={currentUser}
       />}
       {showPage && <EventPage
         events={dayEvents}
         handleBackPress={handleBackPress}
         selectedDay={selectedDay}
+        currentUser={currentUser}
       />}
     </View>
     </SafeAreaView>
