@@ -5,8 +5,9 @@ import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe from 'react-native-cards-swipe';
+import { useRoute } from '@react-navigation/native';
 
-export default function CardSwipe () {
+export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState({});
   const [visible, setIsVisible] = useState(true);
@@ -15,6 +16,9 @@ export default function CardSwipe () {
   const [dogs, setDogs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   // const [currentUser, setCurrentUser] = useState({});
+
+  console.log('what is in card swip: ', props.route.params);
+
   const currentUser = {
     "dog_id": 4,
     "owner_name": "Justin",
