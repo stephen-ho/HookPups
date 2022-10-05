@@ -11,7 +11,7 @@ export default function Chat ({ toggleChat }) {
   const [text, setText] = useState('')
 
   useLayoutEffect(() => {
-    const unsubscribe = db.collection('chats')
+    const unsubscribe = db.collection('otherChats')
     .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => setMessageList(
       snapshot.docs.map(doc => ({
@@ -27,7 +27,7 @@ export default function Chat ({ toggleChat }) {
   const onSend = useCallback((messageList = []) => {
       setMessageList(previousMessages => GiftedChat.append(previousMessages, messageList))
       const { _id, createdAt, text, user } = messageList[0]
-      db.collection('chats').add({_id, createdAt, text, user})
+      db.collection('otherChats').add({_id, createdAt, text, user})
     }, []);
 
   const renderBubble = (props) => {
@@ -97,8 +97,8 @@ export default function Chat ({ toggleChat }) {
         messages={messageList}
         onSend={message => onSend(message)}
         user={{
-          _id: 1,
-          name: 'Matt',
+          _id: 2,
+          name: 'Not Matt',
           avatar: 'https://placeimg.com/140/140/any'
         }}
         renderBubble={renderBubble}
