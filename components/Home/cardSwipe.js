@@ -6,43 +6,6 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe from 'react-native-cards-swipe';
 
-// const Dogs = [
-//   { name: 'Majesty', src: require('../../photos/majesticdog.jpeg'), photos: ['https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRabjk51qPq_AYTpKg-YuDOopdf1WN2XnmqbiXMKH7CliUzkqDqUEJv0v22V5JjHrVGK8A&usqp=CAU'], age: 6, size: 'Large', temperament: 'Calm', bio: 'Loves to play with other dogs. Very friendly with kids'},
-//   { name: 'Hero', src: require('../../photos/hero_dog.png') },
-//   { name: 'Cutie', src: require('../../photos/cutedog.jpeg') },
-// ]
-
-
-// function handleRight () {
-//   axios.post('http://54.219.129.63:3000/matches', {
-//     dog1_name: ,
-//     dog2_name: ,
-//     owner1_name: ,
-//     owner2_name: ,
-//   })
-// }
-
-// function handleLike () {
-//   Alert.alert(
-//     "Liked",
-//     "",
-//     [
-//       { text: "OK", onPress: () => console.log("OK Pressed") }
-//     ]
-//   );
-// }
-
-// function handleNext () {
-//   Alert.alert(
-//     "Next",
-//     "",
-//     [
-//       { text: "OK", onPress: () => console.log("OK Pressed") }
-//     ]
-//   );
-// }
-
-
 export default function CardSwipe () {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState({});
