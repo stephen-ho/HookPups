@@ -9,7 +9,7 @@ import CustomInput from '../../components/SignIn/CustomInput.js';
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import CustomDropdownMenu from '../../components/Profiles/CustomDropdownMenu';
 import UploadImages from '../../components/Profiles/UploadImages.js'
-// import dogBreed from '../../assets/data/dogBreed.js'
+import dogBreed from '../../assets/data/dogBreed.js'
 const _ = require('lodash');
 
 const DogProfileInputScreen = () => {
@@ -35,19 +35,19 @@ const DogProfileInputScreen = () => {
 
   const navigation = useNavigation();
 
-  // useEffect (() => {
-  //   for (let key in dogBreed) {
-  //     if (dogBreed[key].length === 0) {
-  //       setBreedSelection((list) => ( [...list, _.capitalize(key)] ))
-  //     } else {
-  //       dogBreed[key].forEach((type) => {
-  //         setBreedSelection((list) => (
-  //           [...list, `${_.capitalize(type)} ${_.capitalize(key)}`]
-  //         ))
-  //         });
-  //     }
-  //   }
-  // }, []);
+  useEffect (() => {
+    for (let key in dogBreed) {
+      if (dogBreed[key].length === 0) {
+        setBreedSelection((list) => ( [...list, _.capitalize(key)] ))
+      } else {
+        dogBreed[key].forEach((type) => {
+          setBreedSelection((list) => (
+            [...list, `${_.capitalize(type)} ${_.capitalize(key)}`]
+          ))
+          });
+      }
+    }
+  }, []);
 
   const addImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
