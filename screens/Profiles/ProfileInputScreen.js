@@ -12,13 +12,9 @@ function ProfileInputScreen() {
 
   return (
 
-    // <View style={styles.container}>
-    //   <OwnerProfileInputScreen />
-    // </View>
-
   <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="OwnerProfile" component={OwnerProfileInputScreen} />
+        {/* <Stack.Screen name="OwnerProfile" component={OwnerProfileInputScreen} /> */}
         <Stack.Screen name="DogProfile" component={DogProfileInputScreen} />
       </Stack.Navigator>
   </NavigationContainer>

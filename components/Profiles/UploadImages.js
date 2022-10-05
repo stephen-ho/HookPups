@@ -3,46 +3,34 @@ import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const UploadImage = () => {
-  const [image, setImage] = useState(null);
+const UploadImages = ({ images, addImage }) => {
 
-  const addImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
+  const addPhoto = () => {
+    addImage();
+  }
 
   return (
     <View style={imageUploaderStyles.container}>
       {
-        image  && <Image source={{ uri: image }} style={{ width: 130, height: 130 }} />
+        images.length !== 0  && <Image source={{ uri: images[images.length - 1] }} style={{ width: 200, height: 200 }} />
       }
       <View style={imageUploaderStyles.uploadBtnContainer}>
-        <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn} >
-          <Text style={imageUploaderStyles.text}>{image ? 'Edit' : 'Upload'} Image</Text>
-          <AntDesign name="camera" size={16} color="black" />
+        <TouchableOpacity onPress={addPhoto} style={imageUploaderStyles.uploadBtn} >
+          <Text style={imageUploaderStyles.text}>{images.length !== 0 ? 'Add More' : 'Upload Image'}</Text>
+          <AntDesign name="camera" size={20} color="black" />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default UploadImage;
+export default UploadImages;
 
 const imageUploaderStyles=StyleSheet.create({
     container:{
         elevation:2,
-        height:130,
-        width:130,
+        height:200,
+        width:200,
         backgroundColor:'#efefef',
         // backgroundColor:'#FFC8DD',
         position:'relative',
@@ -57,7 +45,7 @@ const imageUploaderStyles=StyleSheet.create({
         bottom:0,
         backgroundColor:'lightgrey',
         width:'100%',
-        height:'25%',
+        height:'22%',
     },
     uploadBtn:{
         display:'flex',
@@ -65,6 +53,6 @@ const imageUploaderStyles=StyleSheet.create({
         justifyContent:'center'
     },
     text: {
-      fontSize: 13
+      fontSize: 16,
     }
 })

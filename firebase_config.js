@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+const config = require('./config.js');
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -8,13 +9,13 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBZMHG4hDYvad7SR8vqnbDyTUhbWTiZNgo",
-  authDomain: "hookpups.firebaseapp.com",
-  projectId: "hookpups",
-  storageBucket: "hookpups.appspot.com",
-  messagingSenderId: "962232282380",
-  appId: "1:962232282380:web:0222503f86927fce72ad29",
-  measurementId: "G-X0C6KGVPBE"
+  apiKey: config.APIKEY,
+  authDomain: config.AUTHDOMAIN,
+  projectId: config.PROJECTID,
+  storageBucket: config.STORAGEBUCKET,
+  messagingSenderId: config.MESSAGINGSENDERID,
+  appId: config.APPID,
+  measurementId: config.MEASUREMENTID
 };
 
 // Initialize Firebase

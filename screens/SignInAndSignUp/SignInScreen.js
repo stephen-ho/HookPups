@@ -9,6 +9,8 @@ import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js'
 import MainScreen from '../MainScreen.js';
 import { auth } from '../../firebase_config.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
+import ProfileInputScreen from '../Profiles/ProfileInputScreen.js';
+import DogProfileInputScreen from '../Profiles/DogProfileInputScreen.js'
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -31,7 +33,8 @@ const SignInScreen = () => {
         console.log(res);
         //navigate to main screen
         // setIsSignedIn(true);
-        navigation.navigate('MainScreen');
+        navigation.navigate('MainScreen', { email });
+        // navigation.navigate('ProfileInputScreen');
       })
       .catch((error) => {
         console.log(error.message);

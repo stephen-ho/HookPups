@@ -14,6 +14,7 @@ import eventData from './eventTestData.js';
 */
 
 const EventMain = (props) => {
+  console.log('what is in Event main: ', props.route.params)
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
   const [events, setEvents] = useState(eventData); // Store initial axios GET events here
   const [markedDays, setMarkedDays] = useState({}); // Mark calendar with relevant days once GET request done

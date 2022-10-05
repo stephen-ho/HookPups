@@ -6,6 +6,7 @@ import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
+import ProfileInputScreen from '../Profiles/ProfileInputScreen.js';
 import { auth } from '../../firebase_config.js';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -21,14 +22,14 @@ const RegisterScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
         // const user = userCredential.user;
-        console.log('account created')
+        console.warn('Account has been successfully created. Please sign in.')
         console.log(res);
 
         //navigate to profit setup
-        navigation.navigation('ProfileInputScreen')
+        navigation.navigate('ProfileInput', { email })
       })
       .catch((error) => {
-        console.log(error);
+        console.warn(error.message);
         // const errorCode = error.code;
         // const errorMessage = error.message;
       });

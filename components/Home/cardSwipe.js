@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View, Alert } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 import CardsSwipe from 'react-native-cards-swipe';
 
@@ -51,7 +52,10 @@ function handleNext () {
   );
 }
 
-export default function CardSwipe () {
+export default function CardSwipe (props) {
+  // const route = useRoute();
+  console.log('what is in card swip: ', props.route.params)
+  // console.log("what is in cardswip: ", this.props.route.params.value )
   return (
     <View style={styles.container}>
       <CardsSwipe
