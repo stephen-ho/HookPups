@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect } from 'react';
+import { auth, db } from '../firebase.js';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, SafeAreaView } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
@@ -7,36 +8,26 @@ import { IconButton } from 'react-native-paper';
 export default function Chat ({toggleChat}) {
   const [messageList, setMessageList] = useState([])
   const [text, setText] = useState('')
-  useEffect(() => {
-    setMessageList([
-      {
-        _id: 5,
-        text: 'no',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 5,
-          name: 'React Client',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      }
-    ])
+
+  useLayoutEffect(() => {
+    const unsubscribe = db.collection('chats')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => setMessageList(
+      snapshot.docs.map(doc => ({
+        _id: doc.data()._id,
+        createdAt: doc.data().createdAt.toDate(),
+        text: doc.data().text,
+        user: doc.data().user
+      }))
+    ))
+    return unsubscribe;
   }, [])
-  // connect to websocket
-  // create handleTextInput function to handle typing
-  // create send function
+
   const onSend = useCallback((messageList = []) => {
-    setMessageList(previousMessages => GiftedChat.append(previousMessages, messageList))
-  })
+      setMessageList(previousMessages => GiftedChat.append(previousMessages, messageList))
+      const { _id, createdAt, text, user } = messageList[0]
+      db.collection('chats').add({_id, createdAt, text, user})
+    }, []);
 
   const renderBubble = (props) => {
     return (
@@ -44,12 +35,10 @@ export default function Chat ({toggleChat}) {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#DCB4DB',
-            marginBottom: 5,
+            backgroundColor: '#cdb4db',
           },
           left: {
             backgroundColor: '#FFAFCC',
-            marginBottom: 5,
           },
         }}
         textStyle={{
@@ -58,6 +47,7 @@ export default function Chat ({toggleChat}) {
           },
         }}
       />
+
     );
   };
 
@@ -82,7 +72,7 @@ export default function Chat ({toggleChat}) {
       <Send {...props}
         containerStyle={{ borderWidth: 0 }}>
         <View style={styles.sendingContainer}>
-          <IconButton icon="send-circle" size={32} color="#DCB4DB" />
+          <IconButton icon="send-circle" size={32} color="#cdb4db" />
         </View>
       </Send>
     );
@@ -96,9 +86,10 @@ export default function Chat ({toggleChat}) {
       <GiftedChat
         timeTextStyle={{ left: { color: 'white' }}}
         messages={messageList}
-        onSend={messages => onSend(messages)}
+        onSend={message => onSend(message)}
         user={{
           _id: 1,
+          name: 'Matt',
           avatar: 'https://placeimg.com/140/140/any'
         }}
         renderBubble={renderBubble}
@@ -106,6 +97,7 @@ export default function Chat ({toggleChat}) {
         renderSend={renderSend}
         alwaysShowSend
         showUserAvatar
+        showAvatarForEveryMessage={true}
       />
     </>
 
