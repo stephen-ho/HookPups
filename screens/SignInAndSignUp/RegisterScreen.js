@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { auth } from '../../firebase_config.js';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import LogoImg from '../../assets/images/hookpupslogo.png';
 import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
-import ProfileInputScreen from '../Profiles/ProfileInputScreen.js';
-import { auth } from '../../firebase_config.js';
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -90,9 +89,8 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingTop: 50,
     alignItems: 'center',
-    top: 30,
     backgroundColor: '#BDE0FE',
     height: Dimensions.get('window').height
   },

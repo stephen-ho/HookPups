@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './screens/SignInAndSignUp/SignInScreen.js';
 import RegisterScreen from './screens/SignInAndSignUp/RegisterScreen.js';
 import MainScreen from './screens/MainScreen.js';
-import ProfileInputScreen from './screens/Profiles/ProfileInputScreen.js';
+import ProfileScreen from './screens/Profiles/ProfileScreen.js';
 import BreedList from './components/Profiles/BreedList.js';
 import DogProfileInputScreen from './screens/Profiles/DogProfileInputScreen.js';
 
@@ -17,19 +17,19 @@ export default function App() {
 
   return (
 
-    <View style={styles.container}>
-      <ProfileInputScreen />
-      {/* <BreedList /> */}
-    </View>
+    // <View style={styles.container}>
+    //   <DogProfileInputScreen />
+    //   {/* <BreedList /> */}
+    // </View>
 
-    // <NavigationContainer >
-    //   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    //     <Stack.Screen name="SignIn" component={SignInScreen} />
-    //     <Stack.Screen name="Register" component={RegisterScreen} />
-    //     <Stack.Screen name="MainScreen" component={MainScreen} />
-    //     <Stack.Screen name="ProfileInput" component={DogProfileInputScreen} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    <NavigationContainer >
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="MainScreen" component={MainScreen} />
+        <Stack.Screen name="ProfileInput" component={DogProfileInputScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
 
   );
 }

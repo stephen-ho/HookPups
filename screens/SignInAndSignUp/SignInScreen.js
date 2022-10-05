@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { auth } from '../../firebase_config.js';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import LogoImg from '../../assets/images/hookpupslogo.png';
 import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
 import MainScreen from '../MainScreen.js';
-import { auth } from '../../firebase_config.js';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import ProfileInputScreen from '../Profiles/ProfileInputScreen.js';
-import DogProfileInputScreen from '../Profiles/DogProfileInputScreen.js'
+// import DogProfileInputScreen from '../Profiles/DogProfileInputScreen.js'
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -94,9 +93,8 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingTop: 50,
     alignItems: 'center',
-    top: 30,
     backgroundColor: '#BDE0FE'
   },
 

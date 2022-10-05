@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EventMain from '../events/EventMain.js';
 import Requests from '../components/Requests/requests.js';
 import CardSwipe from '../components/Home/cardSwipe.js';
+import ProfileScreen from '../screens/Profiles/ProfileScreen.js'
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
@@ -11,7 +12,6 @@ const Tab = createBottomTabNavigator();
 
 const MainScreen = () => {
   const route = useRoute();
-  console.log('in mainscreen:, ', route.params.email);
   const owner_name = route.params.email;
 
   function renderHome () {
@@ -62,7 +62,7 @@ const MainScreen = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={CardSwipe}
+        component={ProfileScreen}
         initialParams={{ user: owner_name }}
         options={{ tabBarIcon: renderProfile, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />

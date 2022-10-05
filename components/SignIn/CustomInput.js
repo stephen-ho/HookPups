@@ -23,7 +23,7 @@ export default CustomInput;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    width: '80%',
+    width: '70%',
     borderRadius: 5,
     padding: 10,
     marginVertical: 5
