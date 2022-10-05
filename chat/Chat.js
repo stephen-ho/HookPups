@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, SafeAreaView, Image } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 import { IconButton } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Chat ({toggleChat}) {
+export default function Chat ({ toggleChat }) {
   const [messageList, setMessageList] = useState([])
   const [text, setText] = useState('')
   useEffect(() => {
@@ -90,8 +91,16 @@ export default function Chat ({toggleChat}) {
 
   return (
     <>
-      <View style={styles.profile}>
-        <Text onPress={toggleChat}>profile goes here</Text>
+      <View style={styles.banner}>
+        <Ionicons name="chevron-back" size={30} color="black" onPress={toggleChat} style={styles.back}/>
+        <View style={styles.profile}>
+          <Image
+            rounded
+            style={styles.profileImg}
+            source={{uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-white-dog-breeds-cover-1560293099.jpg'}}
+          />
+          <Text style={{fontSize: 10}}>Mochi</Text>
+        </View>
       </View>
       <GiftedChat
         timeTextStyle={{ left: { color: 'white' }}}
@@ -121,10 +130,27 @@ const styles = StyleSheet.create({
     justifyContent: 'column',
   },
 
+  banner: {
+    height: 80,
+    backgroundColor: 'rgba(211, 211, 211, 0.3)',
+    borderBottomColor: '#A2D2FF',
+    borderBottomWidth: 1,
+  },
+
+  back: {
+    paddingTop: 30,
+    zIndex: 3,
+  },
+
   profile: {
-    height: 75,
-    backgroundColor: '#8AC6FF',
-    justifyContent: 'center',
+    alignItems: 'center',
+    top: -40,
+  },
+
+  profileImg: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
 
   sendingContainer: {

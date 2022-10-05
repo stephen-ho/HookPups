@@ -15,6 +15,7 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
 
+
   return (
 
     // <View style={styles.container}>
