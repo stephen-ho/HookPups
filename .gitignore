@@ -15,3 +15,9 @@ config.js
 
 # macOS
 .DS_Store
+
+package-lock.json
+data/
+
+.env
+config.js
