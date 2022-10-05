@@ -4,67 +4,126 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { useState, useEffect } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button } from '@rneui/base';
+import { Overlay, Avatar, ListItem } from '@rneui/themed';
 import matchedDogsData from './matchedDogsTestData.js';
+import EventMatchedInput from './EventMatchedInput.js';
 
 const EventInput = (props) => {
-  const [name, setName] = useState('');
+  const [details, setDetails] = useState({});
   const [date, setDate] = useState(props.date);
   const [event, setEvent] = useState('');
   const [location, setLocation] = useState('');
-  const [open, setOpen] = useState(false);
-  const [matchedDogs, setMatchedDogs] = useState([]);
+  // const [matchedDogs, setMatchedDogs] = useState([]);
+  const [matchedDogs, setMatchedDogs] = useState(matchedDogsData);
+  const [selected, setSelected] = useState(false);
+  const [selectedDog, setSelectedDog] = useState({}); //contains dog name+id, owner name+id
+  const [openChooser, setOpenChooser] = useState(false);
 
   useEffect(() => {
     // fetchMatchedDogs();
   }, [])
 
   const fetchMatchedDogs = async () => {
-    const dogs = await axios.get('');
+    // const dogs = await axios.get(`/matches`);
   }
 
-  const handleSubmit = () => {
+  const validateInfo = () => {
+    // What to validate?
+    // Date?
+    // Name?
+    // Event?
+    // Location?
+    // Selected dog? (Do I even need the first name input if this is here?)
+    return true;
+  }
+
+  const handleSubmit = async () => {
+    if (!validateInfo) {
+      //return some error?
+    }
+
+    // Figure out what exactly to submit
+
+    console.log(details);
     const data = {
-      name: '',
-      date: '',
-      event: '',
-      location: '',
+      dog1_id: dog, //should be the id of the current user's dog
+      dog2_id: dog.dog_id,
+      event_name: event,
+      date: date,
+      location: location,
     };
-    axios.post('/', data);
+    await axios.post('/', data);
   }
 
   const handleDateChange = (e, date) => {
-    // console.log(e);
     console.log(date);
-    //Figure out how to parse data?
+    console.log(typeof date);
+    setDate(date);
   }
 
-  const handleStateCheck = () => {
-    console.log('NAME: ', name);
-    console.log('DATE: ', date);
-    console.log('EVENT: ', event);
-    console.log('MATCHED DOGS: ', matchedDogs);
+  const handleOpenChooser = () => {
+    setOpenChooser(!openChooser);
   }
+
+  const handleSelect = (dog) => {
+    setSelected(true);
+    setSelectedDog(dog);
+    setOpenChooser(!openChooser);
+  }
+
   return (
     <View>
-      <Button title='Close' onPress={props.handleShow}></Button>
+      <Button style={{marginTop: 30}} title='Close' onPress={props.handleShow}></Button>
+      {!selected &&
+        <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
+          <Avatar source={{uri: `https://res.cloudinary.com/daqlqdhlo/image/upload/v1662607816/c5lyz7wu0n7ie394zg11.jpg`}}/>
+          <ListItem.Content>
+            <ListItem.Title>Select a dog you've matched with!</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      }
+      {selected &&
+        <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
+          <Avatar source={{uri: selectedDog.photo}}/>
+          <ListItem.Content>
+            <ListItem.Title>Owner: {selectedDog.owner}</ListItem.Title>
+            <ListItem.Subtitle>Dog: {selectedDog.dog}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      }
       <TextInput
-        style={{height: 40, width: 100, backgroundColor: 'white'}}
+        style={styles.inputTextField}
         onChangeText={(e) => setEvent(e)}
         placeholder='Event'
         />
       <TextInput
-        style={{height: 40, width: 100, backgroundColor: 'white'}}
+        style={styles.inputTextField}
         onChangeText={(e) => setLocation(e)}
         placeholder='Location'
         />
       <DateTimePicker
-        style={{width: 200, height: 100}}
+        mode='datetime'
+        style={{width: 200, height: 30}}
         value={date}
         onChange={handleDateChange}
-        disabled={props.disabled}
       />
-      <Text>Popup for all matched dogs for this user?</Text>
-      <Button title="Check State" onPress={handleStateCheck}/>
+      <Overlay
+        isVisible={openChooser}
+        overlayStyle={styles.overlay}
+        onBackdropPress={handleOpenChooser}
+      >
+        <Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 15 }}>YOUR MATCHES</Text>
+        {matchedDogs.length < 1 && <Text style={{ textAlign: 'center' }}>You haven't matched with any dogs yet...</Text>}
+        <ScrollView>
+          {matchedDogs.map((dog, index) => (
+            <EventMatchedInput
+              key={index}
+              dog={dog}
+              handleSelect={handleSelect}
+            />
+          ))}
+        </ScrollView>
+      </Overlay>
       <Button
         title="Submit Event"
         onPress={props.handleShow}

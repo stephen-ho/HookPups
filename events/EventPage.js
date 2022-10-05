@@ -5,12 +5,8 @@ import eventData from './eventTestData.js';
 import styles from './styles.js';
 import { useState } from 'react';
 import EventInput from './EventInput.js';
-
-/*
-  TODO:
-    Add "Add an event" at the bottom of the page
-      Preferably keep it in view no matter where the scroll is
-*/
+import { Button } from '@rneui/base';
+import moment from 'moment'
 
 const EventPage = (props) => {
   const [showInput, setShowInput] = useState(false);
@@ -29,16 +25,27 @@ const EventPage = (props) => {
   }
 
   return (
-    <ScrollView style={styles.eventPage}>
-      {!showInput && renderNames()}
-      {/* <StatusBar style="auto" /> */}
-      {!showInput && <Text onPress={handleShow}>Add an event</Text>}
-      {showInput && <EventInput
-        handleShow={handleShow}
-        date={new Date()}
-        disabled={true}
-      />}
-    </ScrollView>
+    <>
+      {showInput &&
+        <EventInput
+          handleShow={handleShow}
+          date={props.selectedDay}
+        />
+      }
+      <View style={styles.eventPage}>
+        {!showInput &&
+          <View>
+            <Button style={{marginTop: 30}} title="Back to Calendar" onPress={props.handleBackPress} />
+            <Text style={{fontSize: 30, textAlign: 'center' }}>{moment(props.selectedDay).format('MMMM Do YYYY')}</Text>
+            {props.events.length < 1 && <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 15 }}>No events scheduled for this day...</Text>}
+          </View>
+        }
+        <ScrollView>
+          {!showInput && renderNames()}
+        </ScrollView>
+        {!showInput && <Button title='Add an Event' onPress={handleShow} />}
+      </View>
+    </>
   );
 }
 

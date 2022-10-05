@@ -3,29 +3,41 @@ import styles from './styles.js';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { useState, useEffect } from 'react';
 import EventInput from './EventInput.js';
+import { Button } from '@rneui/base';
+import moment from 'moment';
 
 const EventCalendar = (props) => {
   const [showInput, setShowInput] = useState(false);
+  const [currentDay, setCurrentDay] = useState('');
+
+  useEffect(() => {
+    let currentDay = moment(new Date()).format(`YYYY-MM-DD`);
+    setCurrentDay(currentDay);
+  }, [])
 
   const handleShow = () => {
     setShowInput(!showInput);
   }
 
   return (
-    <View style={styles.calendar}>
-      {!showInput && <Calendar
-        onDayPress={props.handleDayPress}
-        enableSwipeMonths={true}
-        selectedDates={new Date()}
-        markedDates={props.markedDays}
-      />}
-      {!showInput && <Text onPress={handleShow}>Add an event</Text>}
-      {showInput && <EventInput
-        handleShow={handleShow}
-        date={new Date()}
-        disabled={false}
-      />}
-    </View>
+    <>
+      <View>
+        {!showInput && <Calendar
+          style={styles.calendar}
+          theme={styles.calendarTheme}
+          onDayPress={props.handleDayPress}
+          enableSwipeMonths={true}
+          markedDates={({...props.selectedDates, [currentDay]: {marked: true}})}
+        />}
+        {!showInput && <Button style={({...styles.buttons, marginTop: 30})} onPress={handleShow}>Add an event</Button>}
+      </View>
+      {showInput &&
+        <EventInput
+          handleShow={handleShow}
+          date={new Date()}
+        />
+      }
+    </>
   )
 };
 
