@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
-import { AntDesign } from '@expo/vector-icons';
+import Chat from '../../chat/Chat.js';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const users = [
   {
@@ -46,8 +47,15 @@ const matched = [
 
 const Request = (props) => {
   const [index, setIndex] = useState(0);
+  const [isChat, setIsChat] = useState(false);
+
+  const toggleChat = () => {
+    setIsChat(!isChat);
+  }
 
   return (
+    <>
+    {isChat ? <Chat toggleChat={toggleChat} /> :
     <View style={styles.requestContainer}>
       <Tab
         value={index}
@@ -85,7 +93,7 @@ const Request = (props) => {
                 </ListItem.Content>
                 <View style={styles.buttons}>
                   <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {alert('Declined')}}/>
-                <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
+                  <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
                 </View>
               </ListItem>
             )}
@@ -100,7 +108,7 @@ const Request = (props) => {
                 <Avatar rounded source={{uri: item.avatar}} size={60} />
                 <ListItem.Content>
                   <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
-                  <ListItem.Subtitle>{item.message}</ListItem.Subtitle>
+                  <ListItem.Subtitle onPress={() =>{toggleChat()}}>{item.message}</ListItem.Subtitle>
                 </ListItem.Content>
               </ListItem>
             )}
@@ -108,6 +116,8 @@ const Request = (props) => {
         </TabView.Item>
       </TabView>
     </View>
+    }
+    </>
   )
 }
 
