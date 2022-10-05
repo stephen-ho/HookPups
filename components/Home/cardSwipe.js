@@ -19,7 +19,7 @@ export default function CardSwipe (props) {
   const swiper = useRef(null);
   // const [currentUser, setCurrentUser] = useState({});
 
-  //console.log('what is in card swip: ', props.route.params);
+  console.log('what is in card swip: ', props.route.params);
 
   const currentUser = {
     "dog_id": 4,
@@ -40,13 +40,14 @@ export default function CardSwipe (props) {
     "address": "undefined"
   };
 
+  async function fetchData () {
+    const results = await axios.get('http://54.219.129.63:3000/description/unmatched/Justin/Max')
+    await setDogs(results.data);
+    setLoading(false);
+  }
+
   useEffect(() => {
     setLoading(true);
-    async function fetchData () {
-      const results = await axios.get('http://54.219.129.63:3000/description/unmatched/Justin/Max')
-      await setDogs(results.data);
-      setLoading(false);
-    }
     fetchData();
   }, [])
 
@@ -58,11 +59,13 @@ export default function CardSwipe (props) {
     );
   }
 
-  function handleRight (index) {
+
+
+  async function handleRight (index) {
     console.log('Index: ', index);
     console.log('Current Owner Name: ', dogs[index].owner_name);
     console.log('Current User: ', currentUser);
-    axios.post('http://54.219.129.63:3000/matches', {
+    await axios.post('http://54.219.129.63:3000/matches', {
       dog1_name: currentUser.dog_name,
       dog2_name: dogs[index].dog_name,
       owner1_name: currentUser.owner_name,
@@ -73,7 +76,8 @@ export default function CardSwipe (props) {
     })
     .catch((err) => {
       console.log(err);
-    })
+    });
+    fetchData();
   }
 
   function handleLike () {
@@ -116,7 +120,8 @@ if (isLoading === true) {
   )
 }
 
-if (isLoading === false) {
+if (isLoading === false && dogs.length !== 0) {
+
   return (
     <>
     <View style={styles.container}>
@@ -218,6 +223,12 @@ if (isLoading === false) {
     </>
   );
   }
+  return (
+    <View style={styles.errorScreen}>
+      <Image source={{ uri: 'https://brokeassstuart.com/wp-content/pictsnShit/2014/08/Sad-Dog-Cute-Broke-Ass-Stuart-NYC-1200x800.jpg' }} style={styles.errImg}/>
+      <Text style={styles.errText}>Sorry, we can't find any unmatched dogs in your area</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -238,12 +249,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   cardContainer: {
     width: '92%',
     height: '75%',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   card: {
     width: '100%',
@@ -318,5 +329,21 @@ const styles = StyleSheet.create({
   modalBG: {
     height: '100%',
     backgroundColor: 'gray',
+  },
+  errorScreen: {
+    backgroundColor: '#d9edff',
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'center',
+  },
+  errImg: {
+    height: 200,
+    width: '90%',
+    borderRadius: 15,
+  },
+  errText: {
+    fontSize: 20,
+    fontWeight: '700',
+    padding: 20,
   }
 });
