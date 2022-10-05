@@ -4,7 +4,7 @@ import { View, FlatList } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
 import Chat from '../../chat/Chat.js';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const users = [
   {
@@ -55,7 +55,7 @@ const Request = (props) => {
 
   return (
     <>
-    {isChat ? <Chat toggleChat={toggleChat}/> :
+    {isChat ? <Chat toggleChat={toggleChat} /> :
     <View style={styles.requestContainer}>
       <Tab
         value={index}
@@ -93,7 +93,7 @@ const Request = (props) => {
                 </ListItem.Content>
                 <View style={styles.buttons}>
                   <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {alert('Declined')}}/>
-                <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
+                  <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {alert('Accepted')}}/>
                 </View>
               </ListItem>
             )}
