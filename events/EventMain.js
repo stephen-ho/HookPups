@@ -17,6 +17,7 @@ import moment from 'moment';
 */
 
 const EventMain = (props) => {
+  console.log('what is in Event main: ', props.route.params)
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
   const [events, setEvents] = useState(eventData); // Store initial axios GET events here
   const [selectedDates, setSelectedDates] = useState({}); // Mark calendar with relevant days once GET request done
