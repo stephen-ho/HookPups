@@ -1,16 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Image, Text, View } from 'react-native';
 import styles from './styles.js';
-import { ListItem, Avatar } from '@rneui/themed'
+import { Overlay, ListItem, Avatar } from '@rneui/themed'
 import { Button } from '@rneui/base';
 import { useState } from 'react';
-
-//#cdb4db
-//#ffc8dd
-
-/*
-  Delete button on the right?
-*/
+import moment from 'moment';
 
 const EventPanel = (props) => {
   const [showDelete, setShowDelete] = useState(false);
@@ -20,7 +14,8 @@ const EventPanel = (props) => {
   }
 
   const handleDelete = () => {
-    console.log('hi')
+    console.log('Deleted placeholder')
+    setShowDelete(!showDelete);
     //delete from here
     //"/events/:owner1_name/:dog1_name/:owner2_name/:dog2_name"
 
@@ -28,38 +23,30 @@ const EventPanel = (props) => {
   }
 
   return (
-    <View style={styles.eventPanel}>
-      <View style={{flexDirection: 'row', backgroundColor: '#f2f2f2', height: 50, width: '85%'}}>
-        <View style={{width: '20%', alignItems: 'center', justifyContent: 'center'}}>
-          <Avatar rounded source={{ uri: props.event.recipient.dog.photo}} onPress={handleShowDelete}/>
-        </View>
-        <View style={{width: '80%', justifyContent: 'center'}}>
-          <Text onPress={handleShowDelete}>{props.event.event} with {props.event.recipient.dog.name} at {props.event.location}</Text>
-        </View>
-        {showDelete && <View>
-          <Button buttonStyle={{height: 50}} title='X' onPress={handleDelete}></Button>
-        </View>}
-      </View>
-    </View>
+    <>
+      <ListItem bottomDivider containerStyle={styles.eventPanel}>
+        <Avatar rounded source={{ uri: props.event.recipient.dog.photo }}/>
+        <ListItem.Content style={{flex: 5}}>
+            <ListItem.Title>{props.event.recipient.dog.name}</ListItem.Title>
+            {/* <ListItem.Subtitle>{moment(props.event.date).format('LT')}</ListItem.Subtitle> */}
+            <ListItem.Subtitle>12:00 PM</ListItem.Subtitle>
+            <ListItem.Subtitle>{props.event.event}</ListItem.Subtitle>
+            <ListItem.Subtitle>{props.event.location}</ListItem.Subtitle>
+        </ListItem.Content>
+        <ListItem.Content>
+          <Button title='X' color='red' onPress={handleShowDelete}/>
+        </ListItem.Content>
+      </ListItem>
+      <Overlay
+        isVisible={showDelete}
+        onBackdropPress={handleShowDelete}
+      >
+        <Text>Do you want to delete this event?</Text>
+        <Button title='Yes' onPress={handleDelete}></Button>
+        <Button title='No' onPress={handleShowDelete}></Button>
+      </Overlay>
+    </>
   )
 }
 
 export default EventPanel;
-
-{/* <ListItem style={styles.eventPanel}>
-<ListItem.Content style={styles.eventPanelLeft}>
-  <Avatar
-    source={{uri: props.event.recipient.dog.photo}}
-    rounded={true}
-  />
-  <ListItem.Title>{props.event.recipient.dog.name}</ListItem.Title>
-</ListItem.Content>
-<ListItem.Content>
-  <ListItem.Subtitle>{props.event.event}</ListItem.Subtitle>
-  <ListItem.Subtitle>with {props.event.recipient.owner}</ListItem.Subtitle>
-  <ListItem.Subtitle>at {props.event.location}</ListItem.Subtitle>
-</ListItem.Content>
-<ListItem.Content>
-  <Button title='Delete Event'></Button>
-</ListItem.Content>
-</ListItem> */}

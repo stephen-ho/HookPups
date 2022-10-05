@@ -35,8 +35,8 @@ const EventPage = (props) => {
       <View style={styles.eventPage}>
         {!showInput &&
           <View>
-            <Button style={{marginTop: 30}} title="Back to Calendar" onPress={props.handleBackPress} />
-            <Text style={{fontSize: 30, textAlign: 'center' }}>{moment(props.selectedDay).format('MMMM Do YYYY')}</Text>
+            <Button title="Back to Calendar" onPress={props.handleBackPress} />
+            <Text style={styles.eventPageDate}>{moment(props.selectedDay).format('MMMM Do YYYY')}</Text>
             {props.events.length < 1 && <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 15 }}>No events scheduled for this day...</Text>}
           </View>
         }

@@ -44,6 +44,7 @@ const EventMain = (props) => {
     let tempSelectedDates = {};
     for (let i = 0; i < eventData.length; i++) {
       // let formattedDate = moment(eventData[i].date).format('YYYY-MM-DD');
+      // tempSelectedDates[formattedDate] = {selected: true};
       tempSelectedDates[eventData[i].date] = {selected: true};
     }
     setSelectedDates(tempSelectedDates);
@@ -68,6 +69,7 @@ const EventMain = (props) => {
   }
 
   return (
+    <SafeAreaView style={{flex: 1, backgroundColor: '#bde0fe'}}>
     <View style={styles.phone}>
       {!showPage && <EventCalendar
         selectedDates={selectedDates}
@@ -79,6 +81,7 @@ const EventMain = (props) => {
         selectedDay={selectedDay}
       />}
     </View>
+    </SafeAreaView>
   )
 };
 

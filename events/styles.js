@@ -33,11 +33,10 @@ const styles = StyleSheet.create({
     // height: '100%',
     // justifyContent: 'center',
     // alignItems: 'center',
-    marginTop: 30,
-    borderTopLeftRadius: 45,
-    borderTopRightRadius: 45,
-    borderWidth: 5,
-    borderColor: '#a2d2ff'
+    borderTopLeftRadius: 65,
+    borderTopRightRadius: 65,
+    borderWidth: 30,
+    borderColor: '#bde0fe'
     // calendarBackground: '#ffffff',
   },
 
@@ -56,8 +55,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
+  eventPageDate: {
+    fontSize: 30,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+
   eventPanel: {
-    marginBottom: 20,
+    flexDirection: 'row',
+    marginBottom: 5,
   },
 
   eventPanelLeft: {
@@ -81,10 +87,17 @@ const styles = StyleSheet.create({
     height: '80%',
   },
 
+  overlayHeader: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+
   overlayItems: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'red'
+    backgroundColor: '#f2f2f2',
+    marginBottom: 4,
   },
 });
 
