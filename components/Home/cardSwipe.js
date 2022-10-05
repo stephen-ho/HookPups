@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
-import CardsSwipe from 'react-native-cards-swipe';
+import CardsSwipe, {CardsSwipeRefObject} from 'react-native-cards-swipe';
 import { useRoute } from '@react-navigation/native';
 
 export default function CardSwipe (props) {
@@ -15,6 +15,8 @@ export default function CardSwipe (props) {
   const width = Dimensions.get('window').width;
   const [dogs, setDogs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+
+  const swiper = useRef(null);
   // const [currentUser, setCurrentUser] = useState({});
 
   console.log('what is in card swip: ', props.route.params);
@@ -38,13 +40,14 @@ export default function CardSwipe (props) {
     "address": "undefined"
   };
 
+  async function fetchData () {
+    const results = await axios.get('http://54.219.129.63:3000/description/unmatched/Justin/Max')
+    await setDogs(results.data);
+    setLoading(false);
+  }
+
   useEffect(() => {
     setLoading(true);
-    async function fetchData () {
-      const results = await axios.get('http://54.219.129.63:3000/description/unmatched/Justin/Max')
-      await setDogs(results.data);
-      setLoading(false);
-    }
     fetchData();
   }, [])
 
@@ -56,22 +59,25 @@ export default function CardSwipe (props) {
     );
   }
 
-  function handleRight (index) {
+
+
+  async function handleRight (index) {
     console.log('Index: ', index);
-    console.log('Current Dog: ', dogs[index]);
+    console.log('Current Owner Name: ', dogs[index].owner_name);
     console.log('Current User: ', currentUser);
-    // axios.post('http://54.219.129.63:3000/matches', {
-    //   dog1_name: currentUser.dog_name,
-    //   dog2_name: currentCard.dog_name,
-    //   owner1_name: currentUser.owner_name,
-    //   owner2_name: currentCard.user_name,
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // })
+    await axios.post('http://54.219.129.63:3000/matches', {
+      dog1_name: currentUser.dog_name,
+      dog2_name: dogs[index].dog_name,
+      owner1_name: currentUser.owner_name,
+      owner2_name: dogs[index].owner_name,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    fetchData();
   }
 
   function handleLike () {
@@ -114,11 +120,13 @@ if (isLoading === true) {
   )
 }
 
-if (isLoading === false) {
+if (isLoading === false && dogs.length !== 0) {
+
   return (
     <>
     <View style={styles.container}>
       <CardsSwipe
+        ref={swiper}
         cards={dogs}
         cardContainerStyle={styles.cardContainer}
         onSwipedRight={handleRight}
@@ -133,12 +141,27 @@ if (isLoading === false) {
         )}
       />
       <View style={styles.icons}>
-        <Button type="clear" onPress={handleNext}>
+
+        {/* <Button type="clear" onPress={handleNext}>
           <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
-        </Button>
-        <Button type="clear" onPress={handleLike}>
+        </Button> */}
+        <TouchableOpacity
+          onPress={() => {
+            if (swiper.current) swiper.current.swipeLeft();
+          }}
+        >
+          <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
+        </TouchableOpacity>
+        {/* <Button type="clear" onPress={handleLike}>
           <AntDesign style={styles.icon} name="heart" size={50} color="#FFAFCC"/>
-        </Button>
+        </Button> */}
+        <TouchableOpacity
+          onPress={() => {
+            if (swiper.current) swiper.current.swipeRight();
+          }}
+        >
+          <AntDesign style={styles.icon} name="heart" size={50} color="#FFAFCC"/>
+        </TouchableOpacity>
       </View>
     </View>
     <View>
@@ -200,6 +223,12 @@ if (isLoading === false) {
     </>
   );
   }
+  return (
+    <View style={styles.errorScreen}>
+      <Image source={{ uri: 'https://brokeassstuart.com/wp-content/pictsnShit/2014/08/Sad-Dog-Cute-Broke-Ass-Stuart-NYC-1200x800.jpg' }} style={styles.errImg}/>
+      <Text style={styles.errText}>Sorry, we can't find any unmatched dogs in your area</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -211,7 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 20,
+    padding: 15,
   },
   icon: {
     paddingHorizontal: 50,
@@ -220,12 +249,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   cardContainer: {
     width: '92%',
     height: '75%',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   card: {
     width: '100%',
@@ -300,5 +329,21 @@ const styles = StyleSheet.create({
   modalBG: {
     height: '100%',
     backgroundColor: 'gray',
+  },
+  errorScreen: {
+    backgroundColor: '#d9edff',
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'center',
+  },
+  errImg: {
+    height: 200,
+    width: '90%',
+    borderRadius: 15,
+  },
+  errText: {
+    fontSize: 20,
+    fontWeight: '700',
+    padding: 20,
   }
 });
