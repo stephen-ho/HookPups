@@ -133,3 +133,20 @@ const Request = (props) => {
 }
 
 export default Request;
+
+{/* <FlatList
+data={matched}
+renderItem={({item}) => (
+  <ListItem bottomDivider>
+    <Avatar rounded source={{uri: item.avatar}} size={60} />
+    <ListItem.Content>
+      <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
+      <ListItem.Subtitle onPress={() =>{toggleChat(); setChatData({
+          uri: item.avatar,
+          name: item.name,
+
+      })}}>{item.message}</ListItem.Subtitle>
+    </ListItem.Content>
+  </ListItem>
+)}
+/> */}
