@@ -11,10 +11,9 @@ import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@exp
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen = () => {
-
+const MainScreen = (props) => {
   const route = useRoute();
-  const owner_name = route.params.email;
+  const owner_name = route.params.user;
   const [dogInfo, setDogInfo] = useState({});
   const [isLoading, setLoading] = useState(true);
 
@@ -79,7 +78,7 @@ if (isLoading === true) {
       {/* <Tab.Screen
         name="Map"
         component={CardSwipe}
-        initialParams={{ user: owner_name }}
+        initialParams={{ user: owner_name, dog: dogInfo }}
         options={{ tabBarIcon: renderMap, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       /> */}
       <Tab.Screen
