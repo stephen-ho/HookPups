@@ -6,6 +6,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe, {CardsSwipeRefObject} from 'react-native-cards-swipe';
 import { useRoute } from '@react-navigation/native';
+import { IOS_BANNER, IOS_APP_ID } from '../../config.js'
 
 export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,6 +19,7 @@ export default function CardSwipe (props) {
 
   const swiper = useRef(null);
   // const [currentUser, setCurrentUser] = useState({});
+
 
   console.log('what is in card swip: ', props.route.params);
 

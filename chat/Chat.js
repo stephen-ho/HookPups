@@ -36,10 +36,10 @@ export default function Chat ({ toggleChat }) {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#cdb4db',
+            backgroundColor: '#A63CA3',
           },
           left: {
-            backgroundColor: '#FFAFCC',
+            backgroundColor: '#FF80AE',
           },
         }}
         textStyle={{
@@ -73,7 +73,7 @@ export default function Chat ({ toggleChat }) {
       <Send {...props}
         containerStyle={{ borderWidth: 0 }}>
         <View style={styles.sendingContainer}>
-          <IconButton icon="send-circle" size={32} color="#cdb4db" />
+          <IconButton icon="send-circle" size={32} color="#A63CA3" />
         </View>
       </Send>
     );
