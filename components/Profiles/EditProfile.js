@@ -14,7 +14,9 @@ const axios = require('axios');
 const urlLink = 'http://54.219.129.63:3000';
 const _ = require('lodash');
 
-const DogProfileInputScreen = () => {
+const EditProfile = (props) => {
+  const existingInfo = props.route.params.info;
+  console.log('edit profile: ',props.route.params.info)
   const route = useRoute();
   const [display_name, setDisplayName] = useState('');
   const [dog_name, setDogName] = useState('');
@@ -186,7 +188,7 @@ const DogProfileInputScreen = () => {
   )
 }
 
-export default DogProfileInputScreen;
+export default EditProfile;
 
 const styles = StyleSheet.create({
   container: {
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
     top: 40,
-    backgroundColor: '#d9edff'
+    backgroundColor: '#BDE0FE'
   },
   title: {
     color: '#716F81',

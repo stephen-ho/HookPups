@@ -13,6 +13,13 @@ const Tab = createBottomTabNavigator();
 const MainScreen = () => {
   const route = useRoute();
   const owner_name = route.params.email;
+  const dog_name = route.params.dog_name;
+
+  console.log('mainscreen - dog name: ', dog_name);
+
+  useEffect (() => {
+
+  })
 
   function renderHome () {
     return <Entypo name="home" size={24} color="black" />;
@@ -48,12 +55,12 @@ const MainScreen = () => {
         initialParams={{ user: owner_name }}
         options={{ tabBarIcon: renderEvents, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Home"
         component={CardSwipe}
         initialParams={{ user: owner_name }}
         options={{ tabBarIcon: renderHome, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
-      />
+      /> */}
       <Tab.Screen
         name="Matches"
         component={Requests}

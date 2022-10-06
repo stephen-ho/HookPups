@@ -32,7 +32,7 @@ export default CustomDropdownMenu;
 
 const styles = StyleSheet.create({
   dropdown1BtnStyle: {
-    width: '80%',
+    width: '70%',
     height: 35,
     backgroundColor: '#FFF',
     borderRadius: 5,

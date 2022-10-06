@@ -22,7 +22,7 @@ const RegisterScreen = () => {
       .then((res) => {
         // const user = userCredential.user;
         console.warn('Account has been successfully created. Please sign in.')
-        console.log(res);
+        console.log('message in the register screen: ', res);
 
         //navigate to profit setup
         navigation.navigate('ProfileInput', { email })

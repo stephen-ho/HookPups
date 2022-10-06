@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import CustomButtonSmall from '../../components/Profiles/CustomButtonSmall.js'
 
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
   const randomData = {
     "owner_name": "123@yahoo.com",
     "display_name": "Alex",
@@ -15,10 +17,25 @@ const ProfileScreen = () => {
     "photos": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxYy4mS5E0-eG5aKeoTPTtkwal628dGFsrgA&usqp=CAU", "https://www.loveyourdog.com/wp-content/uploads/2022/04/Miniature-Pinscher.jpg"],
     "zipcode": 92105
   };
-
+  console.log('props on profile screen: ', props.route.params.user);
   const [info, setInfo] = useState(randomData);
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+
+  }, [])
+
+  const clickEdit = () => {
+    navigation.navigate('ProfileEdit', { info })
+  }
+
+  const clickLogOut = () => {
+    navigation.navigate('SignIn');
+  }
+
   return (
+    <SafeAreaView style={{flex: 1, backgroundColor: '#d9edff'}}>
     <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
      <Text style={styles.title}>
@@ -49,9 +66,21 @@ const ProfileScreen = () => {
       <View>
         <Text>{info.description}</Text>
       </View>
+      <View style={styles.btnContainer}>
+        <CustomButtonSmall
+          text='Edit Profile'
+          onPress={clickEdit}
+        />
+        <CustomButtonSmall
+          text='Log out'
+          bgColor='#FFC8DD'
+          onPress={clickLogOut}
+        />
+      </View>
+
     </View>
     </ScrollView>
-
+    </SafeAreaView>
   )
 }
 
@@ -63,12 +92,12 @@ const styles = StyleSheet.create({
     width: '100%',
     // height: '100%',
     height: Dimensions.get('window').height,
-    paddingTop: 40,
+    paddingTop: 20,
     paddingBottom: 40,
     marginBottom: 20,
     alignItems: 'center',
     // top: 40,
-    backgroundColor: '#BDE0FE'
+    backgroundColor: '#d9edff'
   },
   title: {
     color: '#716F81',
@@ -83,5 +112,10 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%'
+  },
+  btnContainer: {
+    width: '70%',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });
