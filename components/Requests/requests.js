@@ -57,7 +57,7 @@ const Request = (props) => {
   }
 
   useEffect(() => {
-    axios.get('http://54.219.129.63:3000/matches/Tina/Peanut/pending')
+    axios.get('http://54.219.129.63:3000/matches/user5@gmail.com/Max/pending')
       .then((response) => { console.log('Getting pending: ', response.data); setPending(response.data) })
       .catch((err) => {console.log('Error getting pending matches')})
 
