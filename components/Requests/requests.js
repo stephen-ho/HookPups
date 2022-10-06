@@ -80,7 +80,8 @@ const Request = (props) => {
 
         <TabView value={index} onChange={setIndex} animationType='spring'>
           <TabView.Item style={styles.tabView}>
-            <FlatList
+            {pending.length === 0 ? <Text>No dogs here</Text>
+            : <FlatList
               data={pending}
               renderItem={({item}) => (
                 <ListItem bottomDivider>
@@ -98,6 +99,7 @@ const Request = (props) => {
                 </ListItem>
               )}
             />
+            }
           </TabView.Item >
 
           <TabView.Item style={styles.tabView}>
