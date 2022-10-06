@@ -18,10 +18,8 @@ export default function CardSwipe (props) {
   const [isLoading, setLoading] = useState(true);
 
   const swiper = useRef(null);
-  // const [currentUser, setCurrentUser] = useState({});
 
-
-  console.log('what is in card swip: ', props.route.params);
+  // console.log('what is in card swip: ', props.route.params);
 
   const owner_name = props.route.params.user;
   const dogName = props.route.params.dog.dog_name;
@@ -64,15 +62,11 @@ export default function CardSwipe (props) {
     );
   }
 
-
   async function handleRight (index) {
-    console.log('Index: ', index);
-    console.log('Current Owner Name: ', dogs[index].owner_name);
-    console.log('Current User: ', currentUser);
     await axios.post('http://54.219.129.63:3000/matches', {
-      dog1_name: currentUser.dog_name,
+      dog1_name: dogName,
       dog2_name: dogs[index].dog_name,
-      owner1_name: currentUser.owner_name,
+      owner1_name: owner_name,
       owner2_name: dogs[index].owner_name,
     })
     .then((response) => {
@@ -84,36 +78,9 @@ export default function CardSwipe (props) {
     fetchData();
   }
 
-  function handleLike () {
-    Alert.alert(
-      "Liked",
-      "",
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
-  }
-
-  function handleNext () {
-    Alert.alert(
-      "Next",
-      "",
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
-  }
-
   function handlePress (card) {
     setModalVisible(true);
     setCurrentCard(card);
-    // console.log(dogs)
-
-    // setImages(card.photos.map((photo) => {
-    //   return ({uri: photo});
-    // }))
-
-    // console.warn(images);
   };
 
 if (isLoading === true) {
@@ -146,9 +113,6 @@ if (isLoading === false && dogs.length !== 0) {
       />
       <View style={styles.icons}>
 
-        {/* <Button type="clear" onPress={handleNext}>
-          <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
-        </Button> */}
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeLeft();
@@ -156,9 +120,7 @@ if (isLoading === false && dogs.length !== 0) {
         >
           <Feather style={styles.icon} name="x-circle" size={50} color="#937DC2"/>
         </TouchableOpacity>
-        {/* <Button type="clear" onPress={handleLike}>
-          <AntDesign style={styles.icon} name="heart" size={50} color="#FFAFCC"/>
-        </Button> */}
+
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeRight();
@@ -180,34 +142,30 @@ if (isLoading === false && dogs.length !== 0) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-
-
-          <View style={{ flex: 1 }}>
-            <Carousel
-              loop
-              width={width * 0.85}
-              height={width / 1.75}
-              autoPlay={false}
-              data={currentCard.photos}
-              scrollAnimationDuration={1000}
-              onSnapToItem={(index) => console.log('current index:', index)}
-              renderItem={({ item }) => {
-                const photo = item
-                return (
-                  <View
-                      style={{
-                          flex: 1,
-                          justifyContent: 'center',
-                      }}
-                  >
-                    <Image style={styles.carouselImg} source={{ uri: item }}/>
-                  </View>
-                )
-              }}
-            />
-          </View>
-
-
+            <View style={{ flex: 1 }}>
+              <Carousel
+                loop
+                width={width * 0.85}
+                height={width / 1.75}
+                autoPlay={false}
+                data={currentCard.photos}
+                scrollAnimationDuration={1000}
+                onSnapToItem={(index) => console.log('current index:', index)}
+                renderItem={({ item }) => {
+                  const photo = item
+                  return (
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                        }}
+                    >
+                      <Image style={styles.carouselImg} source={{ uri: item }}/>
+                    </View>
+                  )
+                }}
+              />
+            </View>
             <Text style={styles.modalName}>{currentCard.name}</Text>
             <Text style={styles.modalText}>Breed: {currentCard.breed}</Text>
             <Text style={styles.modalText}>Age: {currentCard.age}</Text>
