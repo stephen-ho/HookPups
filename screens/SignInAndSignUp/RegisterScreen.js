@@ -8,12 +8,16 @@ import Logo from '../../components/Logo.js';
 import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
+import CustomModal from '../../components/SignIn/CustomModal.js';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [emailRepeat, setEmailRepeat] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [signInModal, setSignInModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
+  const [errorCode, setErrorCode] = useState('');
 
   const navigation = useNavigation();
 
@@ -21,14 +25,15 @@ const RegisterScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
         // const user = userCredential.user;
-        console.warn('Account has been successfully created. Please sign in.')
-        console.log('message in the register screen: ', res);
-
-        //navigate to profit setup
+        // console.warn('Account has been successfully created. Please sign in.');
+        // console.log('message in the register screen: ', res);
+        setSignInModal(!signInModal);
         navigation.navigate('ProfileInput', { email })
       })
       .catch((error) => {
-        console.warn(error.message);
+        // console.warn(error.code);
+        setErrorCode(error.code);
+        setErrorModal(!errorModal);
         // const errorCode = error.code;
         // const errorMessage = error.message;
       });
@@ -79,6 +84,20 @@ const RegisterScreen = () => {
         onPress={onSignInPressed}
         type='EMPTY'
       />
+
+      <CustomModal
+        modalText={errorCode}
+        buttonText='Back To Registration'
+        visible={errorModal}
+        onPress={() => setErrorModal(!errorModal)}
+        />
+
+      <CustomModal
+        modalText="Account has been successfully created. Please enter you and your dog's information."
+        buttonText='Close'
+        visible={signInModal}
+        onPress={() => setSignInModal(!signInModal)}
+        />
     </View>
     </ScrollView>
   )
