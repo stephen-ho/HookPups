@@ -13,11 +13,14 @@ const EventPanel = (props) => {
     setShowDelete(!showDelete);
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log('Deleted placeholder')
     setShowDelete(!showDelete);
     //delete from here
     //"/events/:owner1_name/:dog1_name/:owner2_name/:dog2_name"
+    // await axios.delete(`http://54.219.129.63:3000/events/${props.currentUser}/${props.currentDog.dog_name}/{OTHEROWNER}/{OTHERDOG}`)
+
+    // await props.fetchEvents();
 
     //retrieve events for this day after deletion
   }

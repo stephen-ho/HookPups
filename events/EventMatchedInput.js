@@ -15,10 +15,10 @@ const EventMatchedInput = ({handleSelect, dog}) => {
 
   return (
     <ListItem containerStyle={styles.overlayItems} onPress={checkPress}>
-      <Avatar rounded source={{uri: dog.photo}}/>
+      <Avatar rounded source={{uri: dog.photos[0]}}/>
       <ListItem.Content>
-        <ListItem.Title>Owner: {dog.owner}</ListItem.Title>
-        <ListItem.Subtitle>Dog: {dog.dog}</ListItem.Subtitle>
+        <ListItem.Title>Dog: {dog.dog_name}</ListItem.Title>
+        <ListItem.Subtitle>Owner: {dog.display_name}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   )

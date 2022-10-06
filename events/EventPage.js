@@ -20,6 +20,8 @@ const EventPage = (props) => {
       <EventPanel
         event={event}
         currentUser={props.currentUser}
+        currentDog={props.currentDog}
+        fetchEvents={props.fetchEvents}
         key={event.event + index}
       />
     ))
@@ -32,6 +34,7 @@ const EventPage = (props) => {
           handleShow={handleShow}
           date={props.selectedDay}
           currentUser={props.currentUser}
+          currentDog={props.currentDog}
         />
       }
       <View style={styles.eventPage}>

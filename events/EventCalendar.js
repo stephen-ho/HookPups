@@ -36,6 +36,7 @@ const EventCalendar = (props) => {
           handleShow={handleShow}
           date={new Date()}
           currentUser={props.currentUser}
+          currentDog={props.currentDog}
         />
       }
     </>

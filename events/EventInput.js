@@ -5,25 +5,31 @@ import { useState, useEffect } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button } from '@rneui/base';
 import { Overlay, Avatar, ListItem } from '@rneui/themed';
-import matchedDogsData from './matchedDogsTestData.js';
+import axios from 'axios';
 import EventMatchedInput from './EventMatchedInput.js';
+import matchedDogsData from './matchedDogsTestData.js';
+
 
 const EventInput = (props) => {
   const [date, setDate] = useState(props.date);
   const [event, setEvent] = useState('');
   const [location, setLocation] = useState('');
-  // const [matchedDogs, setMatchedDogs] = useState([]);
-  const [matchedDogs, setMatchedDogs] = useState(matchedDogsData);
+  const [matchedDogs, setMatchedDogs] = useState([]);
   const [selected, setSelected] = useState(false);
   const [selectedDog, setSelectedDog] = useState({}); //contains dog name+id, owner name+id
   const [openChooser, setOpenChooser] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // fetchMatchedDogs();
+    fetchMatchedDogs();
   }, [])
 
   const fetchMatchedDogs = async () => {
-    // const dogs = await axios.get(`/matches/${props.currentUser}/${CURRENTDOG_HERE}/confirmed`);
+    // console.log('USER ', props.currentUser);
+    // console.log('DOG ', props.currentDog.dog_name);
+    const results = await axios.get(`http://54.219.129.63:3000/matches/${props.currentUser}/${props.currentDog.dog_name}/confirmed`);
+    // console.log('DATA ', results.data);
+    setMatchedDogs(results.data);
   }
 
   const validateInfo = () => {
@@ -55,20 +61,24 @@ const EventInput = (props) => {
     if (!validateInfo()) {
       return;
     }
+    setSubmitting(true);
 
     // Figure out what exactly to submit
 
-    console.log(details);
     const data = {
-      // dog1_id: dog, //should be the id of the current user's dog
-      // dog2_id: dog.dog_id,
+      dog1_id: props.currentDog.dog_id, //should be the id of the current user's dog
+      dog2_id: selectedDog.dog_id,
       event_name: event,
       date: date,
       location: location,
     };
     console.log(data);
+    await axios.post('/events', data);
+    setSubmitting(false);
+
     props.handleShow();
-    // await axios.post('/events', data);
+
+
   }
 
   const handleDateChange = (e, date) => {
@@ -101,10 +111,10 @@ const EventInput = (props) => {
         }
         {selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar rounded source={{uri: selectedDog.photo}}/>
+            <Avatar rounded source={{uri: selectedDog.photos[0]}}/>
             <ListItem.Content>
-              <ListItem.Title>Dog: {selectedDog.dog}</ListItem.Title>
-              <ListItem.Subtitle>Owner: {selectedDog.owner}</ListItem.Subtitle>
+              <ListItem.Title>Dog: {selectedDog.dog_name}</ListItem.Title>
+              <ListItem.Subtitle>Owner: {selectedDog.display_name}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         }
@@ -141,11 +151,15 @@ const EventInput = (props) => {
             ))}
           </ScrollView>
         </Overlay>
-        <Button
+        {!submitting && <Button
           title="Submit Event"
           onPress={handleSubmit}
           style={{marginTop: 30}}
-        />
+        />}
+        {submitting && <Button
+          title="Submitting..."
+          style={{marginTop: 30}}
+        />}
       </View>
     </>
   )
