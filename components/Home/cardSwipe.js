@@ -68,9 +68,9 @@ export default function CardSwipe (props) {
     console.log('Current Owner Name: ', dogs[index].owner_name);
     console.log('Current User: ', currentUser);
     await axios.post('http://54.219.129.63:3000/matches', {
-      dog1_name: currentUser.dog_name,
+      dog1_name: dogName,
       dog2_name: dogs[index].dog_name,
-      owner1_name: currentUser.owner_name,
+      owner1_name: owner_name,
       owner2_name: dogs[index].owner_name,
     })
     .then((response) => {

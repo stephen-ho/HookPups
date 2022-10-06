@@ -57,7 +57,7 @@ const Request = (props) => {
   }
 
   useEffect(() => {
-    axios.get('http://54.219.129.63:3000/matches/Justin/Max/pending')
+    axios.get('http://54.219.129.63:3000/matches/Gracie/teacup/pending')
       .then((response) => { setPending(response.data) })
       .catch((err) => {console.log('Error getting pending matches')})
 
@@ -67,7 +67,7 @@ const Request = (props) => {
   }, [])
 
   const confirmMatch = () => {
-    const match = {"dog1_name": "Max", "owner1_name": "Justin", "dog2_name": "Coco", "owner2_name": "Alex"}
+    const match = {"dog1_name": "teacup", "owner1_name": "Gracie", "dog2_name": "Coco", "owner2_name": "Alex"}
     axios.post('http://54.219.129.63:3000/matches', match)
       .catch((err) => {console.log('Error confirming match')})
   }
