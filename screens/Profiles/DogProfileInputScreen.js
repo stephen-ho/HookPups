@@ -8,8 +8,10 @@ import * as ImagePicker from 'expo-image-picker';
 import CustomInput from '../../components/SignIn/CustomInput.js';
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import CustomDropdownMenu from '../../components/Profiles/CustomDropdownMenu';
-import UploadImages from '../../components/Profiles/UploadImages.js'
-import dogBreed from '../../assets/data/dogBreed.js'
+import UploadImages from '../../components/Profiles/UploadImages.js';
+import dogBreed from '../../assets/data/dogBreed.js';
+const axios = require('axios');
+const urlLink = 'http://54.219.129.63:3000';
 const _ = require('lodash');
 
 const DogProfileInputScreen = () => {
@@ -31,7 +33,7 @@ const DogProfileInputScreen = () => {
   const sizeSelection = ['Tiny', 'Small', 'Medium', 'Large', 'Huge'];
   const ageSelection = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   const personalitySelection = ['Adaptable', 'Aggressive', 'Calm', 'Confident', 'Independent', 'Insecure', 'Mild', 'Outgoing'];
-  const preferrenceSelection = ['All dog', 'Small Dogs', 'Large Dogs', 'Just People'];
+  // const preferrenceSelection = ['All dog', 'Small Dogs', 'Large Dogs', 'Just People'];
 
   const navigation = useNavigation();
 
@@ -73,14 +75,18 @@ const DogProfileInputScreen = () => {
       gender: gender,
       personality: personality,
       description: description,
-      zipcode: zipcode,
+      zipcode: Number(zipcode),
       photos: images
     }
-    console.log('what was enter: ', info);
+    // console.log('what was enter: ', info);
 
-    // axios request to post data
-
-    // navigation.navigate('MainScreen');
+    axios.post(`${urlLink}/description`, info)
+      .then(( result ) => {
+        // console.log('what was received when creating a dog profile: ', result.data);
+        // console.log('after submitting request: ', info);
+        navigation.navigate('MainScreen', { user: info.owner_name });
+      })
+      .catch((err) => console.log('error in adding dog: ', err) );
   }
 
   return (
@@ -156,14 +162,14 @@ const DogProfileInputScreen = () => {
             return setPersonality(selectedItem);
           }}
         />
-        <CustomDropdownMenu
+        {/* <CustomDropdownMenu
           data={preferrenceSelection}
           defaultButtonText={'We Get Along With'}
           onSelect={(selectedItem, index) => {
             console.log(selectedItem, index)
             return setPreferrence(selectedItem);
           }}
-        />
+        /> */}
         <CustomInput
           placeholder='Zip Code'
           value={zipcode}
@@ -189,7 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
     top: 40,
-    backgroundColor: '#BDE0FE'
+    backgroundColor: '#d9edff'
   },
   title: {
     color: '#716F81',
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
   },
   bioContainer: {
     backgroundColor: 'white',
-    width: '80%',
+    width: '70%',
     borderRadius: 5,
     padding: 10,
     marginVertical: 5,
