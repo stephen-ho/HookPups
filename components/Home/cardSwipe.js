@@ -21,6 +21,9 @@ export default function CardSwipe (props) {
 
   console.log('what is in card swip: ', props.route.params);
 
+  const owner_name = props.route.params.user;
+  const dogName = props.route.params.dog.dog_name;
+
   const currentUser = {
     "dog_id": 4,
     "owner_name": "Justin",
@@ -41,7 +44,7 @@ export default function CardSwipe (props) {
   };
 
   async function fetchData () {
-    const results = await axios.get('http://54.219.129.63:3000/description/unmatched/Justin/Max')
+    const results = await axios.get(`http://54.219.129.63:3000/description/unmatched/${owner_name}/${dogName}`)
     await setDogs(results.data);
     setLoading(false);
   }
@@ -58,7 +61,6 @@ export default function CardSwipe (props) {
         </View>
     );
   }
-
 
 
   async function handleRight (index) {
