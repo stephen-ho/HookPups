@@ -260,7 +260,7 @@ if (isLoading === false && dogs.length !== 0) {
                 loop
                 width={width * 0.85}
                 height={width / 1.75}
-                autoPlay={false}
+                autoPlay={true}
                 data={currentCard.photos}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => console.log('current index:', index)}
@@ -280,11 +280,28 @@ if (isLoading === false && dogs.length !== 0) {
               />
             </View>
             <Text style={styles.modalName}>{currentCard.name}</Text>
-            <Text style={styles.modalText}>Breed: {currentCard.breed}</Text>
-            <Text style={styles.modalText}>Age: {currentCard.age}</Text>
-            <Text style={styles.modalText}>Size: {currentCard.size}</Text>
-            <Text style={styles.modalText}>Personality: {currentCard.personality}</Text>
-            <Text style={styles.modalText}>Bio: {currentCard.description}</Text>
+            <View style={styles.profileInfoContainer}>
+              <View style={styles.profileInfo}>
+                <Text style={styles.infoTitle}>Breed: </Text>
+                <Text style={styles.infoDesc}>{currentCard.breed}</Text>
+              </View>
+              <View style={styles.profileInfo}>
+                <Text style={styles.infoTitle}>Age: </Text>
+                <Text style={styles.infoDesc}>{currentCard.age}</Text>
+              </View>
+              <View style={styles.profileInfo}>
+                <Text style={styles.infoTitle}>Size: </Text>
+                <Text style={styles.infoDesc}>{currentCard.size}</Text>
+              </View>
+              <View style={styles.profileInfo}>
+                <Text style={styles.infoTitle}>Personality: </Text>
+                <Text style={styles.infoDesc}>{currentCard.personality}</Text>
+              </View>
+              <View style={styles.profileInfo}>
+                <Text style={styles.infoTitle}>Bio: </Text>
+                <Text style={styles.infoDesc}>{currentCard.description}</Text>
+              </View>
+            </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -359,6 +376,22 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 15,
+  },
+  profileInfoContainer: {
+    width: '85%',
+    paddingBottom: 10,
+  },
+  profileInfo: {
+    flexDirection: 'row',
+    paddingBottom: 5,
+  },
+  infoTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    paddingRight: 10
+  },
+  infoDesc: {
+    fontSize: 18,
   },
   centeredView: {
     flex: 1,

@@ -75,12 +75,6 @@ if (isLoading === true) {
   return (
     <>
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Tab.Screen
-        name="Map"
-        component={CardSwipe}
-        initialParams={{ user: owner_name, dog: dogInfo }}
-        options={{ tabBarIcon: renderMap, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
-      /> */}
       <Tab.Screen
         name="Home"
         component={CardSwipe}
@@ -106,9 +100,6 @@ if (isLoading === true) {
         options={{ tabBarIcon: renderProfile, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />
     </Tab.Navigator>
-    {/* <View style={styles.adBar}>
-      <Text>AD GOES HERE</Text>
-    </View> */}
     </>
   );
 }
