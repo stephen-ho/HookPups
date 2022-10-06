@@ -9,34 +9,29 @@ import CustomInput from '../../components/SignIn/CustomInput.js'
 import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
 import MainScreen from '../MainScreen.js';
-// import DogProfileInputScreen from '../Profiles/DogProfileInputScreen.js'
+import CustomModal from '../../components/SignIn/CustomModal.js';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [errorCode, setErrorCode] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
-
-  useEffect(() => {
-
-
-  }, [])
 
   const onSignInPressed = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        // const user = userCredential.user;
         console.log('sign in');
         console.log(res);
-        //navigate to main screen
-        // setIsSignedIn(true);
+
         navigation.navigate('MainScreen', { user: email });
-        // navigation.navigate('ProfileInputScreen');
       })
       .catch((error) => {
-        console.log(error.message);
+        // console.log(error.code);
+        setErrorCode(error.code);
+        setModalVisible(!modalVisible);
         // const errorCode = error.code;
         // const errorMessage = error.message;
       });
@@ -83,6 +78,13 @@ const SignInScreen = () => {
           text="Don't have an account? Create one"
           onPress={onCreateAccountPressed}
           type='EMPTY'
+        />
+
+        <CustomModal
+          modalText={errorCode}
+          buttonText='Back To Sign In'
+          visible={modalVisible}
+          onPress={() => setModalVisible(!modalVisible)}
         />
       </View>
     </ScrollView>
