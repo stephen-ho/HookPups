@@ -76,10 +76,10 @@ if (isLoading === true) {
   return (
     <>
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Map"
         component={CardSwipe}
-        initialParams={{ user: owner_name }}
+        initialParams={{ user: owner_name, dog: dogInfo }}
         options={{ tabBarIcon: renderMap, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       /> */}
       <Tab.Screen
@@ -94,12 +94,6 @@ if (isLoading === true) {
         initialParams={{ user: owner_name, dog: dogInfo }}
         options={{ tabBarIcon: renderEvents, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />
-      {/* <Tab.Screen
-        name="Home"
-        component={CardSwipe}
-        initialParams={{ user: owner_name }}
-        options={{ tabBarIcon: renderHome, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
-      /> */}
       <Tab.Screen
         name="Matches"
         component={Requests}

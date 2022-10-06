@@ -33,7 +33,7 @@ const DogProfileInputScreen = () => {
   const sizeSelection = ['Tiny', 'Small', 'Medium', 'Large', 'Huge'];
   const ageSelection = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   const personalitySelection = ['Adaptable', 'Aggressive', 'Calm', 'Confident', 'Independent', 'Insecure', 'Mild', 'Outgoing'];
-  const preferrenceSelection = ['All dog', 'Small Dogs', 'Large Dogs', 'Just People'];
+  // const preferrenceSelection = ['All dog', 'Small Dogs', 'Large Dogs', 'Just People'];
 
   const navigation = useNavigation();
 
@@ -162,14 +162,14 @@ const DogProfileInputScreen = () => {
             return setPersonality(selectedItem);
           }}
         />
-        <CustomDropdownMenu
+        {/* <CustomDropdownMenu
           data={preferrenceSelection}
           defaultButtonText={'We Get Along With'}
           onSelect={(selectedItem, index) => {
             console.log(selectedItem, index)
             return setPreferrence(selectedItem);
           }}
-        />
+        /> */}
         <CustomInput
           placeholder='Zip Code'
           value={zipcode}

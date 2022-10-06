@@ -15,8 +15,6 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const Stack = createNativeStackNavigator();
 
-
-
   return (
 
     // <View style={styles.container}>
@@ -38,12 +36,11 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#BDE0FE',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-});
-
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#BDE0FE',
+//     // alignItems: 'center',
+//     // justifyContent: 'center',
+//   },
+// });

@@ -2,12 +2,13 @@ import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const CustomDropdownMenu = ({ data, defaultButtonText, onSelect }) => {
+const CustomDropdownMenu = ({ data, defaultButtonText, defaultValue, onSelect }) => {
 
   return (
       <SelectDropdown
         data={data}
         defaultButtonText={defaultButtonText}
+        defaultValue={defaultValue}
         onSelect={onSelect}
         buttonTextAfterSelection={(selectedItem, index) => {
           return selectedItem;
