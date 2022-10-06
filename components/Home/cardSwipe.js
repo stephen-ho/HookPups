@@ -9,6 +9,7 @@ import { useRoute } from '@react-navigation/native';
 import CustomDropdownMenu from '../Profiles/CustomDropdownMenu.js';
 import dogBreed from '../../assets/data/dogBreed.js'
 const _ = require('lodash');
+import { IOS_BANNER, IOS_APP_ID } from '../../config.js'
 
 export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
