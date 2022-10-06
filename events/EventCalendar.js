@@ -27,13 +27,14 @@ const EventCalendar = (props) => {
           theme={styles.calendarTheme}
           onDayPress={props.handleDayPress}
           enableSwipeMonths={true}
-          markedDates={({...props.selectedDates, [currentDay]: {marked: true}})}
+          markedDates={({...props.selectedDates, [currentDay]: ({...props.selectedDates[currentDay], marked: true})})}
         />}
         {!showInput && <Button style={({...styles.buttons, marginTop: 5})} onPress={handleShow}>Add an event</Button>}
       </View>
       {showInput &&
         <EventInput
           handleShow={handleShow}
+          fetchEvents={props.fetchEvents}
           date={new Date()}
           currentUser={props.currentUser}
           currentDog={props.currentDog}

@@ -32,6 +32,7 @@ const EventPage = (props) => {
       {showInput &&
         <EventInput
           handleShow={handleShow}
+          fetchEvents={props.fetchEvents}
           date={props.selectedDay}
           currentUser={props.currentUser}
           currentDog={props.currentDog}

@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 
   overlay: {
     flexDirection: 'column',
-    width: '60%',
+    width: '75%',
     height: '80%',
   },
 

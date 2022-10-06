@@ -12,6 +12,8 @@ import moment from 'moment';
 
 const EventMain = (props) => {
   // console.log('what is in Event main: ', props.route.params)
+  // console.log('CURRENT USER: ', props.route.params.user);
+  // console.log('CURRENT DOG: ', props.route.params.dog);
   const [currentUser, setCurrentUser] = useState(props.route.params.user);
   const [currentDog, setCurrentDog] = useState(props.route.params.dog);
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
@@ -30,20 +32,23 @@ const EventMain = (props) => {
   }, []);
 
   const fetchEvents = async () => {
+    console.log('EVENTS FETCHED')
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
     //parse results first?
-    console.log('INITIAL EVENT RESULTS: ', results.data);
-    setEvents(results.data);
-    selectDates();
+    // await setEvents(results.data);
+    selectDates(results.data);
   }
 
-  const selectDates = () => {
+  const selectDates = (results) => {
+    console.log('CURRENT EVENTS: ', results);
     let tempSelectedDates = {};
-    for (let i = 0; i < events.length; i++) {
-      let formattedDate = moment(events[i].date).format('YYYY-MM-DD');
+    for (let i = 0; i < results.length; i++) {
+      console.log(results[i]);
+      let formattedDate = moment(results[i].date).format('YYYY-MM-DD');
       tempSelectedDates[formattedDate] = {selected: true};
       // tempSelectedDates[eventData[i].date] = {selected: true};
     }
+    setEvents(results);
     setSelectedDates(tempSelectedDates);
   }
 
@@ -73,6 +78,7 @@ const EventMain = (props) => {
           handleDayPress={handleDayPress}
           currentUser={currentUser}
           currentDog={currentDog}
+          fetchEvents={fetchEvents}
         />}
         {showPage && <EventPage
           events={dayEvents}

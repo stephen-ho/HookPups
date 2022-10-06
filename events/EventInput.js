@@ -28,7 +28,7 @@ const EventInput = (props) => {
     // console.log('USER ', props.currentUser);
     // console.log('DOG ', props.currentDog.dog_name);
     const results = await axios.get(`http://54.219.129.63:3000/matches/${props.currentUser}/${props.currentDog.dog_name}/confirmed`);
-    // console.log('DATA ', results.data);
+    console.log('DATA ', results.data);
     setMatchedDogs(results.data);
   }
 
@@ -57,7 +57,7 @@ const EventInput = (props) => {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!validateInfo()) {
       return;
     }
@@ -65,25 +65,36 @@ const EventInput = (props) => {
 
     // Figure out what exactly to submit
 
+     // dog1_id should be the id of the current user's dog
+    //  dog1_name: props.currentDog.dog_name,
+    //  owner1_name: props.currentUser,
+    //  dog2_name: selectedDog.dog_name,
+    //  owner2_name: selectedDog.owner_name,
+
     const data = {
-      dog1_id: props.currentDog.dog_id, //should be the id of the current user's dog
-      dog2_id: selectedDog.dog_id,
+      dog1_name: props.currentDog.dog_name,
+      owner1_name: props.currentUser,
+      dog2_name: selectedDog.dog1_dog,
+      owner2_name: selectedDog.dog1_owner,
       event_name: event,
       date: date,
       location: location,
     };
     console.log(data);
-    await axios.post('/events', data);
-    setSubmitting(false);
-
-    props.handleShow();
-
-
-  }
+    axios.post(`http://54.219.129.63:3000/events`, data)
+    .then(() => {
+      return props.fetchEvents();
+    })
+    .then(() => {
+      props.handleShow();
+      setSubmitting(false);
+    })
+    .catch((err) => {
+      setSubmitting(false);
+    })
+  };
 
   const handleDateChange = (e, date) => {
-    console.log(date);
-    console.log(typeof date);
     setDate(date);
   }
 
@@ -111,10 +122,10 @@ const EventInput = (props) => {
         }
         {selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar rounded source={{uri: selectedDog.photos[0]}}/>
+            <Avatar rounded source={{uri: selectedDog.dog1_photos[0]}}/>
             <ListItem.Content>
-              <ListItem.Title>Dog: {selectedDog.dog_name}</ListItem.Title>
-              <ListItem.Subtitle>Owner: {selectedDog.display_name}</ListItem.Subtitle>
+              <ListItem.Title>Dog: {selectedDog.dog1_name}</ListItem.Title>
+              <ListItem.Subtitle>Owner: {selectedDog.dog1_owner_display_name}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         }
