@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     alignItems: 'center',
-    backgroundColor: '#BDE0FE',
+    backgroundColor: '#d9edff',
     height: Dimensions.get('window').height
   },
 

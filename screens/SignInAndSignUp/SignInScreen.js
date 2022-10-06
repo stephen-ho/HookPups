@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
     alignItems: 'center',
-    backgroundColor: '#BDE0FE'
+    backgroundColor: '#d9edff'
   },
 
   logo: {

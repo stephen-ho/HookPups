@@ -17,8 +17,8 @@ const _ = require('lodash');
 const ProfileScreen = (props) => {
   console.log('props on profile screen: ', props.route.params.user);
   console.log('props on profile screen: ', props.route.params.dog);
+  const user = props.route.params.user;
   const info = props.route.params.dog;
-  // const [info, setInfo] = useState(props.route.params.dog);
   const [dog_name, setDogName] = useState(info.dog_name);
   const [description, setDescription] = useState(info.description);
   const [gender, setGender] = useState(info.gender);
@@ -28,7 +28,7 @@ const ProfileScreen = (props) => {
   const [personality, setPersonality ] = useState(info.personality);
   const [zipcode, setZipcode] = useState(info.zipcode);
   const [photos, setPhotos] = useState(props.route.params.dog.photos);
-
+  const [submitUpdate, setSubmitUpdate] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [breedSelection, setBreedSelection] = useState([]);
   const genderSelection = ['Male', 'Female'];
@@ -40,18 +40,22 @@ const ProfileScreen = (props) => {
   const width = Dimensions.get('window').width;
 
   useEffect (() => {
-    for (let key in dogBreed) {
-      if (dogBreed[key].length === 0) {
-        setBreedSelection((list) => ( [...list, _.capitalize(key)] ))
-      } else {
-        dogBreed[key].forEach((type) => {
-          setBreedSelection((list) => (
-            [...list, `${_.capitalize(type)} ${_.capitalize(key)}`]
-          ))
-        });
-      }
-    }
-  }, []);
+    axios.get(`${urlLink}/description/${user}`)
+      .then((result) => {
+        console.log('updated dog info: ', result.data);
+        let updatedInfo = result.data[0];
+        setDescription(updatedInfo.description);
+        setGender(updatedInfo.gender);
+        setSize(updatedInfo.size);
+        setAge(updatedInfo.age);
+        setPersonality(updatedInfo.personality);
+        setZipcode(updatedInfo.zipcode);
+        setPhotos(updatedInfo.photos);
+      })
+      .catch((err) => {
+        console.log('Error on displaying new dog info: ', err);
+      })
+  }, [submitUpdate]);
 
   const clickEdit = () => {
     setModalVisible(true);
@@ -59,10 +63,6 @@ const ProfileScreen = (props) => {
 
   const clickLogOut = () => {
     navigation.navigate('SignIn');
-  }
-
-  const clickModalSave = () => {
-    console.log('got clicked')
   }
 
   const addMorePhotos = async () => {
@@ -80,6 +80,23 @@ const ProfileScreen = (props) => {
 
   const submitChanges = () => {
     console.log('submit changes');
+    // axios request to update changes
+    axios.put(`${urlLink}/description/${user}/${dog_name}`, {
+      size: size,
+      personality: personality,
+      description: description,
+      age: age,
+      gender: gender,
+      photos: photos,
+      zipcode: zipcode
+    })
+      .then(() => {
+        setSubmitUpdate(!submitUpdate);
+        setModalVisible(false);
+      })
+      .catch((err) => {
+        console.log('Error on posting new dog info: ', err);
+      });
   }
 
   return (
@@ -92,12 +109,11 @@ const ProfileScreen = (props) => {
       <View style={styles.imageContainer}>
       <Carousel
         loop
-        width={width * 1}
-        // height={width / 1.75}
-        autoPlay={false}
-        data={info.photos}
+        width={width}
+        autoPlay={true}
+        data={photos}
         scrollAnimationDuration={1000}
-        onSnapToItem={(index) => console.log('current index:', index)}
+        // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({ item }) => {
           return (
               <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
@@ -106,12 +122,22 @@ const ProfileScreen = (props) => {
       />
       </View>
 
-      <View><Text>{info.dog_name}</Text></View>
-      <View><Text>{info.breed}</Text></View>
-      <View><Text>{info.size}  |  {info.age} years old  |   {info.gender}</Text></View>
-      <View><Text>{info.personality}</Text></View>
-      <View><Text>{info.zipcode}</Text></View>
-      <View><Text>{info.description}</Text></View>
+      <View style={styles.infoContainer}>
+        <Text style={[styles.infoText, styles.infoName]}>
+          {dog_name}
+        </Text>
+        <Text style={styles.infoText}>{breed}</Text>
+        <Text style={styles.infoText}>{size}  |  {age} years old  |   {gender}</Text>
+        <Text style={styles.infoText}>{personality}</Text>
+        <Text style={styles.infoText}>Location: {zipcode}</Text>
+      </View>
+
+      <View style={styles.bioBoxContainer}>
+        <View style={styles.bioTitleBox}>
+          <Text style={styles.bioTitle}>About Me</Text>
+        </View>
+        <Text style={styles.bioText}>{info.description}</Text>
+      </View>
 
       <View style={styles.btnContainer}>
         <CustomButtonSmall
@@ -139,17 +165,19 @@ const ProfileScreen = (props) => {
             <View style={styles.modalHeader}>
               <View style={styles.modalHeaderContent}></View>
               <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                <AntDesign name="closecircleo" size={20} color="black" />
+                <AntDesign name="closecircle" size={20} color="#716F81" />
               </TouchableOpacity>
             </View>
 
             <View style={styles.modalContent}>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <UploadImages images={photos} addImage={addMorePhotos} />
-              <CustomInput
-                value={dog_name}
-                setValue={setDogName}
-              />
+              <UploadImages images={photos} addImage={addMorePhotos} />
+
+              <View>
+                <Text style={[styles.infoText, styles.infoName]}>{dog_name}</Text>
+                <Text style={ styles.infoText }>{breed}</Text>
+              </View>
+
               <View style={styles.bioContainer}>
                 <TextInput
                   value={description}
@@ -165,14 +193,6 @@ const ProfileScreen = (props) => {
                 onSelect={(selectedItem, index) => {
                   console.log(selectedItem, index)
                   return setGender(selectedItem);
-                }}
-              />
-              <CustomDropdownMenu
-                data={breedSelection}
-                defaultValue={breed}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index)
-                  return setBreed(selectedItem);
                 }}
               />
               <CustomDropdownMenu
@@ -201,6 +221,7 @@ const ProfileScreen = (props) => {
               />
               <CustomInput
                 value={zipcode}
+                placehoder='zip code'
                 setValue={setZipcode}
                 maxLength={5}
                 keyboardType='number-pad'
@@ -252,6 +273,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  infoContainer: {
+    alignItems: "center",
+    marginBottom: 10
+  },
+  infoText: {
+    marginBottom: 3,
+    fontSize: 15,
+  },
+  infoName: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 25
+  },
+  bioBoxContainer: {
+    height: 140,
+    width: '65%',
+    backgroundColor: '#EEF1FF',
+    marginBottom: 20,
+    borderRadius: 10
+  },
+  bioTitleBox: {
+    height: 30,
+    width: '100%',
+    backgroundColor: '#CDB4DB',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    alignItems: "center",
+    justifyContent: 'center'
+  },
+  bioTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  bioText: {
+    padding: 10,
+    paddingLeft: 15,
+    fontSize: 15
+  },
+  // modale
   centeredView: {
     flex: 1,
     justifyContent: "center",
