@@ -6,7 +6,7 @@ import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat
 import { IconButton } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Chat ({ toggleChat }) {
+export default function Chat ({ toggleChat, currentMatch }) {
   const [messageList, setMessageList] = useState([])
   const [text, setText] = useState('')
 
@@ -78,6 +78,10 @@ export default function Chat ({ toggleChat }) {
       </Send>
     );
   }
+
+  useEffect(() => {
+    console.log('--------CURRENT MATCH-------', currentMatch)
+  }, [])
 
   return (
     <>
