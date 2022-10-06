@@ -6,12 +6,12 @@ import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat
 import { IconButton } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Chat ({ toggleChat }) {
+export default function Chat ({ toggleChat, currentMatch }) {
   const [messageList, setMessageList] = useState([])
   const [text, setText] = useState('')
 
   useLayoutEffect(() => {
-    const unsubscribe = db.collection('chats')
+    const unsubscribe = db.collection(`room: ${currentMatch.matchId}`)
     .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => setMessageList(
       snapshot.docs.map(doc => ({
@@ -27,7 +27,7 @@ export default function Chat ({ toggleChat }) {
   const onSend = useCallback((messageList = []) => {
       setMessageList(previousMessages => GiftedChat.append(previousMessages, messageList))
       const { _id, createdAt, text, user } = messageList[0]
-      db.collection('chats').add({_id, createdAt, text, user})
+      db.collection(`room: ${currentMatch.matchId}`).add({_id, createdAt, text, user})
     }, []);
 
   const renderBubble = (props) => {
@@ -36,10 +36,10 @@ export default function Chat ({ toggleChat }) {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#cdb4db',
+            backgroundColor: '#A63CA3',
           },
           left: {
-            backgroundColor: '#FFAFCC',
+            backgroundColor: '#FF80AE',
           },
         }}
         textStyle={{
@@ -73,7 +73,7 @@ export default function Chat ({ toggleChat }) {
       <Send {...props}
         containerStyle={{ borderWidth: 0 }}>
         <View style={styles.sendingContainer}>
-          <IconButton icon="send-circle" size={32} color="#cdb4db" />
+          <IconButton icon="send-circle" size={32} color="#A63CA3" />
         </View>
       </Send>
     );
@@ -87,9 +87,9 @@ export default function Chat ({ toggleChat }) {
           <Image
             rounded
             style={styles.profileImg}
-            source={{uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-white-dog-breeds-cover-1560293099.jpg'}}
+            source={{uri: currentMatch.matchedPhoto}}
           />
-          <Text style={{fontSize: 10}}>Mochi</Text>
+          <Text style={{fontSize: 10}}>{currentMatch.matchedDog}</Text>
         </View>
       </View>
       <GiftedChat
@@ -97,9 +97,9 @@ export default function Chat ({ toggleChat }) {
         messages={messageList}
         onSend={message => onSend(message)}
         user={{
-          _id: 1,
-          name: 'Matt',
-          avatar: 'https://placeimg.com/140/140/any'
+          _id: currentMatch.userId,
+          name: currentMatch.dogName,
+          avatar: currentMatch.userPhoto,
         }}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
