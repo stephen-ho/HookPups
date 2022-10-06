@@ -4,6 +4,7 @@ import styles from './styles.js';
 import { Overlay, ListItem, Avatar } from '@rneui/themed'
 import { Button } from '@rneui/base';
 import { useState } from 'react';
+import axios from 'axios';
 import moment from 'moment';
 
 const EventPanel = (props) => {
@@ -14,23 +15,24 @@ const EventPanel = (props) => {
   }
 
   const handleDelete = () => {
-    console.log('Deleted placeholder')
     setShowDelete(!showDelete);
-    //delete from here
-    //"/events/:owner1_name/:dog1_name/:owner2_name/:dog2_name"
 
-    //retrieve events for this day after deletion
+    axios.delete(`http://54.219.129.63:3000/events/${props.event.event_id}`)
+    .then(() => {
+      console.log('FIRST DELETE SUCCESS')
+      return props.fetchEvents();
+    })
+    .catch((err) => console.log(err));
   }
 
   return (
     <>
       <ListItem bottomDivider containerStyle={styles.eventPanel}>
-        <Avatar rounded source={{ uri: props.event.recipient.dog.photo }}/>
+        <Avatar rounded source={{ uri: props.event.photos[0] }}/>
         <ListItem.Content style={{flex: 5}}>
-            <ListItem.Title>{props.event.recipient.dog.name}</ListItem.Title>
-            {/* <ListItem.Subtitle>{moment(props.event.date).format('LT')}</ListItem.Subtitle> */}
-            <ListItem.Subtitle>12:00 PM</ListItem.Subtitle>
-            <ListItem.Subtitle>{props.event.event}</ListItem.Subtitle>
+            <ListItem.Title>{props.event.dog_name}</ListItem.Title>
+            <ListItem.Subtitle>{moment(props.event.date).format('LT')}</ListItem.Subtitle>
+            <ListItem.Subtitle>{props.event.event_name}</ListItem.Subtitle>
             <ListItem.Subtitle>{props.event.location}</ListItem.Subtitle>
         </ListItem.Content>
         <ListItem.Content>
