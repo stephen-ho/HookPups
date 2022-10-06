@@ -16,7 +16,7 @@ const UploadImages = ({ images, addImage }) => {
       }
       <View style={imageUploaderStyles.uploadBtnContainer}>
         <TouchableOpacity onPress={addPhoto} style={imageUploaderStyles.uploadBtn} >
-          <Text style={imageUploaderStyles.text}>{images.length !== 0 ? 'Add More' : 'Upload Image'}</Text>
+          <Text style={imageUploaderStyles.text}>{images.length !== 0 ? 'Add More' : 'Upload'} Images</Text>
           <AntDesign name="camera" size={20} color="black" />
         </TouchableOpacity>
       </View>
@@ -34,7 +34,8 @@ const imageUploaderStyles=StyleSheet.create({
         backgroundColor:'#efefef',
         // backgroundColor:'#FFC8DD',
         position:'relative',
-        borderRadius:999,
+        // borderRadius:999,
+        borderRadius: 20,
         overflow:'hidden',
         marginBottom: 25
     },
