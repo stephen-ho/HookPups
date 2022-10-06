@@ -238,12 +238,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   cardContainer: {
     width: '92%',
     height: '75%',
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#d9edff'
   },
   card: {
     width: '100%',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, SafeAreaView } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
 import Chat from '../../chat/Chat.js';
@@ -57,12 +57,12 @@ const Request = (props) => {
   }
 
   useEffect(() => {
-    axios.get('http://54.219.129.63:3000/matches/Justin/Max/pending')
-      .then((response) => { setPending(response.data) })
+    axios.get('http://54.219.129.63:3000/matches/Tina/Peanut/pending')
+      .then((response) => { console.log('Getting pending: ', response.data); setPending(response.data) })
       .catch((err) => {console.log('Error getting pending matches')})
 
     axios.get('http://54.219.129.63:3000/matches/Justin/Max/confirmed')
-    .then((response) => { console.log(response.data); setAccepted(response.data)} )
+    .then((response) => { setAccepted(response.data)} )
     .catch((err) => {console.log('Error getting confirmed matches')})
   }, [])
 
@@ -73,70 +73,70 @@ const Request = (props) => {
   }
 
   return (
-    <>
-    {isChat ? <Chat toggleChat={toggleChat} /> :
-    <View style={styles.requestContainer}>
-      <Tab
-        value={index}
-        onChange={(e) => setIndex(e)}
-        indicatorStyle={{
-          backgroundColor: '#CDB4DB',
-          height: 3,
-        }}
-        variant="primary"
-      >
-        <Tab.Item
-          containerStyle={(active) => ({
-            backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
-          })}
-        > Matches </Tab.Item>
-        <Tab.Item
-          containerStyle={(active) => ({
-            backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
-          })}
-        >Accepted</Tab.Item>
-      </Tab>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#d9edff'}}>
+      {isChat ? <Chat toggleChat={toggleChat} /> :
+      <View style={styles.requestContainer}>
+        <Tab
+          value={index}
+          onChange={(e) => setIndex(e)}
+          indicatorStyle={{
+            backgroundColor: '#CDB4DB',
+            height: 3,
+          }}
+          variant="primary"
+        >
+          <Tab.Item
+            containerStyle={(active) => ({
+              backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
+            })}
+          > Matches </Tab.Item>
+          <Tab.Item
+            containerStyle={(active) => ({
+              backgroundColor: active ? '#FFAFCC' : '#FFC8DD',
+            })}
+          >Accepted</Tab.Item>
+        </Tab>
 
-      <TabView value={index} onChange={setIndex} animationType='spring'>
-        <TabView.Item style={styles.tabView}>
+        <TabView value={index} onChange={setIndex} animationType='spring'>
+          <TabView.Item style={styles.tabView}>
+            <FlatList
+              data={pending}
+              renderItem={({item}) => (
+                <ListItem bottomDivider>
+                  <Avatar rounded source={{uri: item.photos[0]}} size={60} />
+                  <ListItem.Content>
+                    <ListItem.Title style={styles.name}>{item.dog_name}</ListItem.Title>
+                    <ListItem.Subtitle>{item.breed}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{item.personality}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <View style={styles.buttons}>
+                    <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {alert('Declined')}}/>
+                    <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={confirmMatch}/>
+                  </View>
+                </ListItem>
+              )}
+            />
+          </TabView.Item >
+
+          <TabView.Item style={styles.tabView}>
           <FlatList
-            data={pending}
-            renderItem={({item}) => (
-              <ListItem bottomDivider>
-                <Avatar rounded source={{uri: item.photos[0]}} size={60} />
-                <ListItem.Content>
-                  <ListItem.Title style={styles.name}>{item.dog_name}</ListItem.Title>
-                  <ListItem.Subtitle>{item.breed}</ListItem.Subtitle>
-                  <ListItem.Subtitle>{item.personality}</ListItem.Subtitle>
-                  <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
-                </ListItem.Content>
-                <View style={styles.buttons}>
-                  <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {alert('Declined')}}/>
-                  <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={confirmMatch}/>
-                </View>
-              </ListItem>
-            )}
-          />
-        </TabView.Item >
-
-        <TabView.Item style={styles.tabView}>
-        <FlatList
-            data={matched}
-            renderItem={({item}) => (
-              <ListItem bottomDivider>
-                <Avatar rounded source={{uri: item.avatar}} size={60} />
-                <ListItem.Content>
-                  <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
-                  <ListItem.Subtitle onPress={() =>{toggleChat()}}>{item.message}</ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            )}
-          />
-        </TabView.Item>
-      </TabView>
-    </View>
-    }
-    </>
+              data={matched}
+              renderItem={({item}) => (
+                <ListItem bottomDivider>
+                  <Avatar rounded source={{uri: item.avatar}} size={60} />
+                  <ListItem.Content>
+                    <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
+                    <ListItem.Subtitle onPress={() =>{toggleChat()}}>{item.message}</ListItem.Subtitle>
+                  </ListItem.Content>
+                </ListItem>
+              )}
+            />
+          </TabView.Item>
+        </TabView>
+      </View>
+      }
+    </SafeAreaView>
   )
 }
 
