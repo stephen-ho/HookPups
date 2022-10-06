@@ -74,19 +74,19 @@ const EventMain = (props) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#bde0fe'}}>
-    <View style={styles.phone}>
-      {!showPage && <EventCalendar
-        selectedDates={selectedDates}
-        handleDayPress={handleDayPress}
-        currentUser={currentUser}
-      />}
-      {showPage && <EventPage
-        events={dayEvents}
-        handleBackPress={handleBackPress}
-        selectedDay={selectedDay}
-        currentUser={currentUser}
-      />}
-    </View>
+      <View style={styles.phone}>
+        {!showPage && <EventCalendar
+          selectedDates={selectedDates}
+          handleDayPress={handleDayPress}
+          currentUser={currentUser}
+        />}
+        {showPage && <EventPage
+          events={dayEvents}
+          handleBackPress={handleBackPress}
+          selectedDay={selectedDay}
+          currentUser={currentUser}
+        />}
+      </View>
     </SafeAreaView>
   )
 };
