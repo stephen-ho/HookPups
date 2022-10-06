@@ -6,22 +6,36 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe, {CardsSwipeRefObject} from 'react-native-cards-swipe';
 import { useRoute } from '@react-navigation/native';
+import CustomDropdownMenu from '../Profiles/CustomDropdownMenu.js';
+import dogBreed from '../../assets/data/dogBreed.js'
+const _ = require('lodash');
 
 export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [menuModalVisible, setMenuModalVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState({});
   const [visible, setIsVisible] = useState(true);
   const [images, setImages] = useState([]);
   const width = Dimensions.get('window').width;
   const [dogs, setDogs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [personality, setPersonality ] = useState('');
+  const [breed, setBreed] = useState('');
+  const [breedSelection, setBreedSelection] = useState([]);
+  const [size, setSize] = useState('');
 
   const swiper = useRef(null);
 
   // console.log('what is in card swip: ', props.route.params);
+  const sizeSelection = ['Tiny', 'Small', 'Medium', 'Large', 'Huge'];
+  const personalitySelection = ['Adaptable', 'Aggressive', 'Calm', 'Confident', 'Independent', 'Insecure', 'Mild', 'Outgoing'];
 
   const owner_name = props.route.params.user;
   const dogName = props.route.params.dog.dog_name;
+  // const personality = 'Calm';
+  // const breed = 'French Bulldog';
+  const params = { personality: personality, breed: breed, size: size }
+
 
   const currentUser = {
     "dog_id": 4,
@@ -42,8 +56,18 @@ export default function CardSwipe (props) {
     "address": "undefined"
   };
 
+  // async function fetchData () {
+  //   const results = await axios.get(`http://54.219.129.63:3000/description/unmatched/${owner_name}/${dogName}`)
+  //   await setDogs(results.data);
+  //   setLoading(false);
+  // }
+
   async function fetchData () {
-    const results = await axios.get(`http://54.219.129.63:3000/description/unmatched/${owner_name}/${dogName}`)
+    const results = await axios({
+      method: 'get',
+      url: `http://54.219.129.63:3000/description/unmatched/${owner_name}/${dogName}`,
+      params: params
+    })
     await setDogs(results.data);
     setLoading(false);
   }
@@ -51,6 +75,18 @@ export default function CardSwipe (props) {
   useEffect(() => {
     setLoading(true);
     fetchData();
+
+    for (let key in dogBreed) {
+      if (dogBreed[key].length === 0) {
+        setBreedSelection((list) => ( [...list, _.capitalize(key)] ))
+      } else {
+        dogBreed[key].forEach((type) => {
+          setBreedSelection((list) => (
+            [...list, `${_.capitalize(type)} ${_.capitalize(key)}`]
+          ))
+          });
+      }
+    }
   }, [])
 
   _renderItem = ({item, index}) => {
@@ -82,6 +118,27 @@ export default function CardSwipe (props) {
     setCurrentCard(card);
   };
 
+  function handleMenuPress () {
+    setMenuModalVisible(true);
+  }
+
+  async function handleCloseMenu () {
+    setMenuModalVisible(!menuModalVisible);
+    setLoading(true);
+    await fetchData();
+    setLoading(false);
+  }
+
+  async function handleResetFilters () {
+    await setBreed('');
+    await setPersonality('');
+    await setSize('');
+    setLoading(true);
+    setMenuModalVisible(!menuModalVisible);
+    await fetchData();
+    setLoading(false);
+  }
+
 if (isLoading === true) {
   return (
     <>
@@ -95,20 +152,76 @@ if (isLoading === false && dogs.length !== 0) {
   return (
     <>
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={menuModalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setMenuModalVisible(!menuModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.menuModalView}>
+
+            <Text style={styles.menuModalText}>Filter Results by Preferences</Text>
+            <CustomDropdownMenu
+              data={breedSelection}
+              defaultButtonText={'Breed'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setBreed(selectedItem);
+              }}
+            />
+            <CustomDropdownMenu
+              data={personalitySelection}
+              defaultButtonText={'Personality'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setPersonality(selectedItem);
+              }}
+            />
+            <CustomDropdownMenu
+              data={sizeSelection}
+              defaultButtonText={'Size'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setSize(selectedItem);
+              }}
+            />
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleCloseMenu}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleResetFilters}
+            >
+              <Text style={styles.textStyle}>Reset Filters</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <CardsSwipe
         ref={swiper}
         cards={dogs}
         cardContainerStyle={styles.cardContainer}
         onSwipedRight={handleRight}
         renderCard={(card) => (
-          <View style={styles.card}>
-            <Text style={styles.h1} onPress={() => handlePress(card)}>{card.dog_name}</Text>
-            <Image
-              style={styles.cardImg}
-              source={{ uri: card.photos[0] }}
-            />
-          </View>
-        )}
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.h1} onPress={() => handlePress(card)}>{card.dog_name}</Text>
+                <Feather style={styles.headerMenu} name="menu" size={30} color="black" onPress={handleMenuPress}/>
+              </View>
+              <Image
+                style={styles.cardImg}
+                source={{ uri: card.photos[0] }}
+              />
+            </View>
+          )
+        }
       />
       <View style={styles.icons}>
 
@@ -183,13 +296,14 @@ if (isLoading === false && dogs.length !== 0) {
     </View>
     </>
   );
-  }
+  } else {
   return (
     <View style={styles.errorScreen}>
       <Image source={{ uri: 'https://brokeassstuart.com/wp-content/pictsnShit/2014/08/Sad-Dog-Cute-Broke-Ass-Stuart-NYC-1200x800.jpg' }} style={styles.errImg}/>
       <Text style={styles.errText}>Sorry, we can't find any unmatched dogs in your area</Text>
     </View>
   )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -212,10 +326,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#d9edff'
   },
+  menuIcon: {
+    position: 'relative',
+    top: 50,
+  },
   cardContainer: {
     width: '92%',
     height: '75%',
     backgroundColor: '#d9edff'
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  headerMenu: {
+    padding: 10,
   },
   card: {
     width: '100%',
@@ -258,11 +384,36 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5
   },
+  menuModalView: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    height: '55%',
+    width: '100%',
+    margin: 0,
+    backgroundColor: "#FFC8DD",
+    padding: 30,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -10
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 5
+  },
+  menuModalText: {
+    paddingBottom: 15,
+    fontSize: 20,
+    fontWeight: '500',
+  },
   button: {
     borderRadius: 15,
-    padding: 10,
+    padding: 20,
     elevation: 2,
-    margin: 20,
+    margin: 5,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",

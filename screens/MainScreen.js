@@ -107,19 +107,19 @@ if (isLoading === true) {
         options={{ tabBarIcon: renderProfile, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />
     </Tab.Navigator>
-    <View style={styles.adBar}>
+    {/* <View style={styles.adBar}>
       <Text>AD GOES HERE</Text>
-    </View>
+    </View> */}
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  adBar: {
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'center'
-  }
-})
+// const styles = StyleSheet.create({
+//   adBar: {
+//     padding: 20,
+//     flexDirection: 'row',
+//     justifyContent: 'center'
+//   }
+// })
 
 export default MainScreen;
