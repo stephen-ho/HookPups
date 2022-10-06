@@ -19,7 +19,7 @@ export default function CardSwipe (props) {
   const swiper = useRef(null);
   // const [currentUser, setCurrentUser] = useState({});
 
-  console.log('what is in card swip: ', props.route.params);
+  console.log('what is in card swip: ', props.route);
 
   const owner_name = props.route.params.user;
   const dogName = props.route.params.dog.dog_name;

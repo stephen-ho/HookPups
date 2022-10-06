@@ -11,10 +11,9 @@ import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@exp
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen = () => {
-
+const MainScreen = (props) => {
   const route = useRoute();
-  const owner_name = route.params.email;
+  const owner_name = route.params.user;
   const [dogInfo, setDogInfo] = useState({});
   const [isLoading, setLoading] = useState(true);
 

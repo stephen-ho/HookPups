@@ -78,15 +78,15 @@ const DogProfileInputScreen = () => {
       zipcode: Number(zipcode),
       photos: images
     }
-    console.log('what was enter: ', info);
+    // console.log('what was enter: ', info);
 
-    // axios request to post data
-    axios.post(`${urlLink}/description`, { info })
+    axios.post(`${urlLink}/description`, info)
       .then(( result ) => {
-        console.log('what was received when creating a dog profile: ', result);
-        navigation.navigate('MainScreen', { dog_name });
+        // console.log('what was received when creating a dog profile: ', result.data);
+        // console.log('after submitting request: ', info);
+        navigation.navigate('MainScreen', { user: info.owner_name });
       })
-      .catch((err) => constole.log('error in adding dog: ', err) );
+      .catch((err) => console.log('error in adding dog: ', err) );
   }
 
   return (

@@ -32,7 +32,7 @@ const SignInScreen = () => {
         console.log(res);
         //navigate to main screen
         // setIsSignedIn(true);
-        navigation.navigate('MainScreen', { email });
+        navigation.navigate('MainScreen', { user: email });
         // navigation.navigate('ProfileInputScreen');
       })
       .catch((error) => {
