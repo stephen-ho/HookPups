@@ -11,7 +11,7 @@ export default function Chat ({ toggleChat, currentMatch }) {
   const [text, setText] = useState('')
 
   useLayoutEffect(() => {
-    const unsubscribe = db.collection('otherChats')
+    const unsubscribe = db.collection(`room: ${currentMatch.matchId}`)
     .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => setMessageList(
       snapshot.docs.map(doc => ({
@@ -27,7 +27,7 @@ export default function Chat ({ toggleChat, currentMatch }) {
   const onSend = useCallback((messageList = []) => {
       setMessageList(previousMessages => GiftedChat.append(previousMessages, messageList))
       const { _id, createdAt, text, user } = messageList[0]
-      db.collection('otherChats').add({_id, createdAt, text, user})
+      db.collection(`room: ${currentMatch.matchId}`).add({_id, createdAt, text, user})
     }, []);
 
   const renderBubble = (props) => {
@@ -79,10 +79,6 @@ export default function Chat ({ toggleChat, currentMatch }) {
     );
   }
 
-  useEffect(() => {
-    console.log('--------CURRENT MATCH-------', currentMatch)
-  }, [])
-
   return (
     <>
       <View style={styles.banner}>
@@ -91,9 +87,9 @@ export default function Chat ({ toggleChat, currentMatch }) {
           <Image
             rounded
             style={styles.profileImg}
-            source={{uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-white-dog-breeds-cover-1560293099.jpg'}}
+            source={{uri: currentMatch.matchedPhoto}}
           />
-          <Text style={{fontSize: 10}}>Mochi</Text>
+          <Text style={{fontSize: 10}}>{currentMatch.matchedDog}</Text>
         </View>
       </View>
       <GiftedChat
@@ -101,9 +97,9 @@ export default function Chat ({ toggleChat, currentMatch }) {
         messages={messageList}
         onSend={message => onSend(message)}
         user={{
-          _id: 2,
-          name: 'Not Matt',
-          avatar: 'https://placeimg.com/140/140/any'
+          _id: currentMatch.userId,
+          name: currentMatch.dogName,
+          avatar: currentMatch.userPhoto,
         }}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
