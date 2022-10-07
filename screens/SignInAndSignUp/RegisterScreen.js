@@ -30,11 +30,13 @@ const RegisterScreen = () => {
           navigation.navigate('ProfileInput', { email })
         })
         .catch((error) => {
-          setErrorCode(error.code);
-          setErrorModal(!errorModal);
+          alert(error.code);
+          // setErrorCode(error.code);
+          // setErrorModal(!errorModal);
         });
     } else {
-      setRegModal(!regModal);
+      alert("Please double check your email and password!")
+      // setRegModal(!regModal);
     }
   }
 

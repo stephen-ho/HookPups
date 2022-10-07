@@ -36,8 +36,9 @@ const SignInScreen = () => {
         navigation.navigate('MainScreen', { user: email });
       })
       .catch((error) => {
-        setErrorCode(error.code); // OR error.message
-        setModalVisible(!modalVisible);
+        alert(error.code);
+        // setErrorCode(error.code); // OR error.message
+        // setModalVisible(!modalVisible);
       });
   }
 
