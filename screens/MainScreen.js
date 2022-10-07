@@ -74,13 +74,7 @@ if (isLoading === true) {
 }
   return (
     <>
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Tab.Screen
-        name="Map"
-        component={CardSwipe}
-        initialParams={{ user: owner_name, dog: dogInfo }}
-        options={{ tabBarIcon: renderMap, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
-      /> */}
+    <Tab.Navigator style={styles.navBar} screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
         component={CardSwipe}
@@ -106,19 +100,19 @@ if (isLoading === true) {
         options={{ tabBarIcon: renderProfile, tabBarActiveTintColor: 'black', tabBarActiveBackgroundColor: '#CDB4DB' }}
       />
     </Tab.Navigator>
-    {/* <View style={styles.adBar}>
-      <Text>AD GOES HERE</Text>
-    </View> */}
     </>
   );
 }
 
-// const styles = StyleSheet.create({
-//   adBar: {
-//     padding: 20,
-//     flexDirection: 'row',
-//     justifyContent: 'center'
-//   }
-// })
+const styles = StyleSheet.create({
+  navBar: {
+    borderRadius: 20,
+  },
+  // adBar: {
+  //   padding: 20,
+  //   flexDirection: 'row',
+  //   justifyContent: 'center'
+  // }
+})
 
 export default MainScreen;

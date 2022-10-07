@@ -3,7 +3,7 @@ import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const UploadImages = ({ images, addImage }) => {
+const UploadImages = ({ images, addImage, style }) => {
 
   const addPhoto = () => {
     addImage();

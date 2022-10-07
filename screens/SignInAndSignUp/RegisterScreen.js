@@ -78,7 +78,7 @@ const RegisterScreen = () => {
         onPress={onRegisterPressed}
       />
 
-      <SocialSignInButtons />
+      {/* <SocialSignInButtons /> */}
 
       <CustomButton
         text="Have an account? Sign in"
