@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button } from '@rneui/base';
 import { Overlay, Avatar, ListItem } from '@rneui/themed';
 import axios from 'axios';
+import moment from 'moment';
 import EventMatchedInput from './EventMatchedInput.js';
 import matchedDogsData from './matchedDogsTestData.js';
 
@@ -25,10 +26,7 @@ const EventInput = (props) => {
   }, [])
 
   const fetchMatchedDogs = async () => {
-    // console.log('USER ', props.currentUser);
-    // console.log('DOG ', props.currentDog.dog_name);
     const results = await axios.get(`http://54.219.129.63:3000/matches/${props.currentUser}/${props.currentDog.dog_name}/confirmed`);
-    console.log('DATA ', results.data);
     setMatchedDogs(results.data);
   }
 
@@ -43,7 +41,6 @@ const EventInput = (props) => {
     if (location.length < 1) {
       errors.push(`Location\n`);
     }
-    // Is validating date also possible?
     if (errors.length > 0) {
       errors[errors.length - 1] = errors[errors.length - 1].replace('\n', '');
       const errorMessages = errors.join('');
@@ -80,10 +77,20 @@ const EventInput = (props) => {
       date: date,
       location: location,
     };
-    console.log(data);
+
     axios.post(`http://54.219.129.63:3000/events`, data)
     .then(() => {
       return props.fetchEvents();
+    })
+    .then(() => {
+      if (props.getDayEvents) {
+        let dateString = moment(date).format('YYYY-MM-DD');
+        let year = parseInt(moment(date).format('YYYY'));
+        let month = parseInt(moment(date).format('MM'));
+        let day = parseInt(moment(date).format('DD'));
+        return props.getDayEvents({ dateString: dateString, year: year, month: month, day: day })
+      }
+      return;
     })
     .then(() => {
       props.handleShow();
@@ -91,22 +98,22 @@ const EventInput = (props) => {
     })
     .catch((err) => {
       setSubmitting(false);
-    })
+    });
   };
 
   const handleDateChange = (e, date) => {
     setDate(date);
-  }
+  };
 
   const handleOpenChooser = () => {
     setOpenChooser(!openChooser);
-  }
+  };
 
   const handleSelect = (dog) => {
     setSelected(true);
     setSelectedDog(dog);
     setOpenChooser(!openChooser);
-  }
+  };
 
   return (
     <>
