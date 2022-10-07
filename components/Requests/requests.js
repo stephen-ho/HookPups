@@ -87,10 +87,10 @@ const Request = (props) => {
   }
 
   const declineMatch = (matchInfo) => {
-    const match = {data: {
+    const match = {
       "dog2_name": matchInfo.dog_name,
       "owner2_name": matchInfo.owner_name
-    }}
+    }
 
     axios.delete(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}`, match)
       .then(() => {
@@ -157,21 +157,20 @@ const Request = (props) => {
             <FlatList
                 data={standard}
                 renderItem={({item}) => (
-                  <ListItem bottomDivider>
+                  <ListItem bottomDivider onPress={() => {
+                    setCurrentMatch({
+                      matchId: item.match_id,
+                      userId: item.dog1_id,
+                      dogName: dogName,
+                      userPhoto: userPhoto,
+                      matchedDog: item.dog2_dog,
+                      matchedPhoto: item.dog2_photos[0]
+                    }); toggleChat();
+                  }}>
                     <Avatar rounded source={{uri: item.dog2_photos[0]}} size={60} />
                     <ListItem.Content>
                       <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
-                      <ListItem.Subtitle onPress={() => {
-                        setCurrentMatch({
-                          matchId: item.match_id,
-                          userId: item.dog1_id,
-                          dogName: dogName,
-                          userPhoto: userPhoto,
-                          matchedDog: item.dog2_dog,
-                          matchedPhoto: item.dog2_photos[0]
-                        }); toggleChat();
-                      }}
-                      >Test message
+                      <ListItem.Subtitle>Test message
                       </ListItem.Subtitle>
                     </ListItem.Content>
                   </ListItem>
