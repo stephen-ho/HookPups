@@ -112,7 +112,7 @@ const ProfileScreen = (props) => {
         width={width}
         autoPlay={true}
         data={photos}
-        scrollAnimationDuration={1000}
+        scrollAnimationDuration={3000}
         // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({ item }) => {
           return (
@@ -257,12 +257,19 @@ const styles = StyleSheet.create({
     color: '#716F81',
     fontWeight: 'bold',
     fontSize: 25,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   imageContainer: {
     width: '100%',
     height: '35%',
     marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   image: {
     width: '100%',
@@ -287,11 +294,18 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   bioBoxContainer: {
-    height: 140,
+    height: 110,
     width: '65%',
     backgroundColor: '#EEF1FF',
     marginBottom: 20,
-    borderRadius: 10
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   bioTitleBox: {
     height: 30,
