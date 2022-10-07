@@ -7,9 +7,8 @@ import { Button } from '@rneui/base';
 import { Overlay, Avatar, ListItem } from '@rneui/themed';
 import axios from 'axios';
 import moment from 'moment';
+import { AntDesign } from '@expo/vector-icons';
 import EventMatchedInput from './EventMatchedInput.js';
-import matchedDogsData from './matchedDogsTestData.js';
-
 
 const EventInput = (props) => {
   const [date, setDate] = useState(props.date);
@@ -27,7 +26,39 @@ const EventInput = (props) => {
 
   const fetchMatchedDogs = async () => {
     const results = await axios.get(`http://54.219.129.63:3000/matches/${props.currentUser}/${props.currentDog.dog_name}/confirmed`);
-    setMatchedDogs(results.data);
+    // setMatchedDogs(results.data);
+    filter(results.data);
+  }
+
+  const filter = (matched) => {
+    let tempStandard = [];
+    for (let i = 0; i < matched.length; i++) {
+      if (matched[i].dog1_owner === props.currentUser) {
+        // setStandard((standard) => [...standard, accepted[i]])
+        tempStandard = [...tempStandard, matched[i]];
+      } else {
+        const restructure = {'match_id': matched[i].match_id};
+
+        const temp1 = matched[i].dog1_id;
+        const temp2 = matched[i].dog1_dog;
+        const temp3 = matched[i].dog1_owner;
+        const temp4 = matched[i].dog1_photos;
+        const temp5 = matched[i].dog1_owner_display_name
+        restructure['dog1_id'] = matched[i].dog2_id;
+        restructure['dog2_id'] = temp1;
+        restructure['dog1_dog'] = matched[i].dog2_dog;
+        restructure['dog2_dog'] = temp2;
+        restructure['dog1_owner'] = matched[i].dog2_owner;
+        restructure['dog2_owner'] = temp3;
+        restructure['dog1_photos'] = matched[i].dog2_photos;
+        restructure['dog2_photos'] = temp4;
+        restructure['dog1_owner_display_name'] = matched[i].dog2_owner_display_name;
+        restructure['dog2_owner_display_name'] = temp5;
+        // setStandard((standard) => [...standard, restructure]);
+        tempStandard = [...tempStandard, restructure];
+      }
+    }
+    setMatchedDogs(tempStandard);
   }
 
   const validateInfo = () => {
@@ -71,8 +102,8 @@ const EventInput = (props) => {
     const data = {
       dog1_name: props.currentDog.dog_name,
       owner1_name: props.currentUser,
-      dog2_name: selectedDog.dog1_dog,
-      owner2_name: selectedDog.dog1_owner,
+      dog2_name: selectedDog.dog2_dog,
+      owner2_name: selectedDog.dog2_owner,
       event_name: event,
       date: date,
       location: location,
@@ -117,8 +148,12 @@ const EventInput = (props) => {
 
   return (
     <>
-      <Button title='Close' onPress={props.handleShow}></Button>
-      <View style={{alignItems: 'center'}}>
+      <View style={styles.header}>
+        <AntDesign name="caretleft" size={24} color="black" style={styles.headerBack} onPress={props.handleShow}/>
+        <Text style={styles.headerText}>Events</Text>
+      </View>
+      {/* <Button style={styles.buttons} title='Close' onPress={props.handleShow}></Button> */}
+      <View style={{ alignItems: 'center', marginTop: 10 }}>
         {!selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
             <Avatar rounded source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
@@ -129,10 +164,10 @@ const EventInput = (props) => {
         }
         {selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar rounded source={{uri: selectedDog.dog1_photos[0]}}/>
+            <Avatar rounded source={{uri: selectedDog.dog2_photos[0]}}/>
             <ListItem.Content>
-              <ListItem.Title>Dog: {selectedDog.dog1_dog}</ListItem.Title>
-              <ListItem.Subtitle>Owner: {selectedDog.dog1_owner_display_name}</ListItem.Subtitle>
+              <ListItem.Title>Dog: {selectedDog.dog2_dog}</ListItem.Title>
+              <ListItem.Subtitle>Owner: {selectedDog.dog2_owner_display_name}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         }

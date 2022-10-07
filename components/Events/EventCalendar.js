@@ -21,6 +21,10 @@ const EventCalendar = (props) => {
 
   return (
     <>
+      {!showInput && <View style={styles.header}>
+        <Text style={styles.headerText}>Events</Text>
+      </View>
+      }
       <View>
         {!showInput && <Calendar
           style={styles.calendar}
