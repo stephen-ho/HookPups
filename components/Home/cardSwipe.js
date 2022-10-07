@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback, TouchableOpacity, RefreshControl, ScrollView } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
@@ -24,6 +24,7 @@ export default function CardSwipe (props) {
   const [breed, setBreed] = useState('');
   const [breedSelection, setBreedSelection] = useState([]);
   const [size, setSize] = useState('');
+  const [refreshing, setrefreshing] = useState(false);
 
   const swiper = useRef(null);
 
@@ -36,6 +37,12 @@ export default function CardSwipe (props) {
   // const personality = 'Calm';
   // const breed = 'French Bulldog';
   const params = { personality: personality, breed: breed, size: size }
+
+  const onRefresh = () => {
+    setrefreshing(true);
+    fetchData();
+    setrefreshing(false);
+  };
 
 
   const currentUser = {
@@ -316,10 +323,72 @@ if (isLoading === false && dogs.length !== 0) {
   );
   } else {
   return (
-    <View style={styles.errorScreen}>
+
+    <ScrollView
+      contentContainerStyle={styles.errorScreen}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+    >
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={menuModalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setMenuModalVisible(!menuModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.menuModalView}>
+
+            <Text style={styles.menuModalText}>Filter Results by Preferences</Text>
+            <CustomDropdownMenu
+              data={breedSelection}
+              defaultButtonText={'Breed'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setBreed(selectedItem);
+              }}
+            />
+            <CustomDropdownMenu
+              data={personalitySelection}
+              defaultButtonText={'Personality'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setPersonality(selectedItem);
+              }}
+            />
+            <CustomDropdownMenu
+              data={sizeSelection}
+              defaultButtonText={'Size'}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+                return setSize(selectedItem);
+              }}
+            />
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleCloseMenu}
+            >
+              <Text style={styles.textStyle}>Apply</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleResetFilters}
+            >
+              <Text style={styles.textStyle}>Reset Filters</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Ionicons style={styles.headerMenu} name="ios-options" size={40} color="black" onPress={handleMenuPress}/>
       <Image source={{ uri: 'https://brokeassstuart.com/wp-content/pictsnShit/2014/08/Sad-Dog-Cute-Broke-Ass-Stuart-NYC-1200x800.jpg' }} style={styles.errImg}/>
       <Text style={styles.errText}>Sorry, we can't find any unmatched dogs in your area</Text>
-    </View>
+      </ScrollView>
   )
   }
 }
