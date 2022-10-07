@@ -83,25 +83,26 @@ const Request = (props) => {
   }
 
   const declineMatch = (matchInfo) => {
-    const match = {
-      "dog1_name": dogName,
-      "owner1_name": owner_name,
-      "dog2_name": matchInfo.dog_name,
-      "owner2_name": matchInfo.owner_name
-    }
+    console.log('declining')
+    // const match = {
+    //   "dog1_name": dogName,
+    //   "owner1_name": owner_name,
+    //   "dog2_name": matchInfo.dog_name,
+    //   "owner2_name": matchInfo.owner_name
+    // }
 
-    axios.post('http://54.219.129.63:3000/matches', match)
-      .then(() => {
-        axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/pending`)
-        .then((response) => {
-          setPending(response.data)
-          axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/confirmed`)
-            .then((response) => { filter(response.data); } )
-            .catch((err) => {console.log('Error getting confirmed matches')})
-        })
-        .catch((err) => {console.log('Error getting pending matches after confirming match')})
-      })
-      .catch((err) => {console.log('Error confirming match')})
+    // axios.post('http://54.219.129.63:3000/matches', match)
+    //   .then(() => {
+    //     axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/pending`)
+    //     .then((response) => {
+    //       setPending(response.data)
+    //       axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/confirmed`)
+    //         .then((response) => { filter(response.data); } )
+    //         .catch((err) => {console.log('Error getting confirmed matches')})
+    //     })
+    //     .catch((err) => {console.log('Error getting pending matches after confirming match')})
+    //   })
+    //   .catch((err) => {console.log('Error confirming match')})
   }
 
   if (!isLoading) {
