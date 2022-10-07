@@ -24,16 +24,13 @@ const EventMain = (props) => {
   }, []);
 
   const fetchEvents = async () => {
-    console.log('EVENTS FETCHED')
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
     selectDates(results.data);
   }
 
   const selectDates = (results) => {
-    console.log('CURRENT EVENTS: ', results);
     let tempSelectedDates = {};
     for (let i = 0; i < results.length; i++) {
-      console.log(results[i]);
       let formattedDate = moment(results[i].date).format('YYYY-MM-DD');
       tempSelectedDates[formattedDate] = {selected: true};
     }
@@ -46,15 +43,12 @@ const EventMain = (props) => {
   };
 
   const handleDayPress = async (day) => {
-    console.log('DAY', day)
     let date = day.dateString;
-    console.log('DATE', date);
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
 
     let tempEvents = [];
     for (let i = 0; i < results.data.length; i++) {
       if (moment(results.data[i].date).format('YYYY-MM-DD') === date) {
-        console.log('INDEX: ', i);
         tempEvents.push(results.data[i]);
       }
     }

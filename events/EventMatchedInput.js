@@ -8,8 +8,6 @@ import { Overlay, Avatar, ListItem } from '@rneui/themed';
 import matchedDogsData from './matchedDogsTestData.js';
 
 const EventMatchedInput = ({handleSelect, dog}) => {
-  console.log('DOG ', dog)
-
   const checkPress = () => {
     handleSelect(dog);
   }
