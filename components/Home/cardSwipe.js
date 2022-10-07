@@ -70,7 +70,6 @@ export default function CardSwipe (props) {
       params: params
     })
     await setDogs(results.data);
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -88,6 +87,7 @@ export default function CardSwipe (props) {
           });
       }
     }
+    setLoading(false);
   }, [])
 
   _renderItem = ({item, index}) => {
@@ -106,12 +106,12 @@ export default function CardSwipe (props) {
       owner2_name: dogs[index].owner_name,
     })
     .then((response) => {
-      console.log(response.data);
+      fetchData();
     })
     .catch((err) => {
       console.log(err);
     });
-    fetchData();
+    setLoading(false);
   }
 
   function handlePress (card) {
