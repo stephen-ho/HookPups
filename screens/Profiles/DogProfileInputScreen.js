@@ -65,28 +65,31 @@ const DogProfileInputScreen = () => {
   };
 
   const submitProfile = () => {
-    let info = {
-      owner_name: route.params.email,
-      display_name: display_name,
-      dog_name: dog_name,
-      breed: breed,
-      size: size,
-      age: age,
-      gender: gender,
-      personality: personality,
-      description: description,
-      zipcode: Number(zipcode),
-      photos: images
+    if(!display_name.trim() || !dog_name.trim() || !breed.trim() || !size.trim() || !age.trim() || !gender.trim() || !personality.trim() || !description.trim() || !zipcode.trim()) {
+      alert('All fields are required')
+    } else {
+      let info = {
+        owner_name: route.params.email,
+        display_name: display_name,
+        dog_name: dog_name,
+        breed: breed,
+        size: size,
+        age: age,
+        gender: gender,
+        personality: personality,
+        description: description,
+        zipcode: Number(zipcode),
+        photos: images
+      }
+      // console.log('what was enter: ', info);
+      axios.post(`${urlLink}/description`, info)
+        .then(( result ) => {
+          // console.log('what was received when creating a dog profile: ', result.data);
+          // console.log('after submitting request: ', info);
+          navigation.navigate('MainScreen', { user: info.owner_name });
+        })
+        .catch((err) => console.log('error in adding dog: ', err) );
     }
-    // console.log('what was enter: ', info);
-
-    axios.post(`${urlLink}/description`, info)
-      .then(( result ) => {
-        // console.log('what was received when creating a dog profile: ', result.data);
-        // console.log('after submitting request: ', info);
-        navigation.navigate('MainScreen', { user: info.owner_name });
-      })
-      .catch((err) => console.log('error in adding dog: ', err) );
   }
 
   return (
@@ -208,6 +211,8 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 5,
     padding: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
     marginVertical: 5,
     height: 100
   },

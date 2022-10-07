@@ -116,7 +116,7 @@ const ProfileScreen = (props) => {
         // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({ item }) => {
           return (
-              <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
+            <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
           )
         }}
       />
@@ -354,6 +354,8 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 5,
     padding: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
     marginVertical: 5,
     height: 100
   },
