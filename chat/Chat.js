@@ -20,7 +20,7 @@ export default function Chat ({ toggleChat, currentMatch }) {
         text: doc.data().text,
         user: doc.data().user
       }))
-    ))
+    ));
     return unsubscribe;
   }, [])
 
