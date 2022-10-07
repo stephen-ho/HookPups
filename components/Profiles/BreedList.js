@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar, TouchableOpacity } from "react-native";
+import dogBreed from '../../assets/data/dogBreed.js';
 
 // You can import from local files
 // import AssetExample from './components/AssetExample';

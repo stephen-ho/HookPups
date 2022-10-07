@@ -10,7 +10,7 @@ import CustomButton from '../../components/SignIn/CustomButton.js';
 import SocialSignInButtons from '../../components/SignIn/SocialSignInButtons.js';
 import MainScreen from '../MainScreen.js';
 import CustomModal from '../../components/SignIn/CustomModal.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup } from "firebase/auth";
 const config = require('../../config.js');
 
 const SignInScreen = () => {
@@ -19,15 +19,12 @@ const SignInScreen = () => {
   const [errorCode, setErrorCode] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const navigation = useNavigation();
-  // const provider = new GoogleAuthProvider();
+  const [userInfo, setUserInfo] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     webClientId: config.GOOGLE_CLIENT_ID,
-  //     offlineAccess: false,
-  //   });
-  // });
+  const navigation = useNavigation();
+
 
   const onSignInPressed = () => {
 
@@ -49,17 +46,6 @@ const SignInScreen = () => {
   const onCreateAccountPressed = () => {
     navigation.navigate('Register');
   }
-
-  // const logInWithGoogle = () {
-  //   const { idToken } = await GoogleSignin.signIn();
-
-  //   // Create a Google credential with the token
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //   // Sign-in the user with the credential
-  //   const user = await auth().signInWithCredential(googleCredential);
-  //   console.log(user)
-  // }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -88,7 +74,7 @@ const SignInScreen = () => {
           type='EMPTY'
         />
 
-        <SocialSignInButtons />
+        {/* <SocialSignInButtons/> */}
 
         <CustomButton
           text="Don't have an account? Create one"

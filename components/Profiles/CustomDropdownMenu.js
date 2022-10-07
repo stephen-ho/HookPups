@@ -25,6 +25,13 @@ const CustomDropdownMenu = ({ data, defaultButtonText, defaultValue, onSelect })
         dropdownStyle={styles.dropdown1DropdownStyle}
         rowStyle={styles.dropdown1RowStyle}
         rowTextStyle={styles.dropdown1RowTxtStyle}
+        search
+            searchInputStyle={styles.dropdown1searchInputStyleStyle}
+            searchPlaceHolder={'Search here'}
+            searchPlaceHolderColor={'darkgrey'}
+            renderSearchInputLeftIcon={() => {
+              return <FontAwesome name={'search'} color={'#444'} size={16} />;
+            }}
       />
   )
 }
@@ -57,5 +64,11 @@ const styles = StyleSheet.create({
     color: '#716F81',
     textAlign: 'center',
     fontSize: 15
+  },
+  dropdown1searchInputStyleStyle: {
+    backgroundColor: '#EFEFEF',
+    borderRadius: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#444',
   },
 })
