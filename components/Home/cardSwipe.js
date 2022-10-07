@@ -10,6 +10,7 @@ import CustomDropdownMenu from '../Profiles/CustomDropdownMenu.js';
 import dogBreed from '../../assets/data/dogBreed.js'
 const _ = require('lodash');
 import { IOS_BANNER, IOS_APP_ID } from '../../config.js'
+import { useFonts, Peralta_400Regular  } from '@expo-google-fonts/peralta'
 
 export default function CardSwipe (props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -25,6 +26,9 @@ export default function CardSwipe (props) {
   const [breedSelection, setBreedSelection] = useState([]);
   const [size, setSize] = useState('');
   const [refreshing, setrefreshing] = useState(false);
+  let [fontsLoaded] = useFonts({
+    Peralta_400Regular
+  });
 
   const swiper = useRef(null);
 
@@ -155,7 +159,7 @@ if (isLoading === true) {
   )
 }
 
-if (isLoading === false && dogs.length !== 0) {
+if (isLoading === false && dogs.length !== 0 && fontsLoaded) {
 
   return (
     <>
@@ -395,16 +399,24 @@ if (isLoading === false && dogs.length !== 0) {
 const styles = StyleSheet.create({
   h1: {
     fontSize: 35,
+    fontFamily: 'Peralta_400Regular',
   },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 10,
+    paddingTop: 50,
+    paddingBottom: 15,
   },
   icon: {
     paddingHorizontal: 50,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 3.3,
   },
   container: {
     flex: 1,
@@ -434,8 +446,8 @@ const styles = StyleSheet.create({
     height: '100%',
     shadowColor: '#000000',
     shadowOffset: {
-      width: 0,
-      height: 8,
+      width: 5,
+      height: 5,
     },
     shadowOpacity: 0.20,
     shadowRadius: 3.3,
