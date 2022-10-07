@@ -8,18 +8,11 @@ import EventPage from './EventPage.js';
 import eventData from './eventTestData.js';
 import moment from 'moment';
 
-// Owner name is actually the owner's email
-
-/*
-  TODO:
-    Markers for events in calendar already
-      Axios call for all relevant events on component load?
-*/
-
 const EventMain = (props) => {
-  console.log('what is in Event main: ', props.route.params)
+  const [currentUser, setCurrentUser] = useState(props.route.params.user);
+  const [currentDog, setCurrentDog] = useState(props.route.params.dog);
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
-  const [events, setEvents] = useState(eventData); // Store initial axios GET events here
+  const [events, setEvents] = useState([]); // Store initial axios GET events here
   const [selectedDates, setSelectedDates] = useState({}); // Mark calendar with relevant days once GET request done
   const [dayEvents, setDayEvents] = useState([]);  // Store events for the pressed date here
   const [selectedDay, setSelectedDay] = useState({});
@@ -27,38 +20,45 @@ const EventMain = (props) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // fetchEvents();
-    selectDates(); //take out when axios implemented; move to fetchEvents
-    // return function cleanUp() {
-    //   setShowPage(false);
-    // }
+    fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
-    const results = await axios.get('/');
-    //parse results first?
-    setEvents(results);
-    selectDates();
+    console.log('EVENTS FETCHED')
+    const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
+    selectDates(results.data);
   }
 
-  const selectDates = () => {
+  const selectDates = (results) => {
+    console.log('CURRENT EVENTS: ', results);
     let tempSelectedDates = {};
-    for (let i = 0; i < eventData.length; i++) {
-      // let formattedDate = moment(eventData[i].date).format('YYYY-MM-DD');
-      // tempSelectedDates[formattedDate] = {selected: true};
-      tempSelectedDates[eventData[i].date] = {selected: true};
+    for (let i = 0; i < results.length; i++) {
+      console.log(results[i]);
+      let formattedDate = moment(results[i].date).format('YYYY-MM-DD');
+      tempSelectedDates[formattedDate] = {selected: true};
     }
+    setEvents(results);
     setSelectedDates(tempSelectedDates);
   }
 
-  const handleDayPress = (day) => {
+  const sortEvents = (a, b) => {
+    return new Date(a.date) - new Date(b.date);
+  };
+
+  const handleDayPress = async (day) => {
+    console.log('DAY', day)
     let date = day.dateString;
+    console.log('DATE', date);
+    const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
+
     let tempEvents = [];
-    for (let i = 0; i < events.length; i++) {
-      if (events[i].date === date) {
-        tempEvents.push(events[i]);
+    for (let i = 0; i < results.data.length; i++) {
+      if (moment(results.data[i].date).format('YYYY-MM-DD') === date) {
+        console.log('INDEX: ', i);
+        tempEvents.push(results.data[i]);
       }
     }
+    tempEvents = tempEvents.sort(sortEvents);
     setDayEvents(tempEvents);
     setShowPage(true);
     setSelectedDay(new Date(day.year, day.month - 1, day.day, 12));
@@ -71,17 +71,24 @@ const EventMain = (props) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#bde0fe'}}>
-    <View style={styles.phone}>
-      {!showPage && <EventCalendar
-        selectedDates={selectedDates}
-        handleDayPress={handleDayPress}
-      />}
-      {showPage && <EventPage
-        events={dayEvents}
-        handleBackPress={handleBackPress}
-        selectedDay={selectedDay}
-      />}
-    </View>
+      <View style={styles.phone}>
+        {!showPage && <EventCalendar
+          selectedDates={selectedDates}
+          handleDayPress={handleDayPress}
+          currentUser={currentUser}
+          currentDog={currentDog}
+          fetchEvents={fetchEvents}
+        />}
+        {showPage && <EventPage
+          events={dayEvents}
+          handleBackPress={handleBackPress}
+          selectedDay={selectedDay}
+          currentUser={currentUser}
+          currentDog={currentDog}
+          fetchEvents={fetchEvents}
+          getDayEvents={handleDayPress}
+        />}
+      </View>
     </SafeAreaView>
   )
 };

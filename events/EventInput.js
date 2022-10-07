@@ -5,25 +5,29 @@ import { useState, useEffect } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button } from '@rneui/base';
 import { Overlay, Avatar, ListItem } from '@rneui/themed';
-import matchedDogsData from './matchedDogsTestData.js';
+import axios from 'axios';
+import moment from 'moment';
 import EventMatchedInput from './EventMatchedInput.js';
+import matchedDogsData from './matchedDogsTestData.js';
+
 
 const EventInput = (props) => {
   const [date, setDate] = useState(props.date);
   const [event, setEvent] = useState('');
   const [location, setLocation] = useState('');
-  // const [matchedDogs, setMatchedDogs] = useState([]);
-  const [matchedDogs, setMatchedDogs] = useState(matchedDogsData);
+  const [matchedDogs, setMatchedDogs] = useState([]);
   const [selected, setSelected] = useState(false);
   const [selectedDog, setSelectedDog] = useState({}); //contains dog name+id, owner name+id
   const [openChooser, setOpenChooser] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // fetchMatchedDogs();
+    fetchMatchedDogs();
   }, [])
 
   const fetchMatchedDogs = async () => {
-    // const dogs = await axios.get(`/matches`);
+    const results = await axios.get(`http://54.219.129.63:3000/matches/${props.currentUser}/${props.currentDog.dog_name}/confirmed`);
+    setMatchedDogs(results.data);
   }
 
   const validateInfo = () => {
@@ -37,7 +41,6 @@ const EventInput = (props) => {
     if (location.length < 1) {
       errors.push(`Location\n`);
     }
-    // Is validating date also possible?
     if (errors.length > 0) {
       errors[errors.length - 1] = errors[errors.length - 1].replace('\n', '');
       const errorMessages = errors.join('');
@@ -51,41 +54,66 @@ const EventInput = (props) => {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!validateInfo()) {
       return;
     }
+    setSubmitting(true);
 
     // Figure out what exactly to submit
 
-    console.log(details);
+     // dog1_id should be the id of the current user's dog
+    //  dog1_name: props.currentDog.dog_name,
+    //  owner1_name: props.currentUser,
+    //  dog2_name: selectedDog.dog_name,
+    //  owner2_name: selectedDog.owner_name,
+
     const data = {
-      // dog1_id: dog, //should be the id of the current user's dog
-      // dog2_id: dog.dog_id,
+      dog1_name: props.currentDog.dog_name,
+      owner1_name: props.currentUser,
+      dog2_name: selectedDog.dog1_dog,
+      owner2_name: selectedDog.dog1_owner,
       event_name: event,
       date: date,
       location: location,
     };
-    console.log(data);
-    props.handleShow();
-    // await axios.post('/', data);
-  }
+
+    axios.post(`http://54.219.129.63:3000/events`, data)
+    .then(() => {
+      return props.fetchEvents();
+    })
+    .then(() => {
+      if (props.getDayEvents) {
+        let dateString = moment(date).format('YYYY-MM-DD');
+        let year = parseInt(moment(date).format('YYYY'));
+        let month = parseInt(moment(date).format('MM'));
+        let day = parseInt(moment(date).format('DD'));
+        return props.getDayEvents({ dateString: dateString, year: year, month: month, day: day })
+      }
+      return;
+    })
+    .then(() => {
+      props.handleShow();
+      setSubmitting(false);
+    })
+    .catch((err) => {
+      setSubmitting(false);
+    });
+  };
 
   const handleDateChange = (e, date) => {
-    console.log(date);
-    console.log(typeof date);
     setDate(date);
-  }
+  };
 
   const handleOpenChooser = () => {
     setOpenChooser(!openChooser);
-  }
+  };
 
   const handleSelect = (dog) => {
     setSelected(true);
     setSelectedDog(dog);
     setOpenChooser(!openChooser);
-  }
+  };
 
   return (
     <>
@@ -93,7 +121,7 @@ const EventInput = (props) => {
       <View style={{alignItems: 'center'}}>
         {!selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
+            <Avatar rounded source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
             <ListItem.Content>
               <ListItem.Title>Select a dog you've matched with!</ListItem.Title>
             </ListItem.Content>
@@ -101,10 +129,10 @@ const EventInput = (props) => {
         }
         {selected &&
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
-            <Avatar source={{uri: selectedDog.photo}}/>
+            <Avatar rounded source={{uri: selectedDog.dog1_photos[0]}}/>
             <ListItem.Content>
-              <ListItem.Title>Dog: {selectedDog.dog}</ListItem.Title>
-              <ListItem.Subtitle>Owner: {selectedDog.owner}</ListItem.Subtitle>
+              <ListItem.Title>Dog: {selectedDog.dog1_dog}</ListItem.Title>
+              <ListItem.Subtitle>Owner: {selectedDog.dog1_owner_display_name}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         }
@@ -141,11 +169,15 @@ const EventInput = (props) => {
             ))}
           </ScrollView>
         </Overlay>
-        <Button
+        {!submitting && <Button
           title="Submit Event"
           onPress={handleSubmit}
           style={{marginTop: 30}}
-        />
+        />}
+        {submitting && <Button
+          title="Submitting..."
+          style={{marginTop: 30}}
+        />}
       </View>
     </>
   )
