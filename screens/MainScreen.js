@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EventMain from '../events/EventMain.js';
+import EventMain from '../components/EventMain.js';
 import Requests from '../components/Requests/requests.js';
 import CardSwipe from '../components/Home/cardSwipe.js';
 import ProfileScreen from '../screens/Profiles/ProfileScreen.js'
