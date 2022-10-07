@@ -37,9 +37,11 @@ const Request = (props) => {
   }, [])
 
   const filter = (accepted) => {
+    let tempStandard = [];
     for (let i = 0; i < accepted.length; i++) {
       if (accepted[i].dog1_owner === owner_name) {
-        setStandard((standard) => [...standard, accepted[i]])
+        // setStandard((standard) => [...standard, accepted[i]])
+        tempStandard = [...tempStandard, accepted[i]];
       } else {
         const restructure = {'match_id': accepted[i].match_id};
 
@@ -55,9 +57,11 @@ const Request = (props) => {
         restructure['dog2_owner'] = temp3;
         restructure['dog1_photos'] = accepted[i].dog2_photos;
         restructure['dog2_photos'] = temp4;
-        setStandard((standard) => [...standard, restructure]);
+        // setStandard((standard) => [...standard, restructure]);
+        tempStandard = [...tempStandard, restructure];
       }
     }
+    setStandard(tempStandard);
   }
 
   const confirmMatch = (matchInfo) => {

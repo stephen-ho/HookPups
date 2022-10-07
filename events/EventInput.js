@@ -131,7 +131,7 @@ const EventInput = (props) => {
           <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
             <Avatar rounded source={{uri: selectedDog.dog1_photos[0]}}/>
             <ListItem.Content>
-              <ListItem.Title>Dog: {selectedDog.dog1_name}</ListItem.Title>
+              <ListItem.Title>Dog: {selectedDog.dog1_dog}</ListItem.Title>
               <ListItem.Subtitle>Owner: {selectedDog.dog1_owner_display_name}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
