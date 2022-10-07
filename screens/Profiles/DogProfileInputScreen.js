@@ -36,19 +36,35 @@ const DogProfileInputScreen = () => {
   // const preferrenceSelection = ['All dog', 'Small Dogs', 'Large Dogs', 'Just People'];
 
   const navigation = useNavigation();
+  let dogBreedObj = {};
 
   useEffect (() => {
     for (let key in dogBreed) {
       if (dogBreed[key].length === 0) {
         setBreedSelection((list) => ( [...list, _.capitalize(key)] ))
+        let capKey = _.capitalize(key);
+        let firstChar = capKey.charAt(0);
+        if (dogBreedObj[firstChar] === undefined) {
+          dogBreedObj[firstChar] = [capKey]
+        } else {
+          dogBreedObj[firstChar].push(capKey);
+        }
       } else {
         dogBreed[key].forEach((type) => {
           setBreedSelection((list) => (
             [...list, `${_.capitalize(type)} ${_.capitalize(key)}`]
-          ))
-          });
+          ));
+          let capValue = `${_.capitalize(type)} ${_.capitalize(key)}`;
+          let firstChar = capValue.charAt(0);
+          if (dogBreedObj[firstChar] === undefined) {
+            dogBreedObj[firstChar] = [capValue]
+          } else {
+            dogBreedObj[firstChar].push(capValue);
+          }
+        });
       }
     }
+    console.log('dog breed: ', dogBreedObj);
   }, []);
 
   const addImage = async () => {
@@ -65,7 +81,7 @@ const DogProfileInputScreen = () => {
   };
 
   const submitProfile = () => {
-    if(!display_name.trim() || !dog_name.trim() || !breed.trim() || !size.trim() || !age.trim() || !gender.trim() || !personality.trim() || !description.trim() || !zipcode.trim()) {
+    if(!display_name.trim() || !dog_name.trim() || !breed.trim() || !size.trim() || !age.toString().trim() || !gender.trim() || !personality.trim() || !description.trim() || !zipcode.trim()) {
       alert('All fields are required')
     } else {
       let info = {
@@ -211,8 +227,6 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 5,
     padding: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
     marginVertical: 5,
     height: 100
   },
