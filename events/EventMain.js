@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventCalendar from './EventCalendar.js';
 import EventPage from './EventPage.js';
-import eventData from './eventTestData.js';
 import moment from 'moment';
 
 const EventMain = (props) => {
@@ -64,7 +63,7 @@ const EventMain = (props) => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#bde0fe'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#a2d2ff'}}>
       <View style={styles.phone}>
         {!showPage && <EventCalendar
           selectedDates={selectedDates}

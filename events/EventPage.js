@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import EventPanel from './EventPanel.js';
-import eventData from './eventTestData.js';
 import styles from './styles.js';
 import { useState } from 'react';
 import EventInput from './EventInput.js';
 import { Button } from '@rneui/base';
+import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 
 const EventPage = (props) => {
@@ -22,7 +22,7 @@ const EventPage = (props) => {
         currentUser={props.currentUser}
         currentDog={props.currentDog}
         fetchEvents={props.fetchEvents}
-        key={event.event_id + index}
+        key={event.event_id}
         getDayEvents={props.getDayEvents}
       />
     ))
@@ -40,6 +40,12 @@ const EventPage = (props) => {
           getDayEvents={props.getDayEvents}
         />
       }
+      {!showInput && <View style={styles.header}>
+        <AntDesign name="caretleft" size={24} color="black" style={styles.headerBack}onPress={props.handleBackPress}/>
+        <Text style={styles.headerText}>Events</Text>
+      </View>
+      }
+      {/* {!showInput && <Button style={styles.buttons} title="Close" onPress={props.handleBackPress} />} */}
       <View style={styles.eventPage}>
         {!showInput &&
           <View style={styles.eventPageHeader}>
@@ -50,8 +56,7 @@ const EventPage = (props) => {
         <ScrollView>
           {!showInput && renderNames()}
         </ScrollView>
-        {!showInput && <Button title='Add an Event' onPress={handleShow} />}
-        {!showInput && <Button title="Back to Calendar" onPress={props.handleBackPress} />}
+        {!showInput && <Button style={styles.buttons} title='Add an Event' onPress={handleShow} />}
       </View>
     </>
   );
