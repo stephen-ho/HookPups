@@ -74,9 +74,7 @@ const SignInScreen = () => {
           type='EMPTY'
         />
 
-        <SocialSignInButtons
-          // googleSignIn={signIn}
-        />
+        {/* <SocialSignInButtons/> */}
 
         <CustomButton
           text="Don't have an account? Create one"
