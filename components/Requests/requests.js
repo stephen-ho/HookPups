@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { View, FlatList, SafeAreaView, Image, ScrollView, RefreshControl } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
+import { auth, db } from '../../firebase.js';
 import styles from './requestStyles.js';
 import Chat from '../../chat/Chat.js';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -108,6 +109,21 @@ const Request = (props) => {
       .catch((err) => {console.log('Error confirming match')})
   }
 
+  // const fetchLastMessage = (matchId) => {
+  //   //let finalMessage = 'No Messages yet!';
+  //   return db.collection(`room: ${matchId}`)
+  //   .orderBy('createdAt', 'desc')
+  //   .limit(1)
+  //   .onSnapshot((snapshot) => {
+  //     if (snapshot.docs[0])
+  //       return snapshot.docs[0].data().text;
+  //     else {
+  //       return 'No Messages yet!'
+  //     }
+  //   })
+  //   // return finalMessage;
+  // }
+
   if (!isLoading) {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#d9edff'}}>
@@ -172,7 +188,6 @@ const Request = (props) => {
                 />
               }
             </TabView.Item >
-
             <TabView.Item style={styles.tabView}>
               {standard.length === 0
                 ? <ScrollView
@@ -188,7 +203,7 @@ const Request = (props) => {
                       <Text style={{fontWeight: 'bold', fontSize: 20}}>So Lonely...</Text>
                     </View>
                   </ScrollView>
-                :<FlatList
+                : <FlatList
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                     data={standard}
@@ -205,9 +220,10 @@ const Request = (props) => {
                       }}>
                         <Avatar rounded source={{uri: item.dog2_photos[0]}} size={60} />
                         <ListItem.Content>
-                          <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
-                          <ListItem.Subtitle>Test message
-                          </ListItem.Subtitle>
+                          <View style={styles.acceptedProfiles}>
+                            <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
+                            <Ionicons name="chatbox-ellipses-outline" size={24} color="black" />
+                          </View>
                         </ListItem.Content>
                       </ListItem>
                     )}
