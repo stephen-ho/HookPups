@@ -10,6 +10,7 @@ import CustomButton from '../../components/SignIn/CustomButton.js';
 import CustomDropdownMenu from '../../components/Profiles/CustomDropdownMenu';
 import UploadImages from '../../components/Profiles/UploadImages.js';
 import dogBreed from '../../assets/data/dogBreed.js';
+import { useFonts, Peralta_400Regular  } from '@expo-google-fonts/peralta'
 const axios = require('axios');
 const urlLink = 'http://54.219.129.63:3000';
 const _ = require('lodash');
@@ -35,7 +36,9 @@ const ProfileScreen = (props) => {
   const sizeSelection = ['Tiny', 'Small', 'Medium', 'Large', 'Huge'];
   const ageSelection = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   const personalitySelection = ['Adaptable', 'Aggressive', 'Calm', 'Confident', 'Independent', 'Insecure', 'Mild', 'Outgoing'];
-
+  let [fontsLoaded] = useFonts({
+    Peralta_400Regular
+  });
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
   let dogBreedObj = {};
@@ -99,153 +102,155 @@ const ProfileScreen = (props) => {
         console.log('Error on posting new dog info: ', err);
       });
   }
+  if(fontsLoaded) {
 
-  return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#d9edff'}}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={styles.container}>
-     <Text style={styles.title}>
-        My Profile
-      </Text>
-      <View style={styles.imageContainer}>
-      <Carousel
-        loop
-        width={width * 0.9}
-        autoPlay={true}
-        data={photos}
-        scrollAnimationDuration={3000}
-        // onSnapToItem={(index) => console.log('current index:', index)}
-        renderItem={({ item }) => {
-          return (
-            <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
-          )
-        }}
-      />
-      </View>
-
-      <View style={styles.infoContainer}>
-        <Text style={[styles.infoText, styles.infoName]}>
-          {dog_name}
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: '#d9edff'}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+       <Text style={styles.title}>
+         {dog_name}
         </Text>
-        <Text style={styles.infoText}>{breed}</Text>
-        <Text style={styles.infoText}>{size}  |  {age} years old  |   {gender}</Text>
-        <Text style={styles.infoText}>{personality}</Text>
-        <Text style={styles.infoText}>Location: {zipcode}</Text>
-      </View>
-
-      <View style={styles.bioBoxContainer}>
-        <View style={styles.bioTitleBox}>
-          <Text style={styles.bioTitle}>About Me</Text>
+        <View style={styles.imageContainer}>
+        <Carousel
+          loop
+          width={width * 0.9}
+          autoPlay={true}
+          data={photos}
+          scrollAnimationDuration={3000}
+          // onSnapToItem={(index) => console.log('current index:', index)}
+          renderItem={({ item }) => {
+            return (
+              <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
+            )
+          }}
+        />
         </View>
-        <Text style={styles.bioText}>{info.description}</Text>
-      </View>
 
-      <View style={styles.btnContainer}>
-        <CustomButtonSmall
-          text='Edit Profile'
-          onPress={clickEdit}
-        />
-        <CustomButtonSmall
-          text='Log out'
-          bgColor='#FFC8DD'
-          onPress={clickLogOut}
-        />
-      </View>
+        <View style={styles.infoContainer}>
+          {/* <Text style={[styles.infoText, styles.infoName]}>
+            {dog_name}
+          </Text> */}
+          <Text style={styles.infoText}>{breed}</Text>
+          <Text style={styles.infoText}>{size}  |  {age} years old  |   {gender}</Text>
+          <Text style={styles.infoText}>{personality}</Text>
+          <Text style={styles.infoText}>Location: {zipcode}</Text>
+        </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.modalHeader}>
-              <View style={styles.modalHeaderContent}></View>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                <AntDesign name="closecircle" size={20} color="#716F81" />
-              </TouchableOpacity>
-            </View>
+        <View style={styles.bioBoxContainer}>
+          <View style={styles.bioTitleBox}>
+            <Text style={styles.bioTitle}>About Me</Text>
+          </View>
+          <Text style={styles.bioText}>{info.description}</Text>
+        </View>
 
-            <View style={styles.modalContent}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.imageBox}>
-              <UploadImages
-                images={photos}
-                addImage={addMorePhotos}
-                style={styles.imageBox}
-              />
+        <View style={styles.btnContainer}>
+          <CustomButtonSmall
+            text='Edit Profile'
+            onPress={clickEdit}
+          />
+          <CustomButtonSmall
+            text='Log out'
+            bgColor='#FFC8DD'
+            onPress={clickLogOut}
+          />
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.modalHeader}>
+                <View style={styles.modalHeaderContent}></View>
+                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                  <AntDesign name="closecircle" size={20} color="#716F81" />
+                </TouchableOpacity>
               </View>
 
-              <View>
-                <Text style={[styles.infoText, styles.infoName]}>{dog_name}</Text>
-                <Text style={ styles.infoText }>{breed}</Text>
-              </View>
-
-              <View style={styles.bioContainer}>
-                <TextInput
-                  value={description}
-                  onChange={setDescription}
-                  autoCapitalize="none"
-                  multiline
-                  style={styles.input}
+              <View style={styles.modalContent}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.imageBox}>
+                <UploadImages
+                  images={photos}
+                  addImage={addMorePhotos}
+                  style={styles.imageBox}
                 />
+                </View>
+
+                <View>
+                  <Text style={[styles.infoText, styles.infoName]}>{dog_name}</Text>
+                  <Text style={ styles.infoText }>{breed}</Text>
+                </View>
+
+                <View style={styles.bioContainer}>
+                  <TextInput
+                    value={description}
+                    onChange={setDescription}
+                    autoCapitalize="none"
+                    multiline
+                    style={styles.input}
+                  />
+                </View>
+                <CustomDropdownMenu
+                  data={genderSelection}
+                  defaultValue={gender}
+                  onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                    return setGender(selectedItem);
+                  }}
+                />
+                <CustomDropdownMenu
+                  data={sizeSelection}
+                  defaultValue={size}
+                  onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                    return setSize(selectedItem);
+                  }}
+                />
+                <CustomDropdownMenu
+                  data={ageSelection}
+                  defaultValue={age}
+                  onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                    return setAge(selectedItem);
+                  }}
+                />
+                <CustomDropdownMenu
+                  data={personalitySelection}
+                  defaultValue={personality}
+                  onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                    return setPersonality(selectedItem);
+                  }}
+                />
+                <CustomInput
+                  value={zipcode}
+                  placehoder='zip code'
+                  setValue={setZipcode}
+                  maxLength={5}
+                  keyboardType='number-pad'
+                />
+                <CustomButton
+                  text='Save'
+                  onPress={submitChanges}
+                />
+              </ScrollView>
               </View>
-              <CustomDropdownMenu
-                data={genderSelection}
-                defaultValue={gender}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index)
-                  return setGender(selectedItem);
-                }}
-              />
-              <CustomDropdownMenu
-                data={sizeSelection}
-                defaultValue={size}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index)
-                  return setSize(selectedItem);
-                }}
-              />
-              <CustomDropdownMenu
-                data={ageSelection}
-                defaultValue={age}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index)
-                  return setAge(selectedItem);
-                }}
-              />
-              <CustomDropdownMenu
-                data={personalitySelection}
-                defaultValue={personality}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index)
-                  return setPersonality(selectedItem);
-                }}
-              />
-              <CustomInput
-                value={zipcode}
-                placehoder='zip code'
-                setValue={setZipcode}
-                maxLength={5}
-                keyboardType='number-pad'
-              />
-              <CustomButton
-                text='Save'
-                onPress={submitChanges}
-              />
-            </ScrollView>
             </View>
           </View>
-        </View>
-      </Modal>
-    </View>
-    </ScrollView>
-    </SafeAreaView>
-  )
+        </Modal>
+      </View>
+      </ScrollView>
+      </SafeAreaView>
+    )
+  }
 }
 
 export default ProfileScreen;
@@ -261,15 +266,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9edff'
   },
   title: {
-    color: '#716F81',
     fontWeight: 'bold',
-    fontSize: 25,
-    marginBottom: 10,
+    fontSize: 27,
+    marginBottom: 15,
+    fontFamily: 'Peralta_400Regular'
   },
   imageContainer: {
     width: '100%',
     height: '35%',
-    marginBottom: 10,
+    marginBottom: 15,
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {
@@ -295,7 +300,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     marginBottom: 3,
-    fontSize: 15,
+    fontSize: 18,
   },
   infoName: {
     marginBottom: 5,

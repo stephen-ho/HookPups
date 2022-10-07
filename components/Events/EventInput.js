@@ -155,7 +155,7 @@ const EventInput = (props) => {
       {/* <Button style={styles.buttons} title='Close' onPress={props.handleShow}></Button> */}
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         {!selected &&
-          <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
+          <ListItem containerStyle={styles.inputChooser} onPress={handleOpenChooser}>
             <Avatar rounded source={{uri: `https://puppyhop.com/images/app/dog-placeholder-muted-500x500.png`}}/>
             <ListItem.Content>
               <ListItem.Title>Select a dog you've matched with!</ListItem.Title>
@@ -163,7 +163,7 @@ const EventInput = (props) => {
           </ListItem>
         }
         {selected &&
-          <ListItem style={styles.inputChooser} onPress={handleOpenChooser}>
+          <ListItem containerStyle={styles.inputChooser} onPress={handleOpenChooser}>
             <Avatar rounded source={{uri: selectedDog.dog2_photos[0]}}/>
             <ListItem.Content>
               <ListItem.Title>Dog: {selectedDog.dog2_dog}</ListItem.Title>
@@ -177,13 +177,13 @@ const EventInput = (props) => {
           placeholder='Event'
           />
         <TextInput
-          style={styles.inputTextField}
+          style={({...styles.inputTextField, borderBottomLeftRadius: 20, borderBottomRightRadius: 20})}
           onChangeText={(e) => setLocation(e)}
           placeholder='Location'
           />
         <DateTimePicker
           mode='datetime'
-          style={{width: 200, height: 30}}
+          style={{width: 200, height: 30, paddingTop: 80, marginRight: 30}}
           value={date}
           onChange={handleDateChange}
         />
@@ -207,11 +207,11 @@ const EventInput = (props) => {
         {!submitting && <Button
           title="Submit Event"
           onPress={handleSubmit}
-          style={{marginTop: 30}}
+          style={{marginTop: 10}}
         />}
         {submitting && <Button
           title="Submitting..."
-          style={{marginTop: 30}}
+          style={{marginTop: 10}}
         />}
       </View>
     </>

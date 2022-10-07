@@ -1,4 +1,4 @@
-node_modules/
+
 .expo/
 dist/
 npm-debug.*
@@ -21,3 +21,4 @@ package-lock.json
 
 .env
 config.js
+node_modules
