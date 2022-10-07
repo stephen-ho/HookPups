@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventCalendar from './EventCalendar.js';
 import EventPage from './EventPage.js';
-import eventData from './eventTestData.js';
 import moment from 'moment';
 
 const EventMain = (props) => {
@@ -24,16 +23,13 @@ const EventMain = (props) => {
   }, []);
 
   const fetchEvents = async () => {
-    console.log('EVENTS FETCHED')
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
     selectDates(results.data);
   }
 
   const selectDates = (results) => {
-    console.log('CURRENT EVENTS: ', results);
     let tempSelectedDates = {};
     for (let i = 0; i < results.length; i++) {
-      console.log(results[i]);
       let formattedDate = moment(results[i].date).format('YYYY-MM-DD');
       tempSelectedDates[formattedDate] = {selected: true};
     }
@@ -46,15 +42,12 @@ const EventMain = (props) => {
   };
 
   const handleDayPress = async (day) => {
-    console.log('DAY', day)
     let date = day.dateString;
-    console.log('DATE', date);
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
 
     let tempEvents = [];
     for (let i = 0; i < results.data.length; i++) {
       if (moment(results.data[i].date).format('YYYY-MM-DD') === date) {
-        console.log('INDEX: ', i);
         tempEvents.push(results.data[i]);
       }
     }
@@ -70,7 +63,7 @@ const EventMain = (props) => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#bde0fe'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#a2d2ff'}}>
       <View style={styles.phone}>
         {!showPage && <EventCalendar
           selectedDates={selectedDates}

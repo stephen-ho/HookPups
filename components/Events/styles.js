@@ -10,6 +10,26 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
 
+  header: {
+    backgroundColor: '#a2d2ff',
+    height: '5%',
+  },
+
+  headerBack: {
+    position: 'absolute',
+    top: 8,
+    left: 10,
+    zIndex: 2,
+    elevation: 2,
+  },
+
+  headerText: {
+    textAlign: 'center',
+    fontSize: 30,
+    height: '100%'
+    // width: '20%',
+  },
+
   buttons: {
     width: '75%',
     alignSelf: 'center',
@@ -36,7 +56,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 65,
     borderTopRightRadius: 65,
     borderWidth: 30,
-    borderColor: '#bde0fe'
+    borderColor: '#d9edff'
     // calendarBackground: '#ffffff',
   },
 
@@ -51,7 +71,7 @@ const styles = StyleSheet.create({
     height: 500,
     width: '100%',
     paddingTop: 10,
-    backgroundColor: '#bde0fe',
+    backgroundColor: '#d9edff',
     flexDirection: 'column',
   },
 
@@ -61,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   eventPageDate: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
   },
 
