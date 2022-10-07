@@ -37,9 +37,11 @@ const Request = (props) => {
   }, [])
 
   const filter = (accepted) => {
+    let tempStandard = [];
     for (let i = 0; i < accepted.length; i++) {
       if (accepted[i].dog1_owner === owner_name) {
-        setStandard((standard) => [...standard, accepted[i]])
+        // setStandard((standard) => [...standard, accepted[i]])
+        tempStandard = [...tempStandard, accepted[i]];
       } else {
         const restructure = {'match_id': accepted[i].match_id};
 
@@ -55,9 +57,11 @@ const Request = (props) => {
         restructure['dog2_owner'] = temp3;
         restructure['dog1_photos'] = accepted[i].dog2_photos;
         restructure['dog2_photos'] = temp4;
-        setStandard((standard) => [...standard, restructure]);
+        // setStandard((standard) => [...standard, restructure]);
+        tempStandard = [...tempStandard, restructure];
       }
     }
+    setStandard(tempStandard);
   }
 
   const confirmMatch = (matchInfo) => {
@@ -83,26 +87,22 @@ const Request = (props) => {
   }
 
   const declineMatch = (matchInfo) => {
-    console.log('declining')
-    // const match = {
-    //   "dog1_name": dogName,
-    //   "owner1_name": owner_name,
-    //   "dog2_name": matchInfo.dog_name,
-    //   "owner2_name": matchInfo.owner_name
-    // }
+    const match = {
+      "dog2_name": matchInfo.dog_name,
+      "owner2_name": matchInfo.owner_name
+    }
 
-    // axios.post('http://54.219.129.63:3000/matches', match)
-    //   .then(() => {
-    //     axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/pending`)
-    //     .then((response) => {
-    //       setPending(response.data)
-    //       axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/confirmed`)
-    //         .then((response) => { filter(response.data); } )
-    //         .catch((err) => {console.log('Error getting confirmed matches')})
-    //     })
-    //     .catch((err) => {console.log('Error getting pending matches after confirming match')})
-    //   })
-    //   .catch((err) => {console.log('Error confirming match')})
+    axios.delete(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}`, match)
+      .then(() => {
+        axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/pending`)
+        .then((response) => {
+          setPending(response.data)
+        })
+        .catch((err) => {
+          console.log('error fetching pending dogs after deleting')
+        })
+      })
+      .catch((err) => {console.log('Error confirming match')})
   }
 
   if (!isLoading) {
@@ -157,21 +157,20 @@ const Request = (props) => {
             <FlatList
                 data={standard}
                 renderItem={({item}) => (
-                  <ListItem bottomDivider>
+                  <ListItem bottomDivider onPress={() => {
+                    setCurrentMatch({
+                      matchId: item.match_id,
+                      userId: item.dog1_id,
+                      dogName: dogName,
+                      userPhoto: userPhoto,
+                      matchedDog: item.dog2_dog,
+                      matchedPhoto: item.dog2_photos[0]
+                    }); toggleChat();
+                  }}>
                     <Avatar rounded source={{uri: item.dog2_photos[0]}} size={60} />
                     <ListItem.Content>
                       <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
-                      <ListItem.Subtitle onPress={() => {
-                        setCurrentMatch({
-                          matchId: item.match_id,
-                          userId: item.dog1_id,
-                          dogName: dogName,
-                          userPhoto: userPhoto,
-                          matchedDog: item.dog2_dog,
-                          matchedPhoto: item.dog2_photos[0]
-                        }); toggleChat();
-                      }}
-                      >Test message
+                      <ListItem.Subtitle>Test message
                       </ListItem.Subtitle>
                     </ListItem.Content>
                   </ListItem>
