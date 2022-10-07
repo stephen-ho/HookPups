@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { View, FlatList, SafeAreaView } from 'react-native';
+import { View, FlatList, SafeAreaView, Image, ScrollView, RefreshControl } from 'react-native';
 import { ListItem, Avatar, Text, Tab, TabView} from "@rneui/themed";
 import styles from './requestStyles.js';
 import Chat from '../../chat/Chat.js';
@@ -15,6 +15,7 @@ const Request = (props) => {
   const [accepted, setAccepted] = useState([]);
   const [currentMatch, setCurrentMatch] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setrefreshing] = useState(false);
   const owner_name = props.route.params.user;
   const dogName = props.route.params.dog.dog_name;
   const userPhoto = props.route.params.dog.photos[0];
@@ -30,6 +31,12 @@ const Request = (props) => {
     filter(res.data);
 
   }
+
+  const onRefresh = () => {
+    setrefreshing(true);
+    fetchData();
+    setrefreshing(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -129,49 +136,83 @@ const Request = (props) => {
 
           <TabView value={index} onChange={setIndex} animationType='spring'>
             <TabView.Item style={styles.tabView}>
-              <FlatList
-                data={pending}
-                renderItem={({item}) => (
-                  <ListItem bottomDivider>
-                    <Avatar rounded source={{uri: item.photos[0]}} size={60} />
-                    <ListItem.Content>
-                      <ListItem.Title style={styles.name}>{item.dog_name}</ListItem.Title>
-                      <ListItem.Subtitle>{item.breed}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.personality}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    <View style={styles.buttons}>
-                      <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {declineMatch(item)}}/>
-                      <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {confirmMatch(item)}}/>
-                    </View>
-                  </ListItem>
-                )}
-              />
+              {pending.length === 0
+              ? <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+                >
+                  <Image source={require('../../photos/hero_dog.png')} style={styles.photo}></Image>
+                  <View style={styles.text}>
+                    <Text style={{fontWeight: 'bold', fontSize: 20}}>So Lonely...</Text>
+                  </View>
+                </ScrollView>
+              : <FlatList
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  data={pending}
+                  renderItem={({item}) => (
+                      <ListItem bottomDivider>
+                        <Avatar rounded source={{uri: item.photos[0]}} size={60} />
+                        <ListItem.Content>
+                          <ListItem.Title style={styles.name}>{item.dog_name}</ListItem.Title>
+                          <ListItem.Subtitle>{item.breed}</ListItem.Subtitle>
+                          <ListItem.Subtitle>{item.personality}</ListItem.Subtitle>
+                          <ListItem.Subtitle>{item.size}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <View style={styles.buttons}>
+                          <AntDesign name="closecircle" size={24} color="#FF5733" onPress={() => {declineMatch(item)}}/>
+                          <AntDesign name="checkcircle" size={24} color="#0BDA51" style={styles.closecircle} onPress={() => {confirmMatch(item)}}/>
+                        </View>
+                      </ListItem>
+                    )}
+                />
+              }
             </TabView.Item >
 
             <TabView.Item style={styles.tabView}>
-            <FlatList
-                data={standard}
-                renderItem={({item}) => (
-                  <ListItem bottomDivider onPress={() => {
-                    setCurrentMatch({
-                      matchId: item.match_id,
-                      userId: item.dog1_id,
-                      dogName: dogName,
-                      userPhoto: userPhoto,
-                      matchedDog: item.dog2_dog,
-                      matchedPhoto: item.dog2_photos[0]
-                    }); toggleChat();
-                  }}>
-                    <Avatar rounded source={{uri: item.dog2_photos[0]}} size={60} />
-                    <ListItem.Content>
-                      <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
-                      <ListItem.Subtitle>Test message
-                      </ListItem.Subtitle>
-                    </ListItem.Content>
-                  </ListItem>
-                )}
-              />
+              {standard.length === 0
+                ? <ScrollView
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                  >
+                    <Image source={require('../../photos/hero_dog.png')} style={styles.photo}></Image>
+                    <View style={styles.text}>
+                      <Text style={{fontWeight: 'bold', fontSize: 20}}>So Lonely...</Text>
+                    </View>
+                  </ScrollView>
+                :<FlatList
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    data={standard}
+                    renderItem={({item}) => (
+                      <ListItem bottomDivider onPress={() => {
+                        setCurrentMatch({
+                          matchId: item.match_id,
+                          userId: item.dog1_id,
+                          dogName: dogName,
+                          userPhoto: userPhoto,
+                          matchedDog: item.dog2_dog,
+                          matchedPhoto: item.dog2_photos[0]
+                        }); toggleChat();
+                      }}>
+                        <Avatar rounded source={{uri: item.dog2_photos[0]}} size={60} />
+                        <ListItem.Content>
+                          <ListItem.Title style={styles.name}>{item.dog2_dog}</ListItem.Title>
+                          <ListItem.Subtitle>Test message
+                          </ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                    )}
+                  />
+                }
             </TabView.Item>
           </TabView>
         </View>
