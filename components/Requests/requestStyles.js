@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: 'bold',
+    paddingRight: 10,
   },
   buttons: {
     flexDirection: 'row',
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
   },
   tabView: {
     width: '100%',
+  },
+  acceptedProfiles: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     paddingTop: 80,
