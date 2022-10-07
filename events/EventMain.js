@@ -8,12 +8,7 @@ import EventPage from './EventPage.js';
 import eventData from './eventTestData.js';
 import moment from 'moment';
 
-// Owner name is actually the owner's email
-
 const EventMain = (props) => {
-  // console.log('what is in Event main: ', props.route.params)
-  // console.log('CURRENT USER: ', props.route.params.user);
-  // console.log('CURRENT DOG: ', props.route.params.dog);
   const [currentUser, setCurrentUser] = useState(props.route.params.user);
   const [currentDog, setCurrentDog] = useState(props.route.params.dog);
   const [showPage, setShowPage] = useState(false); // Show event page once a date is pressed
@@ -26,16 +21,11 @@ const EventMain = (props) => {
 
   useEffect(() => {
     fetchEvents();
-    // return function cleanUp() {
-    //   setShowPage(false);
-    // }
   }, []);
 
   const fetchEvents = async () => {
     console.log('EVENTS FETCHED')
     const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
-    //parse results first?
-    // await setEvents(results.data);
     selectDates(results.data);
   }
 
@@ -46,20 +36,29 @@ const EventMain = (props) => {
       console.log(results[i]);
       let formattedDate = moment(results[i].date).format('YYYY-MM-DD');
       tempSelectedDates[formattedDate] = {selected: true};
-      // tempSelectedDates[eventData[i].date] = {selected: true};
     }
     setEvents(results);
     setSelectedDates(tempSelectedDates);
   }
 
-  const handleDayPress = (day) => {
+  const sortEvents = (a, b) => {
+    return new Date(a.date) - new Date(b.date);
+  };
+
+  const handleDayPress = async (day) => {
+    console.log('DAY', day)
     let date = day.dateString;
+    console.log('DATE', date);
+    const results = await axios.get(`http://54.219.129.63:3000/events/${currentUser}/${currentDog.dog_name}`);
+
     let tempEvents = [];
-    for (let i = 0; i < events.length; i++) {
-      if (moment(events[i].date).format('YYYY-MM-DD') === date) {
-        tempEvents.push(events[i]);
+    for (let i = 0; i < results.data.length; i++) {
+      if (moment(results.data[i].date).format('YYYY-MM-DD') === date) {
+        console.log('INDEX: ', i);
+        tempEvents.push(results.data[i]);
       }
     }
+    tempEvents = tempEvents.sort(sortEvents);
     setDayEvents(tempEvents);
     setShowPage(true);
     setSelectedDay(new Date(day.year, day.month - 1, day.day, 12));
@@ -87,6 +86,7 @@ const EventMain = (props) => {
           currentUser={currentUser}
           currentDog={currentDog}
           fetchEvents={fetchEvents}
+          getDayEvents={handleDayPress}
         />}
       </View>
     </SafeAreaView>
