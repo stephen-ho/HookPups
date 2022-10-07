@@ -22,7 +22,7 @@ const RegisterScreen = () => {
       .then((res) => {
         // const user = userCredential.user;
         console.warn('Account has been successfully created. Please sign in.')
-        console.log(res);
+        console.log('message in the register screen: ', res);
 
         //navigate to profit setup
         navigation.navigate('ProfileInput', { email })
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     alignItems: 'center',
-    backgroundColor: '#BDE0FE',
+    backgroundColor: '#d9edff',
     height: Dimensions.get('window').height
   },
 
