@@ -40,7 +40,6 @@ const Request = (props) => {
     let tempStandard = [];
     for (let i = 0; i < accepted.length; i++) {
       if (accepted[i].dog1_owner === owner_name) {
-        // setStandard((standard) => [...standard, accepted[i]])
         tempStandard = [...tempStandard, accepted[i]];
       } else {
         const restructure = {'match_id': accepted[i].match_id};
@@ -57,7 +56,6 @@ const Request = (props) => {
         restructure['dog2_owner'] = temp3;
         restructure['dog1_photos'] = accepted[i].dog2_photos;
         restructure['dog2_photos'] = temp4;
-        // setStandard((standard) => [...standard, restructure]);
         tempStandard = [...tempStandard, restructure];
       }
     }
@@ -87,12 +85,10 @@ const Request = (props) => {
   }
 
   const declineMatch = (matchInfo) => {
-    const match = {
-      "dog2_name": matchInfo.dog_name,
-      "owner2_name": matchInfo.owner_name
-    }
+    const dog2 = matchInfo.dog_name;
+    const owner2 = matchInfo.owner_name;
 
-    axios.delete(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}`, match)
+    axios.delete(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/${owner2}/${dog2}/`)
       .then(() => {
         axios.get(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}/pending`)
         .then((response) => {
@@ -188,20 +184,3 @@ const Request = (props) => {
 }
 
 export default Request;
-//hello
-{/* <FlatList
-data={matched}
-renderItem={({item}) => (
-  <ListItem bottomDivider>
-    <Avatar rounded source={{uri: item.avatar}} size={60} />
-    <ListItem.Content>
-      <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
-      <ListItem.Subtitle onPress={() =>{toggleChat(); setChatData({
-          uri: item.avatar,
-          name: item.name,
-
-      })}}>{item.message}</ListItem.Subtitle>
-    </ListItem.Content>
-  </ListItem>
-)}
-/> */}
