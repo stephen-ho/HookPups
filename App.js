@@ -16,10 +16,6 @@ export default function App() {
 
   return (
 
-    // <View style={styles.container}>
-    //   <BreedList />
-    // </View>
-
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SignIn" component={SignInScreen} />
