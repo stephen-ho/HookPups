@@ -21,6 +21,17 @@ const styles = StyleSheet.create({
   },
   tabView: {
     width: '100%',
+  },
+  text: {
+    paddingTop: 80,
+    paddingLeft: 135,
+  },
+  photo: {
+    position: 'relative',
+    alignSelf: 'center',
+    top: 50,
+    width: 240,
+    height: 240 * 1.2,
   }
 });
 
