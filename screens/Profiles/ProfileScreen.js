@@ -38,6 +38,7 @@ const ProfileScreen = (props) => {
 
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
+  let dogBreedObj = {};
 
   useEffect (() => {
     axios.get(`${urlLink}/description/${user}`)
@@ -109,7 +110,7 @@ const ProfileScreen = (props) => {
       <View style={styles.imageContainer}>
       <Carousel
         loop
-        width={width}
+        width={width * 0.9}
         autoPlay={true}
         data={photos}
         scrollAnimationDuration={3000}
@@ -171,7 +172,13 @@ const ProfileScreen = (props) => {
 
             <View style={styles.modalContent}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <UploadImages images={photos} addImage={addMorePhotos} />
+              <View style={styles.imageBox}>
+              <UploadImages
+                images={photos}
+                addImage={addMorePhotos}
+                style={styles.imageBox}
+              />
+              </View>
 
               <View>
                 <Text style={[styles.infoText, styles.infoName]}>{dog_name}</Text>
@@ -263,6 +270,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '35%',
     marginBottom: 10,
+    alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -272,6 +280,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   image: {
+    borderRadius: 15,
     width: '100%',
     height: '100%'
   },
@@ -368,12 +377,16 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 5,
     padding: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 15,
+    paddingLeft: 15,
     marginVertical: 5,
     height: 100
   },
   input: {
     textAlignVertical: 'top'
+  },
+  imageBox: {
+    marginLeft: 30,
+    marginTop: 10
   }
 });

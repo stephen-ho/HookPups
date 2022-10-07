@@ -15,6 +15,11 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+
+    // <View style={styles.container}>
+    //   <BreedList />
+    // </View>
+
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -27,3 +32,8 @@ export default function App() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
