@@ -87,10 +87,10 @@ const Request = (props) => {
   }
 
   const declineMatch = (matchInfo) => {
-    const match = {
+    const match = {data: {
       "dog2_name": matchInfo.dog_name,
       "owner2_name": matchInfo.owner_name
-    }
+    }}
 
     axios.delete(`http://54.219.129.63:3000/matches/${owner_name}/${dogName}`, match)
       .then(() => {
