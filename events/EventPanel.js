@@ -19,8 +19,20 @@ const EventPanel = (props) => {
 
     axios.delete(`http://54.219.129.63:3000/events/${props.event.event_id}`)
     .then(() => {
-      console.log('FIRST DELETE SUCCESS')
+      console.log('FIRST DELETE SUCCESS');
       return props.fetchEvents();
+    })
+    .then(() => {
+      let dateString = moment(props.event.date).format('YYYY-MM-DD');
+      let year = parseInt(moment(props.event.date).format('YYYY'));
+      let month = parseInt(moment(props.event.date).format('MM'));
+      let day = parseInt(moment(props.event.date).format('DD'));
+      console.log('DATESTRING ', dateString);
+      console.log('YEAR ', year);
+      console.log('MONTH ', month);
+      console.log('DAY ', day)
+      console.log('SECOND DELETE SUCCESS');
+      return props.getDayEvents({ dateString: dateString, year: year, month: month, day: day })
     })
     .catch((err) => console.log(err));
   }
