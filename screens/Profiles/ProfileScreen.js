@@ -116,7 +116,7 @@ const ProfileScreen = (props) => {
         // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({ item }) => {
           return (
-              <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
+            <Image style={styles.image} source={{ uri: item }} resizeMode='cover' resizeMethod='auto'/>
           )
         }}
       />

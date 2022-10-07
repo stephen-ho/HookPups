@@ -17,26 +17,25 @@ const RegisterScreen = () => {
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [signInModal, setSignInModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+  const [regModal, setRegModal] = useState(false);
   const [errorCode, setErrorCode] = useState('');
 
   const navigation = useNavigation();
 
   const onRegisterPressed = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((res) => {
-        // const user = userCredential.user;
-        // console.warn('Account has been successfully created. Please sign in.');
-        // console.log('message in the register screen: ', res);
-        setSignInModal(!signInModal);
-        navigation.navigate('ProfileInput', { email })
-      })
-      .catch((error) => {
-        // console.warn(error.code);
-        setErrorCode(error.code);
-        setErrorModal(!errorModal);
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-      });
+    if (email === emailRepeat && password === passwordRepeat) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((res) => {
+          setSignInModal(!signInModal);
+          navigation.navigate('ProfileInput', { email })
+        })
+        .catch((error) => {
+          setErrorCode(error.code);
+          setErrorModal(!errorModal);
+        });
+    } else {
+      setRegModal(!regModal);
+    }
   }
 
   const onSignInPressed = () => {
@@ -91,12 +90,17 @@ const RegisterScreen = () => {
         visible={errorModal}
         onPress={() => setErrorModal(!errorModal)}
         />
-
       <CustomModal
         modalText="Account has been successfully created. Please enter you and your dog's information."
         buttonText='Close'
         visible={signInModal}
         onPress={() => setSignInModal(!signInModal)}
+        />
+      <CustomModal
+        modalText="Please double check your email and password!"
+        buttonText='Try Again'
+        visible={regModal}
+        onPress={() => setRegModal(!regModal)}
         />
     </View>
     </ScrollView>

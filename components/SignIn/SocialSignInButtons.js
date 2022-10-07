@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import CustomButton from './CustomButton.js';
 
-  const SocialSignInButtons = () => {
+  const SocialSignInButtons = ({ googleSignIn, appleSignIn }) => {
 
     const onGooglePressed = () => {
       console.warn('sign in with google')
+      // googleSignIn();
     }
 
     const onApplePressed = () => {
       console.warn('sign in with apple')
+      // appleSignIn();
     }
 
     return (
