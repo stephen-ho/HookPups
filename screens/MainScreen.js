@@ -74,7 +74,7 @@ if (isLoading === true) {
 }
   return (
     <>
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator style={styles.navBar} screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
         component={CardSwipe}
@@ -104,12 +104,15 @@ if (isLoading === true) {
   );
 }
 
-// const styles = StyleSheet.create({
-//   adBar: {
-//     padding: 20,
-//     flexDirection: 'row',
-//     justifyContent: 'center'
-//   }
-// })
+const styles = StyleSheet.create({
+  navBar: {
+    borderRadius: 20,
+  },
+  // adBar: {
+  //   padding: 20,
+  //   flexDirection: 'row',
+  //   justifyContent: 'center'
+  // }
+})
 
 export default MainScreen;

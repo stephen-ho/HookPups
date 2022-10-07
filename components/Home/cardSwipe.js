@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Dimensions, Image, StyleSheet, View, Alert, Modal, Pressable, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Card, Button } from '@rneui/themed';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import Carousel from 'react-native-reanimated-carousel';
 import CardsSwipe, {CardsSwipeRefObject} from 'react-native-cards-swipe';
 import { useRoute } from '@react-navigation/native';
@@ -194,7 +194,7 @@ if (isLoading === false && dogs.length !== 0) {
               style={[styles.button, styles.buttonClose]}
               onPress={handleCloseMenu}
             >
-              <Text style={styles.textStyle}>Close</Text>
+              <Text style={styles.textStyle}>Apply</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -214,7 +214,7 @@ if (isLoading === false && dogs.length !== 0) {
             <View style={styles.card}>
               <View style={styles.cardHeader}>
                 <Text style={styles.h1} onPress={() => handlePress(card)}>{card.dog_name}</Text>
-                <Feather style={styles.headerMenu} name="menu" size={30} color="black" onPress={handleMenuPress}/>
+                <Ionicons style={styles.headerMenu} name="ios-options" size={40} color="black" onPress={handleMenuPress}/>
               </View>
               <Image
                 style={styles.cardImg}
@@ -262,7 +262,7 @@ if (isLoading === false && dogs.length !== 0) {
                 height={width / 1.75}
                 autoPlay={true}
                 data={currentCard.photos}
-                scrollAnimationDuration={1000}
+                scrollAnimationDuration={3000}
                 onSnapToItem={(index) => console.log('current index:', index)}
                 renderItem={({ item }) => {
                   const photo = item
@@ -327,13 +327,13 @@ if (isLoading === false && dogs.length !== 0) {
 const styles = StyleSheet.create({
   h1: {
     fontSize: 35,
-    padding: 10,
   },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    paddingTop: 30,
+    paddingBottom: 10,
   },
   icon: {
     paddingHorizontal: 50,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: '92%',
-    height: '75%',
+    height: '85%',
     backgroundColor: '#d9edff'
   },
   cardHeader: {
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 8,
     },
-    shadowOpacity: 0.07,
+    shadowOpacity: 0.20,
     shadowRadius: 3.3,
   },
   cardImg: {
