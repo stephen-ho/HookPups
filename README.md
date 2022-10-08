@@ -1,4 +1,4 @@
-HookPups
+HookPups Client Repo
 =================================
 
 Overview:
