@@ -10,10 +10,40 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
 
+  header: {
+    backgroundColor: '#a2d2ff',
+    height: '8%',
+  },
+
+  headerBack: {
+    position: 'absolute',
+    top: 8,
+    left: 10,
+    zIndex: 2,
+    elevation: 2,
+  },
+
+  headerText: {
+    textAlign: 'center',
+    fontSize: 30,
+    height: '100%',
+    fontFamily: 'Peralta_400Regular'
+    // width: '20%',
+  },
+
   buttons: {
-    width: '75%',
-    alignSelf: 'center',
-    // alignItems: 'center',
+    width: '100%',
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 5,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 
   topBar: {
@@ -35,8 +65,11 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     borderTopLeftRadius: 65,
     borderTopRightRadius: 65,
+    borderBottomRightRadius: 65,
+    borderBottomLeftRadius: 65,
     borderWidth: 30,
-    borderColor: '#bde0fe'
+    borderColor: '#d9edff',
+    height: 450,
     // calendarBackground: '#ffffff',
   },
 
@@ -51,7 +84,7 @@ const styles = StyleSheet.create({
     height: 500,
     width: '100%',
     paddingTop: 10,
-    backgroundColor: '#bde0fe',
+    backgroundColor: '#d9edff',
     flexDirection: 'column',
   },
 
@@ -61,7 +94,7 @@ const styles = StyleSheet.create({
   },
 
   eventPageDate: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
   },
 
@@ -76,19 +109,25 @@ const styles = StyleSheet.create({
   },
 
   inputChooser: {
-    width: '75%',
+    width: '85%',
+    paddingTop: 30,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    marginTop: 30,
   },
 
   inputTextField: {
     height: 50,
-    width: '75%',
+    width: '85%',
     backgroundColor: '#f2f2f2',
+    paddingLeft: 10,
   },
 
   overlay: {
     flexDirection: 'column',
     width: '75%',
-    height: '80%',
+    height: '60%',
+    borderRadius: 10,
   },
 
   overlayHeader: {

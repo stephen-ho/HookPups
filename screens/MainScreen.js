@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EventMain from '../events/EventMain.js';
+import EventMain from '../components/Events/EventMain.js';
 import Requests from '../components/Requests/requests.js';
 import CardSwipe from '../components/Home/cardSwipe.js';
 import ProfileScreen from '../screens/Profiles/ProfileScreen.js'
@@ -17,21 +17,6 @@ const MainScreen = (props) => {
   const [dogInfo, setDogInfo] = useState({});
   const [isLoading, setLoading] = useState(true);
 
-  // async function fetchData () {
-  //   const results = await axios.get('http://54.219.129.63:3000/description/unmatched/:user_name/:dog_name')
-  //   await setDogs(results.data);
-  //   setLoading(false);
-  // }
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetchData();
-  // }, [])
-
-  // async function fetchData() {
-  //   const results = await axios.get(`http://54.219.129.63:3000/description/${owner_name}`);
-  //   await setDogInfo(results.data[0]);
-  // }
 
   useEffect(() => {
     axios.get(`http://54.219.129.63:3000/description/${owner_name}`)
@@ -49,9 +34,6 @@ const MainScreen = (props) => {
     return <Entypo name="home" size={24} color="black" />;
   }
 
-  function renderMap () {
-    return <FontAwesome name="map-marker" size={24} color="black" />;
-  }
 
   function renderEvents () {
     return <MaterialIcons name="event-note" size={24} color="black" />;
@@ -106,7 +88,7 @@ if (isLoading === true) {
 
 const styles = StyleSheet.create({
   navBar: {
-    borderRadius: 20,
+
   },
   // adBar: {
   //   padding: 20,
