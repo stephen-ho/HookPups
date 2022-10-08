@@ -10,24 +10,33 @@ Component Details:
 
 User Authentication / Profile Creation 
 -----------------
+<img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/login.png" width="250"/> <img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/createaccount.png" width="250"/> <img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/createprofile.png" width="250"/>
 
 New end-users are required to create a user account with log-in details. Upon opening the app, the user will be prompted to provide their log-in details if not already logged in, and/or create a new user account in order to access the app’s functionalities. Additionally, the user will be able to edit their account details and set up their dog’s profile page.
 
 Home Page w/ Swipe Feature
 -----------------
+<img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/homepage.png" width="250"/> <img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/filter.png" width="250"/>
 
 The user will have the option to select dog friend preferences, and will be given one dog photo at a time allowing them to swipe to match with desired dog friends. Only dogs within a certain radius will be shown.
 
 Events
 -----------------
+<img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/events.png" width="250"/> <img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/newevent.png" width="250"/>
 
 The calendar page will store the user’s future meetup plans. It will allow the user to add their meetup information by selecting their dog friend from a list of confirmed matches as well as input the date, time, and location of the meet-up.
 
 Matches
 -----------------
+<img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/matches.png" width="250"/> <img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/chat.png" width="250"/>
 
 Users can view their confirmed matches in addition to their pending patches in a toggled list view. Upon clicking on a confirmed match it will open up a private chat room between the user and their match.
 
+Profile
+-----------------
+<img src="https://github.com/HR-Ravenclaw/HookPups/blob/main/photos/profile.png" width="250"/>
+
+Users can view their own profile and make edits if needed.
 
 Built With:
 -------------
@@ -51,15 +60,22 @@ Node v16.16.0
 NPM 8.11.0
 ```
 Instructions:
-1. Clone the repo
 
-`git clone https://github.com/HR-Ravenclaw/HookPups.git`
+1. Clone both client and server repos
 
-2. Install NPM packages
+Client: `git clone https://github.com/HR-Ravenclaw/HookPups.git`
+
+Server: `git clone https://github.com/HR-Ravenclaw/HookPups_Backend`
+
+2. Install NPM packages on both
 
 `npm install`
 
-3. In terminal run the Expo/XCode simulator
+3. In server terminal start the server
+
+`npm start server/server.js`
+
+4. In client terminal run the Expo/XCode simulator
 
 `npm run ios`
 
